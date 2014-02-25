@@ -2,7 +2,6 @@ name = Stanford Sites Personal Shortcuts
 description = Creates helpful "administrative shortcuts" for Stanford Sites Personal
 core = 7.x
 package = Stanford Sites Personal
-php = 5.2.4
 version = 7.x-1.x-dev
 project = stanford_personal_shortcuts
 dependencies[] = block
