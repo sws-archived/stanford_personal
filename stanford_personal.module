@@ -1,0 +1,99 @@
+<?php
+/**
+ * @file
+ * Code for the Stanford Sites Jumpstart module.
+ */
+/**
+ * Implements hook_menu().
+ */
+function stanford_personal_menu() {
+  $items['admin/stanford-personal'] = array(
+    'title' => 'Stanford Sites Personal Help',
+    'page callback' => 'theme',
+    'page arguments' => array('gethelp_template'),
+    'access arguments' => array('access stanford personal help'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+  $items['admin/stanford-personal/help'] = array(
+    'title' => 'Get Help',
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'weight' => -10,
+  );
+  return $items;
+}
+
+/**
+ * Page callback for admin/stanford-jumpstart/features.
+ */
+function stanford_personal_theme($existing, $type, $theme, $path) {
+  // Set the default Add Features template
+
+  return array(
+    'gethelp_template' => array(
+      'template' => 'templates/gethelp',
+    ),
+  );
+}
+
+/**
+ * Implements hook_permission().
+ */
+function stanford_personal_permission() {
+  return array(
+    'access stanford personal help' => array(
+      'title' => t('Access Stanford Sites Personal Help'),
+      'description' => t('View the Stanford Sites Personal Help pages, launch checklist and instructions'),
+    ),
+    'stanford personal use full block' => array(
+      'title' => t('Use Full Block Interface'),
+      'description' => t('View all options for editing blocks.'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function stanford_personal_form_block_admin_configure_alter(&$form, &$form_state, $form_id) {
+  if (!user_access('stanford personal use full block')) {
+    $form['regions']['#type'] = 'hidden';
+    $form['visibility']['node_type']['#type'] = 'hidden';
+    $form['visibility']['role']['#type'] = 'hidden';
+    $form['visibility']['user']['#type'] = 'hidden';
+    $form['settings']['css_class']['#type'] = 'hidden';
+    //"visiblity" - ya rly.
+    $form['visiblity']['context_respect']['#type'] = 'hidden';
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function stanford_personal_form_bean_form_alter(&$form, &$form_state, $form_id) {
+  if (!user_access('stanford personal use full block')) {
+    $form['revision']['#type'] = 'hidden';
+    $form['actions']['delete']['#type'] = 'hidden';
+  }
+  $form['#validate'][] = 'stanford_personal_bean_form_validate';
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function stanford_personal_form_stanford_page_node_form_alter(&$form, &$form_state, $form_id) {
+  if (!user_access('stanford personal use full block')) {
+    $form['options']['promote']['#type'] = 'hidden';
+    $form['options']['sticky']['#type'] = 'hidden';
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function stanford_personal_form_system_site_information_settings_alter(&$form, &$form_state, $form_id) {
+  if (!user_access('stanford personal use full block')) {
+    $form['site_information']['site_slogan']['#type'] = 'hidden';
+    $form['error_page']['#type'] = 'hidden';
+    $form['front_page']['#type'] = 'hidden';
+  }
+}

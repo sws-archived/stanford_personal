@@ -1,0 +1,9 @@
+name = Stanford Sites Personal
+description = Provides custom functionality for the Stanford Sites Personal service
+core = 7.x
+package = Stanford Sites Personal
+version = 7.x-1.x-dev
+project = stanford_personal
+stylesheets[all][] = css/stanford-personal.css
+stylesheets[all][] = css/stanford-personal-theme-fixes.css
+scripts[] = js/stanford-personal.js

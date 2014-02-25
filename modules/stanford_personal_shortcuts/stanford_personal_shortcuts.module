@@ -1,0 +1,35 @@
+<?php
+/**
+ * @file
+ * Code for the Stanford Sites Personal Layouts feature.
+ */
+
+include_once 'stanford_personal_shortcuts.features.inc';
+
+/**
+ * Implements hook_block_info().
+ */
+function stanford_personal_shortcuts_block_info() {
+  $blocks['hello']['info'] = t('Stanford Sites Personal Hello "User" Block');
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function stanford_personal_shortcuts_block_view($delta = '') {
+  $block = array();
+  switch($delta) {
+    case 'hello':
+      global $user;
+      $content = '<div class="shortcuts-user">';
+      $content .= t('Hello, !name', array('!name' => l($user->name, 'user/' . $user->uid . '/edit')));
+      $content .= '</div><div class="shortcuts-logout">';
+      $content .= t(l('Log out', 'user/logout'));
+      $content .= '</div>';
+      $block['subject'] = NULL;
+      $block['content'] = $content;
+    break;
+  }
+  return $block;
+}

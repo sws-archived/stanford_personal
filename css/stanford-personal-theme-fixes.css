@@ -1,0 +1,44 @@
+@charset "UTF-8";
+/* Jumpstart Theme Fixes -- All CSS here HAS been fixed in the themes */
+
+/* Fixed at OFW */
+.float-left,
+.float-right {
+	float:left;
+	margin-right:15px;
+	margin-bottom:15px;
+}
+.float-right {
+	float: right;
+	margin-left: 15px;
+	margin-right: 0;
+}
+.row-fluid .node .content .float-right {
+    margin-left: 15px;
+}
+
+/* Fixed at Wilbur */
+p a.more-link {border-bottom:0;}
+
+/* Fixed at Stanford Framework */
+#admin-shortcuts {padding: 8px 10px 3px 10px; color: white; font-family: lucida grande;}
+#sidebar-first .block-menu ul.menu li ul, #sidebar-first .block-menu-block ul.menu li ul { padding: 0 0 0 15px; }
+.navbar .nav > li > a {margin:0 0.5em 0 0;}
+@media (max-width:767px) {
+	.navbar .nav > li > a {margin:0;}
+}
+#sidebar-first .block-menu-block .content > .nav > li.expanded > ul, #sidebar-first .block-menu .content > .nav > li.expanded > ul { padding-bottom: 1em; }
+
+/* fix for views-row-lines height! remove the min-height. */
+.views-row-lines .views-row { min-height: inherit; overflow:hidden; }
+
+.banner-overlay > div { top: -135px; }
+
+/* ---- NEEDS TO BE FIXED IN THEMES ---- */
+
+/* Open Framework */
+/* adjust views-grid-five mobile breakpoint */
+@media (max-width:350px) {
+	.views-grid-five .views-row { display:block; width:100%; margin-right:0;}
+}
+

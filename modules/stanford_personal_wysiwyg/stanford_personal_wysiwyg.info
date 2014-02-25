@@ -1,0 +1,15 @@
+name = Stanford Sites Jumpstart WYSIWYG
+description = Baseline WYSIWYG configuration for Stanford Sites Jumpstart
+core = 7.x
+package = Stanford Sites Jumpstart
+php = 5.2.4
+version = 7.x-1.x-dev
+project = stanford_personal_wysiwyg
+dependencies[] = better_formats
+dependencies[] = features
+dependencies[] = pathologic
+dependencies[] = wysiwyg(>=2.2)
+dependencies[] = wysiwyg_filter
+features[features_api][] = api:1
+features[filter][] = content_editor_text_format
+features[wysiwyg][] = content_editor_text_format
