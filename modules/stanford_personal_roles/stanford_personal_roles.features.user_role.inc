@@ -13,7 +13,7 @@ function stanford_personal_roles_user_default_roles() {
   // Exported role: site owner.
   $roles['site owner'] = array(
     'name' => 'site owner',
-    'weight' => '7',
+    'weight' => 7,
   );
 
   return $roles;
