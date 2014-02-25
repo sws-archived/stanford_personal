@@ -15,8 +15,7 @@ function stanford_personal_roles_user_default_permissions() {
     'name' => 'access administration pages',
     'roles' => array(
       0 => 'administrator',
-      1 => 'editor',
-      2 => 'site owner',
+      1 => 'site owner',
     ),
     'module' => 'system',
   );
@@ -47,8 +46,7 @@ function stanford_personal_roles_user_default_permissions() {
     'name' => 'access contextual links',
     'roles' => array(
       0 => 'administrator',
-      1 => 'editor',
-      2 => 'site owner',
+      1 => 'site owner',
     ),
     'module' => 'contextual',
   );
@@ -78,8 +76,7 @@ function stanford_personal_roles_user_default_permissions() {
     'name' => 'access jumpstart help',
     'roles' => array(
       0 => 'administrator',
-      1 => 'editor',
-      2 => 'site owner',
+      1 => 'site owner',
     ),
     'module' => 'stanford_personal',
   );
@@ -92,16 +89,6 @@ function stanford_personal_roles_user_default_permissions() {
       1 => 'site owner',
     ),
     'module' => 'user',
-  );
-
-  // Exported permission: administer bean settings.
-  $permissions['administer bean settings'] = array(
-    'name' => 'administer bean settings',
-    'roles' => array(
-      0 => 'administrator',
-      1 => 'site owner',
-    ),
-    'module' => 'bean',
   );
 
   // Exported permission: administer blocks.
@@ -204,72 +191,6 @@ function stanford_personal_roles_user_default_permissions() {
     'module' => 'node',
   );
 
-  // Exported permission: edit any stanford_banner bean.
-  $permissions['edit any stanford_banner bean'] = array(
-    'name' => 'edit any stanford_banner bean',
-    'roles' => array(
-      0 => 'administrator',
-      1 => 'editor',
-      2 => 'site owner',
-    ),
-    'module' => 'bean',
-  );
-
-  // Exported permission: edit any stanford_contact bean.
-  $permissions['edit any stanford_contact bean'] = array(
-    'name' => 'edit any stanford_contact bean',
-    'roles' => array(
-      0 => 'administrator',
-      1 => 'editor',
-      2 => 'site owner',
-    ),
-    'module' => 'bean',
-  );
-
-  // Exported permission: edit any stanford_large_block bean.
-  $permissions['edit any stanford_large_block bean'] = array(
-    'name' => 'edit any stanford_large_block bean',
-    'roles' => array(
-      0 => 'administrator',
-      1 => 'editor',
-      2 => 'site owner',
-    ),
-    'module' => 'bean',
-  );
-
-  // Exported permission: edit any stanford_page content.
-  $permissions['edit any stanford_page content'] = array(
-    'name' => 'edit any stanford_page content',
-    'roles' => array(
-      0 => 'administrator',
-      1 => 'editor',
-      2 => 'site owner',
-    ),
-    'module' => 'node',
-  );
-
-  // Exported permission: edit any stanford_postcard bean.
-  $permissions['edit any stanford_postcard bean'] = array(
-    'name' => 'edit any stanford_postcard bean',
-    'roles' => array(
-      0 => 'administrator',
-      1 => 'editor',
-      2 => 'site owner',
-    ),
-    'module' => 'bean',
-  );
-
-  // Exported permission: edit any stanford_social_media_connect bean.
-  $permissions['edit any stanford_social_media_connect bean'] = array(
-    'name' => 'edit any stanford_social_media_connect bean',
-    'roles' => array(
-      0 => 'administrator',
-      1 => 'editor',
-      2 => 'site owner',
-    ),
-    'module' => 'bean',
-  );
-
   // Exported permission: edit own stanford_page content.
   $permissions['edit own stanford_page content'] = array(
     'name' => 'edit own stanford_page content',
@@ -285,8 +206,7 @@ function stanford_personal_roles_user_default_permissions() {
     'name' => 'revert revisions',
     'roles' => array(
       0 => 'administrator',
-      1 => 'editor',
-      2 => 'site owner',
+      1 => 'site owner',
     ),
     'module' => 'node',
   );
@@ -301,24 +221,12 @@ function stanford_personal_roles_user_default_permissions() {
     'module' => 'search',
   );
 
-  // Exported permission: show format selection for bean.
-  $permissions['show format selection for bean'] = array(
-    'name' => 'show format selection for bean',
-    'roles' => array(
-      0 => 'administrator',
-      1 => 'editor',
-      2 => 'site owner',
-    ),
-    'module' => 'better_formats',
-  );
-
   // Exported permission: show format selection for field_collection_item.
   $permissions['show format selection for field_collection_item'] = array(
     'name' => 'show format selection for field_collection_item',
     'roles' => array(
       0 => 'administrator',
-      1 => 'editor',
-      2 => 'site owner',
+      1 => 'site owner',
     ),
     'module' => 'better_formats',
   );
@@ -328,8 +236,7 @@ function stanford_personal_roles_user_default_permissions() {
     'name' => 'show format selection for taxonomy_term',
     'roles' => array(
       0 => 'administrator',
-      1 => 'editor',
-      2 => 'site owner',
+      1 => 'site owner',
     ),
     'module' => 'better_formats',
   );
@@ -339,8 +246,7 @@ function stanford_personal_roles_user_default_permissions() {
     'name' => 'show format selection for user',
     'roles' => array(
       0 => 'administrator',
-      1 => 'editor',
-      2 => 'site owner',
+      1 => 'site owner',
     ),
     'module' => 'better_formats',
   );
@@ -350,83 +256,10 @@ function stanford_personal_roles_user_default_permissions() {
     'name' => 'show format selection for node',
     'roles' => array(
       0 => 'administrator',
-      1 => 'editor',
-      2 => 'site owner',
+      1 => 'site owner',
       3 => 'authenticated user',
     ),
     'module' => 'better_formats',
-  );
-
-  // Exported permission: view any stanford_banner bean.
-  $permissions['view any stanford_banner bean'] = array(
-    'name' => 'view any stanford_banner bean',
-    'roles' => array(
-      0 => 'anonymous user',
-      1 => 'authenticated user',
-    ),
-    'module' => 'bean',
-  );
-
-  // Exported permission: view any stanford_contact bean.
-  $permissions['view any stanford_contact bean'] = array(
-    'name' => 'view any stanford_contact bean',
-    'roles' => array(
-      0 => 'anonymous user',
-      1 => 'authenticated user',
-    ),
-    'module' => 'bean',
-  );
-
-  // Exported permission: view any stanford_large_block bean.
-  $permissions['view any stanford_large_block bean'] = array(
-    'name' => 'view any stanford_large_block bean',
-    'roles' => array(
-      0 => 'anonymous user',
-      1 => 'authenticated user',
-    ),
-    'module' => 'bean',
-  );
-
-  // Exported permission: view any stanford_postcard bean.
-  $permissions['view any stanford_postcard bean'] = array(
-    'name' => 'view any stanford_postcard bean',
-    'roles' => array(
-      0 => 'anonymous user',
-      1 => 'authenticated user',
-    ),
-    'module' => 'bean',
-  );
-
-  // Exported permission: view any stanford_social_media_connect bean.
-  $permissions['view any stanford_social_media_connect bean'] = array(
-    'name' => 'view any stanford_social_media_connect bean',
-    'roles' => array(
-      0 => 'anonymous user',
-      1 => 'authenticated user',
-    ),
-    'module' => 'bean',
-  );
-
-  // Exported permission: view bean page.
-  $permissions['view bean page'] = array(
-    'name' => 'view bean page',
-    'roles' => array(
-      0 => 'administrator',
-      1 => 'editor',
-      2 => 'site owner',
-    ),
-    'module' => 'bean',
-  );
-
-  // Exported permission: view bean revisions.
-  $permissions['view bean revisions'] = array(
-    'name' => 'view bean revisions',
-    'roles' => array(
-      0 => 'administrator',
-      1 => 'editor',
-      2 => 'site owner',
-    ),
-    'module' => 'bean',
   );
 
   // Exported permission: view own unpublished content.
@@ -444,8 +277,7 @@ function stanford_personal_roles_user_default_permissions() {
     'name' => 'view revisions',
     'roles' => array(
       0 => 'administrator',
-      1 => 'editor',
-      2 => 'site owner',
+      1 => 'site owner',
     ),
     'module' => 'node',
   );
@@ -455,8 +287,7 @@ function stanford_personal_roles_user_default_permissions() {
     'name' => 'view the administration theme',
     'roles' => array(
       0 => 'administrator',
-      1 => 'editor',
-      2 => 'site owner',
+      1 => 'site owner',
     ),
     'module' => 'system',
   );
@@ -466,8 +297,7 @@ function stanford_personal_roles_user_default_permissions() {
     'name' => 'use text format content_editor_text_format',
     'roles' => array(
       0 => 'administrator',
-      1 => 'editor',
-      2 => 'site owner',
+      1 => 'site owner',
     ),
     'module' => 'filter',
   );
@@ -478,8 +308,7 @@ function stanford_personal_roles_user_default_permissions() {
       0 => 'administrator',
       1 => 'anonymous user',
       2 => 'authenticated user',
-      3 => 'editor',
-      4 => 'site owner',
+      3 => 'site owner',
     ),
     'module' => 'filter',
   );
@@ -489,8 +318,7 @@ function stanford_personal_roles_user_default_permissions() {
     'name' => 'use text format full_html',
     'roles' => array(
       0 => 'administrator',
-      1 => 'editor',
-      2 => 'site owner',
+      1 => 'site owner',
     ),
     'module' => 'filter',
   );
