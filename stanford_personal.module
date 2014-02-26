@@ -55,10 +55,10 @@ function stanford_personal_menu() {
 }
 
 /**
- * Page callback for admin/stanford-jumpstart/features.
+ * Page callback for admin/stanford-personal/help.
  */
 function stanford_personal_theme($existing, $type, $theme, $path) {
-  // Set the default Add Features template
+  // Set the default help templates
 
   return array(
     'gethelp_template' => array(
@@ -152,8 +152,51 @@ function stanford_personal_design_form(&$form, &$form_state) {
 }
 
 /**
- * Config form for "Manage Profile" page
+ * Config form for "Change Site Settings" page
  */
-function stanford_personal_site_settings_form(&$form, &$form_state) {
+function stanford_personal_site_settings_form($form, &$form_state) {
+  $form['site_title'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Site Details'),
+  );
+  $form['site_title']['site_name'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Site Name'),
+    '#required' => TRUE,
+  );
+  $form['site_title']['site_subtitle'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Site Subtitle'),
+  );
+  $form['site_title']['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Change Site Name and Subtitle'),
+  );
+  $form['site_editors'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Site Editors'),
+  );
+  $form['site_editors']['sunetid'] = array(
+    '#type' => 'textfield',
+    '#title' => t('SUNetID'),
+  );
+  $form['site_editors']['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Add a new site editor'),
+  );
+  $form['advanced'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Switch to Advanced Mode'),
+  );
+  $form['advanced']['agree'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('I understand these risks.'),
+    '#required' => TRUE,
+  );
+  $form['advanced']['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Switch to Advanced Mode'),
+  );
+//  $form['#theme'] = 'site_settings_template';
   return $form;
 }
