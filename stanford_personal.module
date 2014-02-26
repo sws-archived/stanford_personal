@@ -152,7 +152,7 @@ function stanford_personal_manage_pages_form($form_state) {
   $tree = menu_tree_all_data('main-menu');
 
   $form['add_page_link'] = array(
-    '#markup' => l('Add a new page','node/add/stanford_page', array('attributes' => array('class' => array('button')))),
+    '#markup' => l('Add a new page','node/add/stanford-page', array('attributes' => array('class' => array('button')))),
     '#weight' => '-50',
     '#class'  => 'button',
   );
