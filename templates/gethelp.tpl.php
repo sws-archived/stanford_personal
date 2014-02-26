@@ -29,8 +29,8 @@ $gethelp = l('Request Assistance', 'https://stanforduniversity.qualtrics.com/SE/
 <p><a href="#" target="_blank" class="btn btn-request">Sign Up For Tech Training</a></p>
 </div>-->
 
-<h2>Jumpstart User Guide</h2>
-<p>Do you need help with Stanford Sites Jumpstart? Look no further! We have lots of helpful tips in our user guide. The following pages might get you started:</p>
+<h2>Stanford Sites Personal User Guide</h2>
+<p>Do you need help with Stanford Sites Personal? Look no further! We have lots of helpful tips in our user guide. The following pages might get you started:</p>
       <ul>
         <li><a href="https://sites.stanford.edu/jumpstart/user-guide/your-new-site" target="_blank">Your new site</a></li>
         <li><a href="https://sites.stanford.edu/jumpstart/user-guide/menus" target="_blank">Menus</a></li>

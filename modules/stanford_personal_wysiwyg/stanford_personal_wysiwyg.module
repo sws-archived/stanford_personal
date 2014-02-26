@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- * Stanford Jumpstart WYSIWYG functionality
+ * Stanford Sites Personal WYSIWYG functionality
  */
 /**
  * Implements hook_form_FORM_ID_alter().

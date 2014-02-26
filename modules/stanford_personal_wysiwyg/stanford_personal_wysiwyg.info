@@ -1,7 +1,7 @@
-name = Stanford Sites Jumpstart WYSIWYG
-description = Baseline WYSIWYG configuration for Stanford Sites Jumpstart
+name = Stanford Sites Personal WYSIWYG
+description = Baseline WYSIWYG configuration for Stanford Sites Personal
 core = 7.x
-package = Stanford Sites Jumpstart
+package = Stanford Sites Personal
 php = 5.2.4
 version = 7.x-1.x-dev
 project = stanford_personal_wysiwyg
