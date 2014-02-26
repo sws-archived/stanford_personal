@@ -151,6 +151,12 @@ function stanford_personal_manage_pages_form($form_state) {
   // retrieve the data for the main-menu menu
   $tree = menu_tree_all_data('main-menu');
 
+  $form['add_page_link'] = array(
+    '#markup' => l('Add a new page','node/add/stanford_page', array('attributes' => array('class' => array('button')))),
+    '#weight' => '-50',
+    '#class'  => 'button',
+  );
+
   // Identify that the elements in 'menu_items' are a collection, to
   // prevent Form API from flattening the array when submitted.
   $form['menu_items']['#tree'] = TRUE;
@@ -288,6 +294,8 @@ function stanford_personal_site_settings_form(&$form, &$form_state) {
  */
 function theme_stanford_personal_manage_pages_form($variables) {
   $form = $variables['form'];
+  $output = '';
+  $output .= drupal_render($form['add_page_link']);
 
   // Initialize the variable which will store our table rows.
   $rows = array();
@@ -344,7 +352,7 @@ function theme_stanford_personal_manage_pages_form($variables) {
   $table_id = 'menu-items-table';
 
   // We can render our tabledrag table for output.
-  $output = theme('table', array(
+  $output .= theme('table', array(
     'header' => $header,
     'rows' => $rows,
     'attributes' => array('id' => $table_id),
