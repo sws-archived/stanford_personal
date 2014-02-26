@@ -372,12 +372,26 @@ function theme_stanford_personal_manage_pages_form($variables) {
  * account that item's new order after the drag and drop actions have been
  * performed.
  *
- * @ingroup stanford_personsal
+ * @ingroup stanford_personal
  */
 function stanford_personal_manage_pages_form_submit($form, &$form_state) {
   // Because the form elements were keyed with the item ids from the database,
   // we can simply iterate through the submitted values.
   foreach ($form_state['values']['menu_items'] as $id => $item) {
+    // publish or unpublish nodes as needed
+    // TODO: would be nice not to save the node if the status hasn't changed
+    if (isset($item['enabled'])) {
+      $nid = _stanford_personal_get_nid(menu_link_load($id));
+      $node = node_load($nid);
+      if ($item['enabled']) {
+        node_publish_action($node);
+        node_save($node);
+      } else {
+        node_unpublish_action($node);
+        node_save($node);
+      }
+    }
+
     db_query(
       "UPDATE {menu_links} SET weight = :weight WHERE mlid = :id",
       array(':weight' => $item['weight'], ':id' => $id)
