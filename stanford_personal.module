@@ -51,6 +51,15 @@ function stanford_personal_menu() {
     'access arguments' => array('access stanford personal help'),
     'weight' => -6,
   );
+  $items['admin/stanford-personal/pages'] = array(
+    'title' => 'Manage Pages',
+    'description' => 'Manage Pages on your Stanford Site',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('stanford_personal_manage_pages_form'),
+    'access arguments' => array('stanford personal manage pages'),
+    'type'  => MENU_NORMAL_ITEM,
+    'weight' => -9,
+  );
   return $items;
 }
 
@@ -63,6 +72,9 @@ function stanford_personal_theme($existing, $type, $theme, $path) {
   return array(
     'gethelp_template' => array(
       'template' => 'templates/gethelp',
+    ),
+    'stanford_personal_manage_pages_form' => array(
+      'render element' => 'form',
     ),
   );
 }
@@ -79,6 +91,10 @@ function stanford_personal_permission() {
     'stanford personal use full block' => array(
       'title' => t('Use Full Block Interface'),
       'description' => t('View all options for editing blocks.'),
+    ),
+    'stanford personal manage pages' => array(
+      'title' => t('Manage Pages'),
+      'description' => t('Access the manage pages interface.'),
     ),
   );
 }
@@ -130,6 +146,115 @@ function stanford_personal_form_system_site_information_settings_alter(&$form, &
   }
 }
 
+function stanford_personal_manage_pages_form($form_state) {
+
+  // retrieve the data for the main-menu menu
+  $tree = menu_tree_all_data('main-menu');
+
+  // Identify that the elements in 'menu_items' are a collection, to
+  // prevent Form API from flattening the array when submitted.
+  $form['menu_items']['#tree'] = TRUE;
+
+  // Iterate through each menu item
+  foreach ($tree as $item) {
+
+    // Create a form entry for this item.
+    //
+    // Each entry will be an array using the the unique id for that item as
+    // the array key, and an array of table row data as the value.
+
+    $link = $item['link'];
+
+    $mlid = 'mlid:' . $link['mlid'];
+    $path = $link['link_path'];
+
+    $is_home = FALSE;
+   if ($path == '<front>') {
+      $path = variable_get('site_frontpage');
+      $is_home = TRUE;
+    }
+
+    $operations = array();
+
+    $operations['edit'] = array(
+      '#type' => 'link',
+      '#title' => t('edit'),
+      '#href' => $path . '/edit',
+    );
+
+    // Add a delete operation, but only if it's not the Home Page
+    if (!$is_home) {
+      $operations['delete'] = array(
+        '#type' => 'link',
+        '#title' => t('delete'),
+        '#href' => $path . '/delete',
+      );
+    }
+
+    $nid = _stanford_personal_get_nid($link);
+    $node = FALSE;
+
+    if ($nid) {
+      $node = node_load($nid);
+    }
+
+    // checkbox: 
+    // disabled if it's HOME
+    // disabled if it's not a node
+    // checked if it's a node, and it's published
+    // unchecked if it's a node, and not published
+   
+    $enabled_checkbox = array(
+        '#type' => 'checkbox',
+        '#title' => 'Publish the page',
+        '#title_display' => 'invisible',
+    );
+
+    if ($is_home) {
+      $enabled_checkbox['#disabled'] = 'disabled';
+    }
+
+    if (!empty($node)) {
+      $enabled_checkbox['#default_value'] = $node->status;
+    } else {
+      $enabled_checkbox = array('#markup' => 'N/A');
+    }
+
+    $form['menu_items'][$link['mlid']] = array(
+      '#is_home' => $is_home,
+
+      // We'll use a form element of type '#markup' to display the item name.
+      'name' => array(
+        '#markup' => l($link['link_title'],$link['link_path']),
+      ),
+
+      // Add the enabled checkbox.
+      'enabled' => $enabled_checkbox,
+
+      // Add the operations links created earlier.
+      'actions' => $operations,
+
+      // The 'weight' field will be manipulated as we move the items around in
+      // the table using the tabledrag activity.  We use the 'weight' element
+      // defined in Drupal's Form API.
+      'weight' => array(
+        '#type' => 'weight',
+        '#title' => t('Weight'),
+        '#default_value' => $link['weight'],
+        '#delta' => 50,
+        '#title_display' => 'invisible',
+      ),
+    );
+  }
+  // Now we add our submit button, for submitting the form results.
+  //
+  // The 'actions' wrapper used here isn't strictly necessary for tabledrag,
+  // but is included as a Form API recommended practice.
+  $form['actions'] = array('#type' => 'actions');
+  $form['actions']['submit'] = array('#type' => 'submit', '#value' => t('Save'));
+  return $form;
+}
+
 /**
  * Config form for "Manage Profile" page
  */
@@ -138,22 +263,167 @@ function stanford_personal_profile_form(&$form, &$form_state) {
 }
 
 /**
- * Config form for "Manage Profile" page
+ * Config form for "Manage Blocks" page
  */
 function stanford_personal_blocks_form(&$form, &$form_state) {
   return $form;
 }
 
 /**
- * Config form for "Manage Profile" page
+ * Config form for "Customize Design" page
  */
 function stanford_personal_design_form(&$form, &$form_state) {
   return $form;
 }
 
 /**
- * Config form for "Manage Profile" page
+ * Config form for "Change Site Settings" page
  */
 function stanford_personal_site_settings_form(&$form, &$form_state) {
   return $form;
+}
+
+/**
+ * Config form for "Manage Pages" page
+ */
+function theme_stanford_personal_manage_pages_form($variables) {
+  $form = $variables['form'];
+
+  // Initialize the variable which will store our table rows.
+  $rows = array();
+
+  // Iterate over each element in our $form['menu_items'] array.
+  foreach (element_children($form['menu_items']) as $id) {
+
+    // Before we add our 'weight' column to the row, we need to give the
+    // element a custom class so that it can be identified in the
+    // drupal_add_tabledrag call.
+    //
+    // This could also have been done during the form declaration by adding
+    // '#attributes' => array('class' => 'menu-item-weight'),
+    // directy to the 'weight' element in stanford_personal_manage_pages_form().
+    $form['menu_items'][$id]['weight']['#attributes']['class'] = array('menu-item-weight');
+
+    // We don't want the home page to be draggable
+    if ($form['menu_items'][$id]['#is_home']) {
+      $class = '';
+    } else {
+      $class = 'draggable';
+    }
+
+    // We are now ready to add each element of our $form data to the $rows
+    // array, so that they end up as individual table cells when rendered
+    // in the final table.  We run each element through the drupal_render()
+    // function to generate the final html markup for that element.
+    $rows[] = array(
+      'data' => array(
+        // Add our 'page' column.
+        drupal_render($form['menu_items'][$id]['name']),
+        // Add our 'enabled' column.
+        drupal_render($form['menu_items'][$id]['enabled']),
+        // Add our 'actions' column.
+        drupal_render($form['menu_items'][$id]['actions']),
+        // Add our 'weight' column.
+        drupal_render($form['menu_items'][$id]['weight']),
+      ),
+      // To support the tabledrag behaviour, we need to assign each row of the
+      // table a class attribute of 'draggable'. This will add the 'draggable'
+      // class to the <tr> element for that row when the final table is
+      // rendered.
+      'class' => array($class),
+    );
+  }
+ // We now define the table header values.  Ensure that the 'header' count
+  // matches the final column count for your table.
+  $header = array(t('Page'), t('Enabled'), t('Actions'), t('Weight'));
+
+  // We also need to pass the drupal_add_tabledrag() function an id which will
+  // be used to identify the <table> element containing our tabledrag form.
+  // Because an element's 'id' should be unique on a page, make sure the value
+  // you select is NOT the same as the form ID used in your form declaration.
+  $table_id = 'menu-items-table';
+
+  // We can render our tabledrag table for output.
+  $output = theme('table', array(
+    'header' => $header,
+    'rows' => $rows,
+    'attributes' => array('id' => $table_id),
+  ));
+
+  // And then render any remaining form elements (such as our submit button).
+  $output .= drupal_render_children($form);
+
+  // We now call the drupal_add_tabledrag() function in order to add the
+  // tabledrag.js goodness onto our page.
+  //
+  // For a basic sortable table, we need to pass it:
+  // - the $table_id of our <table> element,
+  // - the $action to be performed on our form items ('order'),
+  // - a string describing where $action should be applied ('siblings'),
+  // - and the class of the element containing our 'weight' element.
+  drupal_add_tabledrag($table_id, 'order', 'sibling', 'menu-item-weight');
+
+  return $output;
+}
+/**
+ * Submit callback for the stanford_personal_manage_pages_form form.
+ *
+ * Updates the 'weight' column for each element in our table, taking into
+ * account that item's new order after the drag and drop actions have been
+ * performed.
+ *
+ * @ingroup stanford_personsal
+ */
+function stanford_personal_manage_pages_form_submit($form, &$form_state) {
+  // Because the form elements were keyed with the item ids from the database,
+  // we can simply iterate through the submitted values.
+  foreach ($form_state['values']['menu_items'] as $id => $item) {
+    db_query(
+      "UPDATE {menu_links} SET weight = :weight WHERE mlid = :id",
+      array(':weight' => $item['weight'], ':id' => $id)
+    );
+  }
+
+  // Clear the menu cache or the changes won't be reflected in the UI
+  menu_cache_clear('main-menu');
+}
+
+/**
+ * From: https://drupal.org/project/menu_view_unpublished
+ * Allow menu items to show in the admin interface, even if they are unpublished
+ */
+
+function stanford_personal_query_node_access_alter(QueryAlterableInterface $query) {
+  if (user_access('stanford personal manage pages')) {
+    $c = &$query->conditions();
+    // Remove the status condition if we suspect this query originates from
+    // menu_tree_check_access().
+    if (count($c) == 3 &&
+      is_string($c[0]['field']) && $c[0]['field'] == 'n.status' &&
+      is_string($c[1]['field']) && $c[1]['field'] == 'n.nid' && $c[1]['operator'] == 'IN') {
+      unset($c[0]);
+    }
+  }
+}
+
+/**
+ * Helper functions
+ */
+
+function _stanford_personal_get_nid($link) {
+
+  if ($link['router_path'] == 'node/%') {
+    $nid = substr($link['link_path'], 5);
+    if (is_numeric($nid)) {
+      return $nid;
+    }
+  }
+  elseif ($link['link_path'] == '<front>') {
+    $nid = substr(variable_get('site_frontpage'), 5);
+    if (is_numeric($nid)) {
+      return $nid;
+    }
+  }
+
+  return FALSE;
 }
