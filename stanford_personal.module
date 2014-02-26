@@ -47,9 +47,32 @@ function stanford_personal_menu() {
     'title' => 'Change Site Settings',
     'type' => MENU_LOCAL_TASK,
     'page callback' => 'drupal_get_form',
-    'page arguments' => array('stanford_personal_site_settings_form'),
+    'page arguments' => array('stanford_personal_site_details_form'),
     'access arguments' => array('access stanford personal help'),
     'weight' => -6,
+  );
+  $items['admin/stanford-personal/site-settings/site-details'] = array(
+    'title' => 'Site Details',
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('stanford_personal_site_details_form'),
+    'access arguments' => array('access stanford personal help'),
+    'weight' => -10,
+  );
+  $items['admin/stanford-personal/site-settings/advanced'] = array(
+    'title' => 'Advanced Mode',
+    'type' => MENU_LOCAL_TASK,
+    'page arguments' => array('stanford_personal_site_settings_advanced_form'),
+    'access arguments' => array('access stanford personal help'),
+    'weight' => -8,
+  );
+  $items['admin/stanford-personal/site-settings/site-editors'] = array(
+    'title' => 'Site Editors',
+    'type' => MENU_LOCAL_TASK,
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('stanford_personal_site_editors_form'),
+    'access arguments' => array('access stanford personal help'),
+    'weight' => -9,
   );
   return $items;
 }
@@ -72,14 +95,14 @@ function stanford_personal_theme($existing, $type, $theme, $path) {
  */
 function stanford_personal_permission() {
   return array(
-    'access stanford personal help' => array(
-      'title' => t('Access Stanford Sites Personal Help'),
-      'description' => t('View the Stanford Sites Personal Help pages, launch checklist and instructions'),
-    ),
-    'stanford personal use full block' => array(
-      'title' => t('Use Full Block Interface'),
-      'description' => t('View all options for editing blocks.'),
-    ),
+      'access stanford personal help' => array(
+          'title' => t('Access Stanford Sites Personal Help'),
+          'description' => t('View the Stanford Sites Personal Help pages, launch checklist and instructions'),
+      ),
+      'stanford personal use full block' => array(
+          'title' => t('Use Full Block Interface'),
+          'description' => t('View all options for editing blocks.'),
+      ),
   );
 }
 
@@ -152,9 +175,9 @@ function stanford_personal_design_form(&$form, &$form_state) {
 }
 
 /**
- * Config form for "Change Site Settings" page
+ * Config form for "Site Details" page
  */
-function stanford_personal_site_settings_form($form, &$form_state) {
+function stanford_personal_site_details_form($form, &$form_state) {
   $form['site_title'] = array(
     '#type' => 'fieldset',
     '#title' => t('Site Details'),
@@ -162,16 +185,25 @@ function stanford_personal_site_settings_form($form, &$form_state) {
   $form['site_title']['site_name'] = array(
     '#type' => 'textfield',
     '#title' => t('Site Name'),
+    '#default_value' => variable_get('site_name'),
     '#required' => TRUE,
   );
   $form['site_title']['site_subtitle'] = array(
     '#type' => 'textfield',
     '#title' => t('Site Subtitle'),
+    '#default_value' => variable_get('site_slogan'),
   );
   $form['site_title']['submit'] = array(
     '#type' => 'submit',
     '#value' => t('Change Site Name and Subtitle'),
   );
+  return $form;
+}
+
+/**
+ * Config form for "Site Details" page
+ */
+function stanford_personal_site_editors_form($form, &$form_state) {
   $form['site_editors'] = array(
     '#type' => 'fieldset',
     '#title' => t('Site Editors'),
@@ -179,11 +211,32 @@ function stanford_personal_site_settings_form($form, &$form_state) {
   $form['site_editors']['sunetid'] = array(
     '#type' => 'textfield',
     '#title' => t('SUNetID'),
+    '#description' => t('Enter the SUNetID of the user you wish to add as a site editor.'),
+    '#required' => TRUE,
+  );
+  $form['site_editors']['name']  = array(
+    '#type' => 'textfield',
+    '#title' => t('Name'),
+    '#description' => t('If you wish to specify the user\'s preferred name (instead of sunetid@stanford.edu), enter it here.'),
+  );
+  $form['site_editors']['email']  = array(
+    '#type' => 'textfield',
+    '#title' => t('Email Address'),
+    '#description' => t('If you wish to specify an alternate email address (instead of sunetid@stanford.edu), enter it here.'),
   );
   $form['site_editors']['submit'] = array(
     '#type' => 'submit',
-    '#value' => t('Add a new site editor'),
+    '#value' => t('Add Site Editor'),
+    '#submit' => array('webauth_extras_waau_config_form_submit', 'stanford_personal_site_editors_form_submit'),
+    '#validate' => array('webauth_extras_waau_config_form_validate'),
   );
+  return $form;
+}
+
+/**
+ * Config form for "Site Details" page
+ */
+function stanford_personal_site_settings_advanced_form($form, &$form_state) {
   $form['advanced'] = array(
     '#type' => 'fieldset',
     '#title' => t('Switch to Advanced Mode'),
@@ -197,6 +250,64 @@ function stanford_personal_site_settings_form($form, &$form_state) {
     '#type' => 'submit',
     '#value' => t('Switch to Advanced Mode'),
   );
-//  $form['#theme'] = 'site_settings_template';
+  // TODO: add some logic here to detect if the user already is Advanced, and let them go back
   return $form;
+}
+
+/**
+ * Submit handler for "Site Details" form.
+ */
+function stanford_personal_site_details_form_submit($form, &$form_state) {
+  // set the site_name variable to the user's entry
+  variable_set('site_name', $form_state['values']['site_name']);
+  drupal_set_message(t('The site name has been set to @sitename', array('@sitename' => $form_state['values']['site_name'])));
+  // set the site_slogan variable to the user's entry
+  variable_set('site_slogan', $form_state['values']['site_subtitle']);
+  if(empty($form_state['values']['site_subtitle'])) {
+    drupal_set_message(t('The site subtitle has been unset.'));
+  }
+  else {
+    drupal_set_message(t('The site subtitle has been set to @subtitle', array('@subtitle' => $form_state['values']['site_subtitle'])));
+  }
+}
+
+/**
+ * Submit handler for "Site Editors" form.
+ */
+function stanford_personal_site_editors_form_submit($form, &$form_state) {
+  // grap the $role object for the "site owner" role
+  $site_owner = user_role_load_by_name('site owner');
+  // get the rid, e.g., 7
+  $rid = $site_owner->rid;
+  // grab the $user object for the user name that was just submitted
+  // TODO: see if there's a better way to do this based on return value from webauth_extras_add_user() or webauth_extras_waau_config_form_submit().
+  $account = user_load_by_name($form_state['values']['name']);
+  // what roles does that user already have? put these into the $roles array
+  $roles = $account->roles;
+  // add rid 7 into the $roles array
+  $roles[$rid] = TRUE;
+  // put the modified $roles array into the $account object
+  $account->roles = $roles;
+  // save the $account object as the user
+  user_save($account);
+}
+
+/**
+ * Sumbit handler for the "Advanced Mode" form.
+ */
+
+function stanford_personal_site_settings_advanced_form_submit($form, &$form_state) {
+  global $user;
+  // grab user object
+  $account = $user;
+  // grab the rid of the administrator role (e.g., 8); usually this role is named "administrator", so fall back on that
+  $admin_rid = variable_get('user_admin_role', user_role_load_by_name('administrator')->rid);
+  // what roles does that user already have? put these into the $roles array
+  $roles = $account->roles;
+  // add rid 8 into the $roles array
+  $roles[$admin_rid] = TRUE;
+  // put the modified $roles array into the $account object
+  $account->roles = $roles;
+  // save the $account object as the user
+  user_save($account);
 }
