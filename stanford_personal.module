@@ -14,6 +14,43 @@ function stanford_personal_menu() {
     'access arguments' => array('access stanford personal help'),
     'type' => MENU_NORMAL_ITEM,
   );
+  $items['admin/stanford-personal/help'] = array(
+    'title' => 'Get Help',
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'weight' => -11,
+  );
+  $items['admin/stanford-personal/profile'] = array(
+    'title' => 'Manage Profile',
+    'type' => MENU_LOCAL_TASK,
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('stanford_personal_profile_form'),
+    'access arguments' => array('access stanford personal help'),
+    'weight' => -10,
+  );
+  $items['admin/stanford-personal/blocks'] = array(
+    'title' => 'Manage Blocks',
+    'type' => MENU_LOCAL_TASK,
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('stanford_personal_blocks_form'),
+    'access arguments' => array('access stanford personal help'),
+    'weight' => -8,
+  );
+  $items['admin/stanford-personal/design'] = array(
+    'title' => 'Customize Design',
+    'type' => MENU_LOCAL_TASK,
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('stanford_personal_design_form'),
+    'access arguments' => array('access stanford personal help'),
+    'weight' => -7,
+  );
+  $items['admin/stanford-personal/site-settings'] = array(
+    'title' => 'Change Site Settings',
+    'type' => MENU_LOCAL_TASK,
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('stanford_personal_site_settings_form'),
+    'access arguments' => array('access stanford personal help'),
+    'weight' => -6,
+  );
   $items['admin/stanford-personal/pages'] = array(
     'title' => 'Manage Pages',
     'description' => 'Manage Pages on your Stanford Site',
@@ -22,11 +59,6 @@ function stanford_personal_menu() {
     'access arguments' => array('stanford personal manage pages'),
     'type'  => MENU_NORMAL_ITEM,
     'weight' => -9,
-  );
-  $items['admin/stanford-personal/help'] = array(
-    'title' => 'Get Help',
-    'type' => MENU_DEFAULT_LOCAL_TASK,
-    'weight' => -10,
   );
   return $items;
 }
@@ -223,6 +255,37 @@ function stanford_personal_manage_pages_form($form_state) {
   return $form;
 }
 
+/**
+ * Config form for "Manage Profile" page
+ */
+function stanford_personal_profile_form(&$form, &$form_state) {
+  return $form;
+}
+
+/**
+ * Config form for "Manage Blocks" page
+ */
+function stanford_personal_blocks_form(&$form, &$form_state) {
+  return $form;
+}
+
+/**
+ * Config form for "Customize Design" page
+ */
+function stanford_personal_design_form(&$form, &$form_state) {
+  return $form;
+}
+
+/**
+ * Config form for "Change Site Settings" page
+ */
+function stanford_personal_site_settings_form(&$form, &$form_state) {
+  return $form;
+}
+
+/**
+ * Config form for "Manage Pages" page
+ */
 function theme_stanford_personal_manage_pages_form($variables) {
   $form = $variables['form'];
 
