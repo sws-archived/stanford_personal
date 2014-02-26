@@ -17,7 +17,39 @@ function stanford_personal_menu() {
   $items['admin/stanford-personal/help'] = array(
     'title' => 'Get Help',
     'type' => MENU_DEFAULT_LOCAL_TASK,
+    'weight' => -11,
+  );
+  $items['admin/stanford-personal/profile'] = array(
+    'title' => 'Manage Profile',
+    'type' => MENU_LOCAL_TASK,
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('stanford_personal_profile_form'),
+    'access arguments' => array('access stanford personal help'),
     'weight' => -10,
+  );
+  $items['admin/stanford-personal/blocks'] = array(
+    'title' => 'Manage Blocks',
+    'type' => MENU_LOCAL_TASK,
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('stanford_personal_blocks_form'),
+    'access arguments' => array('access stanford personal help'),
+    'weight' => -8,
+  );
+  $items['admin/stanford-personal/design'] = array(
+    'title' => 'Customize Design',
+    'type' => MENU_LOCAL_TASK,
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('stanford_personal_design_form'),
+    'access arguments' => array('access stanford personal help'),
+    'weight' => -7,
+  );
+  $items['admin/stanford-personal/site-settings'] = array(
+    'title' => 'Change Site Settings',
+    'type' => MENU_LOCAL_TASK,
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('stanford_personal_site_settings_form'),
+    'access arguments' => array('access stanford personal help'),
+    'weight' => -6,
   );
   return $items;
 }
@@ -96,4 +128,32 @@ function stanford_personal_form_system_site_information_settings_alter(&$form, &
     $form['error_page']['#type'] = 'hidden';
     $form['front_page']['#type'] = 'hidden';
   }
+}
+
+/**
+ * Config form for "Manage Profile" page
+ */
+function stanford_personal_profile_form(&$form, &$form_state) {
+  return $form;
+}
+
+/**
+ * Config form for "Manage Profile" page
+ */
+function stanford_personal_blocks_form(&$form, &$form_state) {
+  return $form;
+}
+
+/**
+ * Config form for "Manage Profile" page
+ */
+function stanford_personal_design_form(&$form, &$form_state) {
+  return $form;
+}
+
+/**
+ * Config form for "Manage Profile" page
+ */
+function stanford_personal_site_settings_form(&$form, &$form_state) {
+  return $form;
 }
