@@ -39,6 +39,7 @@ function stanford_personal_menu() {
   $items['admin/stanford-personal/blocks'] = array(
     'title' => 'Manage Blocks',
     'type' => MENU_LOCAL_TASK,
+    'description' => 'Manage Blocks on your Stanford Site',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('stanford_personal_blocks_form'),
     'access arguments' => array('access stanford personal help'),
@@ -97,6 +98,9 @@ function stanford_personal_theme($existing, $type, $theme, $path) {
       'template' => 'templates/gethelp',
     ),
     'stanford_personal_manage_pages_form' => array(
+      'render element' => 'form',
+    ),
+    'stanford_personal_blocks_form' => array(
       'render element' => 'form',
     ),
   );
@@ -323,15 +327,65 @@ function stanford_personal_manage_pages_form($form_state) {
 /**
  * Config form for "Manage Profile" page
  */
-function stanford_personal_profile_form(&$form, &$form_state) {
+function stanford_personal_profile_form($form, &$form_state) {
   return $form;
 }
 
 /**
  * Config form for "Manage Blocks" page
  */
-function stanford_personal_blocks_form(&$form, &$form_state) {
+function stanford_personal_blocks_form($form, &$form_state) {
+
+  // Now we add our submit button, for submitting the form results.
+  //
+  // The 'actions' wrapper used here isn't strictly necessary for tabledrag,
+  // but is included as a Form API recommended practice.
+
+  // TODO: Enabled / Block / Actions columns
+  // TODO: (i) links about what they are
+  // TODO: Profile Block - Edit link goes to Manage Profile page
+  // TODO: Sidebar block
+  // TODO: Footer block
+  // TODO: Social Media Block
+  // TODO: Manage block layouts - Decide where your blocks go. [Customize Design] link goes out (danger of leaving page without saving)
+
+  $items = array();
+
+  $form['actions'] = array('#type' => 'actions');
+  $form['actions']['submit'] = array('#type' => 'submit', '#value' => t('Save'));
   return $form;
+}
+
+function theme_stanford_personal_blocks_form($variables) {
+  $output = '';
+
+  $form = $variables['form'];
+
+  $header = array(t('Enabled'), t('Block'), t('Actions'));
+
+  $rows = array(
+    array('','Profile Block',''),
+    array('','Sidebar Block',''),
+    array('','Footer Block',''),
+    array('','Social Media Block',''),
+  );
+
+  $table_id = 'block-items-table';
+
+  $output .= theme('table', array(
+    'header' => $header,
+    'rows' => $rows,
+    'attributes' => array('id' => $table_id),
+  ));
+
+  // And then render any remaining form elements (such as our submit button).
+  $output .= drupal_render_children($form);
+
+  return $output;
+}
+
+function stanford_personal_blocks_form_submit($form, &$form_state) {
+  drupal_set_message('Nothing. Nothing was done.');
 }
 
 /**
