@@ -47,6 +47,11 @@ function stanford_personal_wysiwyg_wysiwyg_editor_settings_alter(&$settings, $co
       $settings['contentsCss'][] = url(drupal_get_path('theme', 'stanford_framework') . '/css/stanford_framework.css');
       $settings['contentsCss'][] = url(drupal_get_path('theme', 'stanford_jordan') . '/css/stanford_jordan.css');
       break;
+    case 'stanford_light' :
+      $settings['contentsCss'][] = url(drupal_get_path('theme', 'open_framework') . '/bootstrap/css/bootstrap.css');
+      $settings['contentsCss'][] = url(drupal_get_path('theme', 'open_framework') . '/css/open_framework.css');
+      $settings['contentsCss'][] = url(drupal_get_path('theme', 'stanford_light') . '/css/stanford_light.css');
+      break;
     case 'stanford_wilbur' :
       $settings['contentsCss'][] = url(drupal_get_path('theme', 'open_framework') . '/bootstrap/css/bootstrap.css');
       $settings['contentsCss'][] = url(drupal_get_path('theme', 'open_framework') . '/css/open_framework.css');
