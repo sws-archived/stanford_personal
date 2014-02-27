@@ -637,6 +637,9 @@ function stanford_personal_site_settings_advanced_form_submit($form, &$form_stat
   }   elseif ($form_state['values']['submit'] == "Switch Back to Basic Mode") {
     // remove rid 8 from the $roles array
     unset($roles[$admin_rid]);
+    // grab the rid of the "site owner" role
+    $site_owner_rid = user_role_load_by_name('site owner')->rid;
+    $roles[$site_owner_rid] = TRUE;
     // put the modified $roles array into the $account object
     $account->roles = $roles;
     // save the $account object as the user
