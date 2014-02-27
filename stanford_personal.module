@@ -368,6 +368,7 @@ function stanford_personal_site_editors_form($form, &$form_state) {
  * Config form for "Advanced Mode" page
  */
 function stanford_personal_site_settings_advanced_form($form, &$form_state) {
+  $content = t("Advanced mode allows you to use all of Drupal’s powerful functionality, but also makes it possible for you to break your site. If you have taken a Drupal class and would like to experiment with your website, or you are already familiar with Drupal site building, Advanced mode will give you full access to advanced site administration.");
   $form['advanced'] = array(
     '#type' => 'fieldset',
     '#title' => t('Switch to Advanced Mode'),
@@ -375,6 +376,7 @@ function stanford_personal_site_settings_advanced_form($form, &$form_state) {
   $form['advanced']['agree'] = array(
     '#type' => 'checkbox',
     '#title' => t('I understand these risks.'),
+    '#prefix' => '<p>' . $content . '</p>',
     '#required' => TRUE,
   );
   $form['advanced']['submit'] = array(
