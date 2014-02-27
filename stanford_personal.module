@@ -309,6 +309,7 @@ function stanford_personal_design_form(&$form, &$form_state) {
  * Config form for "Site Details" page
  */
 function stanford_personal_site_details_form($form, &$form_state) {
+  $content = t("Your site title and subtitle are displayed in the header of your website. The title is created automatically from your SUNet information when you request your site. You can update them to reflect your personal preferences.");
   $form['site_title'] = array(
     '#type' => 'fieldset',
     '#title' => t('Site Details'),
@@ -317,6 +318,7 @@ function stanford_personal_site_details_form($form, &$form_state) {
     '#type' => 'textfield',
     '#title' => t('Site Name'),
     '#default_value' => variable_get('site_name'),
+    '#prefix' => '<p>' . $content . '</p>',
     '#required' => TRUE,
   );
   $form['site_title']['site_subtitle'] = array(
