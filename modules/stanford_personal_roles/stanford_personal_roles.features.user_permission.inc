@@ -106,7 +106,6 @@ function stanford_personal_roles_user_default_permissions() {
     'name' => 'administer menu',
     'roles' => array(
       'administrator' => 'administrator',
-      'site owner' => 'site owner',
     ),
     'module' => 'menu',
   );
