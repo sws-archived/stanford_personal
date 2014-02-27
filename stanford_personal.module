@@ -593,7 +593,10 @@ function stanford_personal_manage_pages_form_submit($form, &$form_state) {
       "UPDATE {menu_links} SET weight = :weight WHERE mlid = :id",
       array(':weight' => $item['weight'], ':id' => $id)
     );
+
   }
+
+  drupal_set_message(t('The changes have been saved.'));
 
   // Clear the menu cache or the changes won't be reflected in the UI
   menu_cache_clear('main-menu');
