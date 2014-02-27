@@ -323,21 +323,81 @@ function stanford_personal_manage_pages_form($form_state) {
 /**
  * Config form for "Manage Profile" page
  */
-function stanford_personal_profile_form(&$form, &$form_state) {
+function stanford_personal_profile_form($form, &$form_state) {
   return $form;
 }
 
 /**
  * Config form for "Manage Blocks" page
  */
-function stanford_personal_blocks_form(&$form, &$form_state) {
+function stanford_personal_blocks_form($form, &$form_state) {
   return $form;
 }
 
 /**
  * Config form for "Customize Design" page
  */
-function stanford_personal_design_form(&$form, &$form_state) {
+function stanford_personal_design_form($form, &$form_state) {
+  $default_theme = variable_get('theme_default');
+  // If you aren't using stanford_light, no soup for you. Also, anybody that don't like Hank Williams, they can kiss our ass.
+  if($default_theme !== 'stanford_light') {
+    $content = t('You are not using the Stanford Light theme, perhaps because you have switched to Advanced Mode and chose a different theme. Go to !themesettings to configure your theme.', array('!themesettings' => l('the theme settings page', 'admin/appearance/settings')));
+    $form['other'] = array(
+      '#prefix' => '<p>' . $content . '</p>',
+    );
+  }
+  else {
+    $form['layouts'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Choose Layout'),
+    );
+    $layout_options = array(
+      0 => t('Left Sidebar'),
+      1 => t('Right Sidebar'),
+      2 => t('Two Sidbars, Profile Right'),
+      3 => t('Two Sidebars, Profile Left'),
+    );
+    $form['layouts']['layout'] = array(
+      '#type' => 'radios',
+      '#title' => t('Layout'),
+      '#options' => $layout_options,
+//      '#default_value' => $default_layout,
+    );
+    $form['styles'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Choose Style'),
+    );
+    $style_options = array(
+      0 => t('Light'),
+      1 => t('Dark'),
+      2 => t('Plain'),
+      3 => t('Rich'),
+      4 => t('Bright'),
+      5 => t('High Contrast'),
+    );
+    $form['styles']['style'] = array(
+      '#type' => 'radios',
+      '#title' => t('Style'),
+      '#options' => $style_options,
+//      '#default_value' => $default_style,
+    );
+    $form['fonts'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Choose Fonts'),
+    );
+    $font_options = array(
+      0 => t('Sans Serif'),
+      1 => t('Serif'),
+      2 => t('Slab Serif'),
+    );
+    $form['fonts']['font'] = array(
+      '#type' => 'radios',
+      '#title' => t('Font'),
+      '#options' => $font_options,
+//      '#default_value' => $default_style,
+    );
+
+  }
   return $form;
 }
 
