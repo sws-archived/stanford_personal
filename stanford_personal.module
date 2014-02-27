@@ -229,6 +229,10 @@ function stanford_personal_manage_pages_form($form_state) {
 
     // Add a delete operation, but only if it's not the Home Page
     if (!$is_home) {
+      $operations['separator'] = array(
+        '#markup' => ' | ',
+      );
+
       $operations['delete'] = array(
         '#type' => 'link',
         '#title' => t('delete'),
