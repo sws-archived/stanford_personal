@@ -232,7 +232,7 @@ function stanford_personal_manage_pages_form($form_state) {
       $operations['delete'] = array(
         '#type' => 'link',
         '#title' => t('delete'),
-        '#href' => $path . '/delete',
+        '#href' => url($path . '/delete', array('absolute' => TRUE, 'query' => array('destination' => 'admin/stanford-personal/pages'))),
       );
     }
 
