@@ -159,7 +159,7 @@ function stanford_personal_form_stanford_page_node_form_alter(&$form, &$form_sta
 
   // hide the menu form, we'll default to main-menu later 
   // only do this if the user is not an administrator
-  if (!user_access('administer menus and menu items')) {
+  if (!user_access('administer menu')) {
     $form['menu']['#type'] = 'hidden';
   }
 
@@ -175,7 +175,7 @@ function stanford_personal_stanford_page_node_form_submit($form, &$form_state) {
  
   // Set the default menu to main-menu and the link title to the page title
   // Only do this if the user can't administer menus 
-  if (!user_access('administer menus and menu items')) {
+  if (!user_access('administer menu')) {
     $form_state['values']['menu']['link_title'] = $form_state['values']['title'];
     $form_state['values']['menu']['enabled'] = 1;
     $form_state['values']['menu']['parent'] = 'main-menu:0';
