@@ -341,15 +341,87 @@ function stanford_personal_blocks_form($form, &$form_state) {
   // The 'actions' wrapper used here isn't strictly necessary for tabledrag,
   // but is included as a Form API recommended practice.
 
-  // TODO: Enabled / Block / Actions columns
   // TODO: (i) links about what they are
-  // TODO: Profile Block - Edit link goes to Manage Profile page
   // TODO: Sidebar block
   // TODO: Footer block
   // TODO: Social Media Block
   // TODO: Manage block layouts - Decide where your blocks go. [Customize Design] link goes out (danger of leaving page without saving)
 
-  $items = array();
+  $form['block_items']['#tree'] = TRUE;
+
+
+  /**
+   *  Profile Block
+   *  TODO: enabled box needs to do something
+   */
+
+  $form['block_items']['profile_block'] = array(
+    'enabled' => array(
+      '#type'          => 'checkbox',
+      '#title'         => 'Enable the Profile Block',
+      '#title_display' => 'invisible',
+      '#default_value' => TRUE,
+    ),
+    'name' => array(
+      '#markup' => 'Profile Block',
+    ),
+    'actions' => array(
+      '#type' => 'link',
+      '#title' => t('edit'),
+      '#href'  => 'admin/stanford-personal/profile',
+    ),
+  );
+
+  $form['block_items']['sidebar_block'] = array(
+    'enabled' => array(
+      '#type'          => 'checkbox',
+      '#title'         => 'Enable the Sidebar Block',
+      '#title_display' => 'invisible',
+      '#default_value' => TRUE,
+    ),
+    'name' => array(
+      '#markup' => 'Sidebar Block',
+    ),
+    'actions' => array(
+      '#type' => 'link',
+      '#title' => t('edit'),
+      '#href'  => '',
+    ),
+  );
+
+  $form['block_items']['footer_block'] = array(
+    'enabled' => array(
+      '#type'          => 'checkbox',
+      '#title'         => 'Enable the Footer Block',
+      '#title_display' => 'invisible',
+      '#default_value' => TRUE,
+    ),
+    'name' => array(
+      '#markup' => 'Footer Block',
+    ),
+    'actions' => array(
+      '#type' => 'link',
+      '#title' => t('edit'),
+      '#href'  => '',
+    ),
+  );
+
+  $form['block_items']['social_media_block'] = array(
+    'enabled' => array(
+      '#type'          => 'checkbox',
+      '#title'         => 'Enable the Social Media Block',
+      '#title_display' => 'invisible',
+      '#default_value' => TRUE,
+    ),
+    'name' => array(
+      '#markup' => 'Social Media Block',
+    ),
+    'actions' => array(
+      '#type' => 'link',
+      '#title' => t('edit'),
+      '#href'  => '',
+    ),
+  );
 
   $form['actions'] = array('#type' => 'actions');
   $form['actions']['submit'] = array('#type' => 'submit', '#value' => t('Save'));
@@ -362,13 +434,17 @@ function theme_stanford_personal_blocks_form($variables) {
   $form = $variables['form'];
 
   $header = array(t('Enabled'), t('Block'), t('Actions'));
+  $rows = array();
 
-  $rows = array(
-    array('','Profile Block',''),
-    array('','Sidebar Block',''),
-    array('','Footer Block',''),
-    array('','Social Media Block',''),
-  );
+  foreach (element_children($form['block_items']) as $id) {
+    $rows[] = array(
+      'data' => array(
+        drupal_render($form['block_items'][$id]['enabled']),
+        drupal_render($form['block_items'][$id]['name']),
+        drupal_render($form['block_items'][$id]['actions']),
+      ),
+   );
+  }
 
   $table_id = 'block-items-table';
 
