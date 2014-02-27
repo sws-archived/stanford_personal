@@ -214,30 +214,10 @@ function stanford_personal_manage_pages_form($form_state) {
     $path = $link['link_path'];
 
     $is_home = FALSE;
-   if ($path == '<front>') {
+
+    if ($path == '<front>') {
       $path = variable_get('site_frontpage');
       $is_home = TRUE;
-    }
-
-    $operations = array();
-
-    $operations['edit'] = array(
-      '#type' => 'link',
-      '#title' => t('edit'),
-      '#href' => $path . '/edit',
-    );
-
-    // Add a delete operation, but only if it's not the Home Page
-    if (!$is_home) {
-      $operations['separator'] = array(
-        '#markup' => ' | ',
-      );
-
-      $operations['delete'] = array(
-        '#type' => 'link',
-        '#title' => t('delete'),
-        '#href' => url($path . '/delete', array('absolute' => TRUE, 'query' => array('destination' => 'admin/stanford-personal/pages'))),
-      );
     }
 
     $nid = _stanford_personal_get_nid($link);
@@ -245,6 +225,34 @@ function stanford_personal_manage_pages_form($form_state) {
 
     if ($nid) {
       $node = node_load($nid);
+    }
+
+    $operations = array();
+
+    if (!empty($node)) {
+
+      $operations['edit'] = array(
+        '#type' => 'link',
+        '#title' => t('edit'),
+        '#href' => $path . '/edit',
+      );
+
+      // Add a delete operation, but only if it's not the Home Page
+      if (!$is_home) {
+        $operations['separator'] = array(
+          '#markup' => ' | ',
+        );
+
+        $operations['delete'] = array(
+          '#type' => 'link',
+          '#title' => t('delete'),
+          '#href' => url($path . '/delete', array('absolute' => TRUE, 'query' => array('destination' => 'admin/stanford-personal/pages'))),
+        );
+      }
+    } else {
+      $operations['empty'] = array(
+        '#markup' => 'N/A',
+      );
     }
 
     // checkbox: 
