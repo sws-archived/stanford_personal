@@ -347,6 +347,35 @@ function stanford_personal_design_form($form, &$form_state) {
     );
   }
   else {
+    $stanford_light_settings = array (
+      'toggle_logo' => 0,
+      'toggle_name' => 1,
+      'toggle_slogan' => 1,
+      'toggle_node_user_picture' => 1,
+      'toggle_comment_user_picture' => 1,
+      'toggle_comment_user_verification' => 1,
+      'toggle_favicon' => 1,
+      'toggle_main_menu' => 1,
+      'toggle_secondary_menu' => 1,
+      'default_logo' => 1,
+      'logo_path' => '',
+      'logo_upload' => '',
+      'default_favicon' => 1,
+      'favicon_path' => '',
+      'favicon_upload' => '',
+      'content_order_classes' => '',
+      'front_heading_classes' => '',
+      'breadcrumb_classes' => '',
+      'body_bg_type' => '',
+      'body_bg_classes' => '',
+      'body_bg_path' => 'public://',
+      'body_bg_upload' => '',
+      'styles' => 'styles-light',
+      'fonts' => 'fonts-sans',
+      'red_bar' => 'red-bar',
+    );
+    $stanford_light_settings = variable_get('theme_stanford_light_settings', $stanford_light_settings);
+    $form_state['stanford_light_settings'] = $stanford_light_settings;
     $form['layouts'] = array(
       '#type' => 'fieldset',
       '#title' => t('Choose Layout'),
@@ -368,33 +397,48 @@ function stanford_personal_design_form($form, &$form_state) {
       '#title' => t('Choose Style'),
     );
     $style_options = array(
-      0 => t('Light'),
-      1 => t('Dark'),
-      2 => t('Plain'),
-      3 => t('Rich'),
-      4 => t('Bright'),
-      5 => t('High Contrast'),
+      'styles-light' => t('Light'),
+      'styles-dark' => t('Dark'),
+      'styles-plain' => t('Plain'),
+      'styles-rich' => t('Rich'),
+      'styles-bright' => t('Bright'),
+      'styles-contrast' => t('High Contrast'),
     );
     $form['styles']['style'] = array(
       '#type' => 'radios',
       '#title' => t('Style'),
       '#options' => $style_options,
-//      '#default_value' => $default_style,
+      '#default_value' => $stanford_light_settings['styles'],
     );
     $form['fonts'] = array(
       '#type' => 'fieldset',
       '#title' => t('Choose Fonts'),
     );
     $font_options = array(
-      0 => t('Sans Serif'),
-      1 => t('Serif'),
-      2 => t('Slab Serif'),
+      
+      'fonts-sans' => t('Sans Serif'),
+      'fonts-serif' => t('Serif'),
+      'fonts-slab' => t('Slab Serif'),
     );
     $form['fonts']['font'] = array(
       '#type' => 'radios',
       '#title' => t('Font'),
       '#options' => $font_options,
-//      '#default_value' => $default_style,
+      '#default_value' => $stanford_light_settings['fonts'],
+    );
+    $form['redbar'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Enable Red Bar'),
+    );
+    $redbar_options = array(
+      'red-bar' => t('Show red bar above header'),
+      'no-red-bar' => t('Do not show red bar above header'),
+    );
+    $form['redbar']['red_bar'] = array(
+      '#type' => 'radios',
+      '#title' => t('Font'),
+      '#options' => $redbar_options,
+      '#default_value' => $stanford_light_settings['red_bar'],
     );
     $form['logo'] = array(
       '#type' => 'fieldset',
@@ -414,35 +458,39 @@ function stanford_personal_design_form($form, &$form_state) {
       '#collapsible' => TRUE,
       '#collapsed' => TRUE,
     );
+    $form['submit'] = array(
+      '#type' => 'submit',
+      '#value' => t('Save Design Settings'),
+    );
 
   }
   return $form;
 }
-
+// <editor-fold defaultstate="collapsed" desc="code folding">
 /**
  * Config form for "Site Details" page
  */
 function stanford_personal_site_details_form($form, &$form_state) {
   $content = t("Your site title and subtitle are displayed in the header of your website. The title is created automatically from your SUNet information when you request your site. You can update them to reflect your personal preferences.");
   $form['site_title'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('Site Details'),
+      '#type' => 'fieldset',
+      '#title' => t('Site Details'),
   );
   $form['site_title']['site_name'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Site Name'),
-    '#default_value' => variable_get('site_name'),
-    '#prefix' => '<p>' . $content . '</p>',
-    '#required' => TRUE,
+      '#type' => 'textfield',
+      '#title' => t('Site Name'),
+      '#default_value' => variable_get('site_name'),
+      '#prefix' => '<p>' . $content . '</p>',
+      '#required' => TRUE,
   );
   $form['site_title']['site_subtitle'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Site Subtitle'),
-    '#default_value' => variable_get('site_slogan'),
+      '#type' => 'textfield',
+      '#title' => t('Site Subtitle'),
+      '#default_value' => variable_get('site_slogan'),
   );
   $form['site_title']['submit'] = array(
-    '#type' => 'submit',
-    '#value' => t('Change Site Name and Subtitle'),
+      '#type' => 'submit',
+      '#value' => t('Change Site Name and Subtitle'),
   );
   return $form;
 }
@@ -454,31 +502,31 @@ function stanford_personal_site_editors_form($form, &$form_state) {
   $content = '<p>' . t("If you would like to have another person edit your website, you can add their SUNet ID here. It is also possible to request a SUNet ID for people who are off campus.") . '</p>';
   $content .= '<p>' . t('!sunetids', array('!sunetids' => l('Learn more about SUNetIDs', 'https://itservices.stanford.edu/service/accounts/sunetids'))) . '</p>';
   $form['site_editors'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('Site Editors'),
+      '#type' => 'fieldset',
+      '#title' => t('Site Editors'),
   );
   $form['site_editors']['sunetid'] = array(
-    '#type' => 'textfield',
-    '#title' => t('SUNetID'),
-    '#description' => t('Enter the SUNetID of the user you wish to add as a site editor.'),
-    '#prefix' => $content,
-    '#required' => TRUE,
+      '#type' => 'textfield',
+      '#title' => t('SUNetID'),
+      '#description' => t('Enter the SUNetID of the user you wish to add as a site editor.'),
+      '#prefix' => $content,
+      '#required' => TRUE,
   );
-  $form['site_editors']['name']  = array(
-    '#type' => 'textfield',
-    '#title' => t('Name'),
-    '#description' => t('If you wish to specify the user\'s preferred name (instead of sunetid@stanford.edu), enter it here.'),
+  $form['site_editors']['name'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Name'),
+      '#description' => t('If you wish to specify the user\'s preferred name (instead of sunetid@stanford.edu), enter it here.'),
   );
-  $form['site_editors']['email']  = array(
-    '#type' => 'textfield',
-    '#title' => t('Email Address'),
-    '#description' => t('If you wish to specify an alternate email address (instead of sunetid@stanford.edu), enter it here.'),
+  $form['site_editors']['email'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Email Address'),
+      '#description' => t('If you wish to specify an alternate email address (instead of sunetid@stanford.edu), enter it here.'),
   );
   $form['site_editors']['submit'] = array(
-    '#type' => 'submit',
-    '#value' => t('Add Site Editor'),
-    '#submit' => array('webauth_extras_waau_config_form_submit', 'stanford_personal_site_editors_form_submit'),
-    '#validate' => array('webauth_extras_waau_config_form_validate'),
+      '#type' => 'submit',
+      '#value' => t('Add Site Editor'),
+      '#submit' => array('webauth_extras_waau_config_form_submit', 'stanford_personal_site_editors_form_submit'),
+      '#validate' => array('webauth_extras_waau_config_form_validate'),
   );
   return $form;
 }
@@ -490,42 +538,41 @@ function stanford_personal_site_settings_advanced_form($form, &$form_state) {
   global $user;
   $account = $user;
   $admin_rid = variable_get('user_admin_role', user_role_load_by_name('administrator')->rid);
-  if(!array_key_exists($admin_rid, $account->roles)) {
+  if (!array_key_exists($admin_rid, $account->roles)) {
     $content = t("Advanced mode allows you to use all of Drupal’s powerful functionality, but also makes it possible for you to break your site. If you have taken a Drupal class and would like to experiment with your website, or you are already familiar with Drupal site building, Advanced mode will give you full access to advanced site administration.");
     $form['advanced'] = array(
-      '#type' => 'fieldset',
-      '#title' => t('Switch to Advanced Mode'),
+        '#type' => 'fieldset',
+        '#title' => t('Switch to Advanced Mode'),
     );
     $form['advanced']['agree'] = array(
-      '#type' => 'checkbox',
-      '#title' => t('I understand these risks.'),
-      '#prefix' => '<p>' . $content . '</p>',
-      '#required' => TRUE,
+        '#type' => 'checkbox',
+        '#title' => t('I understand these risks.'),
+        '#prefix' => '<p>' . $content . '</p>',
+        '#required' => TRUE,
     );
     $form['advanced']['submit'] = array(
-      '#type' => 'submit',
-      '#value' => t('Switch to Advanced Mode'),
+        '#type' => 'submit',
+        '#value' => t('Switch to Advanced Mode'),
     );
-  }
-  else {
+  }   else {
     $content = t("You are currently in Advanced mode. Advanced mode allows you to use all of Drupal’s powerful functionality, but also makes it possible for you to break your site. If you would like to switch back to Basic Mode, with a simpler user interface, click the button below.");
     $form['basic'] = array(
-      '#type' => 'fieldset',
-      '#title' => t('Advanced Mode'),
+        '#type' => 'fieldset',
+        '#title' => t('Advanced Mode'),
     );
-/**
- *   // Comment out checkbox for switching back to basic for now.
- *   $form['basic']['agree'] = array(
- *     '#type' => 'checkbox',
- *     '#title' => t('I understand these risks.'),
- *     '#required' => TRUE,
- *   );
- *
+    /**
+     *   // Comment out checkbox for switching back to basic for now.
+     *   $form['basic']['agree'] = array(
+     *     '#type' => 'checkbox',
+     *     '#title' => t('I understand these risks.'),
+     *     '#required' => TRUE,
+     *   );
+     *
  */
     $form['basic']['submit'] = array(
-      '#type' => 'submit',
-      '#prefix' => '<p>' . $content . '</p>',
-      '#value' => t('Switch Back to Basic Mode'),
+        '#type' => 'submit',
+        '#prefix' => '<p>' . $content . '</p>',
+        '#value' => t('Switch Back to Basic Mode'),
     );
   }
   return $form;
@@ -542,7 +589,7 @@ function stanford_personal_site_details_form_submit($form, &$form_state) {
   variable_set('site_slogan', $form_state['values']['site_subtitle']);
   if (empty($form_state['values']['site_subtitle'])) {
     drupal_set_message(t('The site subtitle has been unset.'));
-  }   else {
+  } else {
     drupal_set_message(t('The site subtitle has been set to @subtitle', array('@subtitle' => $form_state['values']['site_subtitle'])));
   }
 }
@@ -580,15 +627,14 @@ function stanford_personal_site_settings_advanced_form_submit($form, &$form_stat
   $admin_rid = variable_get('user_admin_role', user_role_load_by_name('administrator')->rid);
   // what roles does that user already have? put these into the $roles array
   $roles = $account->roles;
-  if($form_state['values']['submit'] == "Switch to Advanced Mode") {
+  if ($form_state['values']['submit'] == "Switch to Advanced Mode") {
     // add rid 8 into the $roles array
     $roles[$admin_rid] = TRUE;
     // put the modified $roles array into the $account object
     $account->roles = $roles;
     // save the $account object as the user
     user_save($account);
-  }
-  elseif ($form_state['values']['submit'] == "Switch Back to Basic Mode") {
+  }   elseif ($form_state['values']['submit'] == "Switch Back to Basic Mode") {
     // remove rid 8 from the $roles array
     unset($roles[$admin_rid]);
     // put the modified $roles array into the $account object
@@ -596,6 +642,16 @@ function stanford_personal_site_settings_advanced_form_submit($form, &$form_stat
     // save the $account object as the user
     user_save($account);
   }
+}
+
+// </editor-fold>
+
+function stanford_personal_design_form_submit($form, &$form_state) {
+  $stanford_light_settings = $form_state['stanford_light_settings'];
+  $stanford_light_settings['fonts'] = $form_state['values']['font'];
+  $stanford_light_settings['styles'] = $form_state['values']['style'];
+  $stanford_light_settings['red_bar'] = $form_state['values']['red_bar'];
+  variable_set('theme_stanford_light_settings', $stanford_light_settings);
 }
 
 /**
