@@ -113,6 +113,16 @@ function stanford_personal_layouts_context_default_contexts() {
   $context->description = 'Sitewide layout with a left sidebar';
   $context->tag = 'Sitewide';
   $context->conditions = array(
+    'path' => array(
+      'values' => array(
+        '~admin' => '~admin',
+        '~admin*' => '~admin*',
+        '~node/*/edit' => '~node/*/edit',
+        '~block/*/edit*' => '~block/*/edit*',
+        '~node/add*' => '~node/add*',
+        '~?q=admin/*' => '~?q=admin/*',
+      ),
+    ),
     'sitewide' => array(
       'values' => array(
         1 => 1,
@@ -137,7 +147,7 @@ function stanford_personal_layouts_context_default_contexts() {
       ),
     ),
   );
-  $context->condition_mode = 0;
+  $context->condition_mode = 1;
 
   // Translatables
   // Included for use with string extractors like potx.
@@ -152,6 +162,16 @@ function stanford_personal_layouts_context_default_contexts() {
   $context->description = 'Sitewide layout with profile and social blocks in right (first) side bar and flexi block in left (second) sidebar';
   $context->tag = 'Sitewide';
   $context->conditions = array(
+    'path' => array(
+      'values' => array(
+        '~admin' => '~admin',
+        '~admin*' => '~admin*',
+        '~node/*/edit' => '~node/*/edit',
+        '~block/*/edit*' => '~block/*/edit*',
+        '~node/add*' => '~node/add*',
+        '~?q=admin/*' => '~?q=admin/*',
+      ),
+    ),
     'sitewide' => array(
       'values' => array(
         1 => 1,
@@ -176,7 +196,7 @@ function stanford_personal_layouts_context_default_contexts() {
       ),
     ),
   );
-  $context->condition_mode = 0;
+  $context->condition_mode = 1;
 
   // Translatables
   // Included for use with string extractors like potx.
@@ -191,6 +211,16 @@ function stanford_personal_layouts_context_default_contexts() {
   $context->description = 'Sitewide layout with profile and social blocks in right (second) sidebar and flexi in left (first) sidebar';
   $context->tag = 'Sitewide';
   $context->conditions = array(
+    'path' => array(
+      'values' => array(
+        '~admin' => '~admin',
+        '~admin/*' => '~admin/*',
+        '~node/add/*' => '~node/add/*',
+        'node/add' => 'node/add',
+        'block/*/edit*' => 'block/*/edit*',
+        'node/*/edit' => 'node/*/edit',
+      ),
+    ),
     'sitewide' => array(
       'values' => array(
         1 => 1,
@@ -215,7 +245,7 @@ function stanford_personal_layouts_context_default_contexts() {
       ),
     ),
   );
-  $context->condition_mode = 0;
+  $context->condition_mode = 1;
 
   // Translatables
   // Included for use with string extractors like potx.
@@ -230,6 +260,16 @@ function stanford_personal_layouts_context_default_contexts() {
   $context->description = 'Sitewide layout with a right sidebar';
   $context->tag = 'Sitewide';
   $context->conditions = array(
+    'path' => array(
+      'values' => array(
+        '~admin' => '~admin',
+        '~admin*' => '~admin*',
+        '~node/*/edit' => '~node/*/edit',
+        '~block/*/edit*' => '~block/*/edit*',
+        '~node/add*' => '~node/add*',
+        '~?q=admin/*' => '~?q=admin/*',
+      ),
+    ),
     'sitewide' => array(
       'values' => array(
         1 => 1,
@@ -254,7 +294,7 @@ function stanford_personal_layouts_context_default_contexts() {
       ),
     ),
   );
-  $context->condition_mode = 0;
+  $context->condition_mode = 1;
 
   // Translatables
   // Included for use with string extractors like potx.
