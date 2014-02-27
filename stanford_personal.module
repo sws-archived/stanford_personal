@@ -158,7 +158,10 @@ function stanford_personal_form_stanford_page_node_form_alter(&$form, &$form_sta
   }
 
   // hide the menu form, we'll default to main-menu later 
-  $form['menu']['#type'] = 'hidden';
+  // only do this if the user is not an administrator
+  if (!user_access('administer menus and menu items')) {
+    $form['menu']['#type'] = 'hidden';
+  }
 
   // add submit functions to form
   $form['#submit'][] = 'stanford_personal_stanford_page_node_form_submit';
@@ -169,9 +172,14 @@ function stanford_personal_form_stanford_page_node_form_alter(&$form, &$form_sta
  */
 
 function stanford_personal_stanford_page_node_form_submit($form, &$form_state) {
-  $form_state['values']['menu']['link_title'] = $form_state['values']['title'];
-  $form_state['values']['menu']['enabled'] = 1;
-  $form_state['values']['menu']['parent'] = 'main-menu:0';
+ 
+  // Set the default menu to main-menu and the link title to the page title
+  // Only do this if the user can't administer menus 
+  if (!user_access('administer menus and menu items')) {
+    $form_state['values']['menu']['link_title'] = $form_state['values']['title'];
+    $form_state['values']['menu']['enabled'] = 1;
+    $form_state['values']['menu']['parent'] = 'main-menu:0';
+  }
 }
 
 /**
