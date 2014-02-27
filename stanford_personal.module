@@ -29,11 +29,11 @@ function stanford_personal_menu() {
   );
   $items['admin/stanford-personal/pages'] = array(
     'title' => 'Manage Pages',
+    'type' => MENU_LOCAL_TASK,
     'description' => 'Manage Pages on your Stanford Site',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('stanford_personal_manage_pages_form'),
     'access arguments' => array('stanford personal manage pages'),
-    'type'  => MENU_NORMAL_ITEM,
     'weight' => -9,
   );
   $items['admin/stanford-personal/blocks'] = array(
