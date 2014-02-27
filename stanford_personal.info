@@ -7,3 +7,4 @@ project = stanford_personal
 stylesheets[all][] = css/stanford-personal.css
 stylesheets[all][] = css/stanford-personal-theme-fixes.css
 scripts[] = js/stanford-personal.js
+dependencies[] = webauth_extras
