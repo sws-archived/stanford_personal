@@ -325,6 +325,7 @@ function stanford_personal_design_form(&$form, &$form_state) {
  * Config form for "Site Details" page
  */
 function stanford_personal_site_details_form($form, &$form_state) {
+  $content = t("Your site title and subtitle are displayed in the header of your website. The title is created automatically from your SUNet information when you request your site. You can update them to reflect your personal preferences.");
   $form['site_title'] = array(
     '#type' => 'fieldset',
     '#title' => t('Site Details'),
@@ -333,6 +334,7 @@ function stanford_personal_site_details_form($form, &$form_state) {
     '#type' => 'textfield',
     '#title' => t('Site Name'),
     '#default_value' => variable_get('site_name'),
+    '#prefix' => '<p>' . $content . '</p>',
     '#required' => TRUE,
   );
   $form['site_title']['site_subtitle'] = array(
@@ -351,6 +353,8 @@ function stanford_personal_site_details_form($form, &$form_state) {
  * Config form for "Site Editors" page
  */
 function stanford_personal_site_editors_form($form, &$form_state) {
+  $content = '<p>' . t("If you would like to have another person edit your website, you can add their SUNet ID here. It is also possible to request a SUNet ID for people who are off campus.") . '</p>';
+  $content .= '<p>' . t('!sunetids', array('!sunetids' => l('Learn more about SUNetIDs', 'https://itservices.stanford.edu/service/accounts/sunetids'))) . '</p>';
   $form['site_editors'] = array(
     '#type' => 'fieldset',
     '#title' => t('Site Editors'),
@@ -359,6 +363,7 @@ function stanford_personal_site_editors_form($form, &$form_state) {
     '#type' => 'textfield',
     '#title' => t('SUNetID'),
     '#description' => t('Enter the SUNetID of the user you wish to add as a site editor.'),
+    '#prefix' => $content,
     '#required' => TRUE,
   );
   $form['site_editors']['name']  = array(
@@ -384,6 +389,7 @@ function stanford_personal_site_editors_form($form, &$form_state) {
  * Config form for "Advanced Mode" page
  */
 function stanford_personal_site_settings_advanced_form($form, &$form_state) {
+  $content = t("Advanced mode allows you to use all of Drupal’s powerful functionality, but also makes it possible for you to break your site. If you have taken a Drupal class and would like to experiment with your website, or you are already familiar with Drupal site building, Advanced mode will give you full access to advanced site administration.");
   $form['advanced'] = array(
     '#type' => 'fieldset',
     '#title' => t('Switch to Advanced Mode'),
@@ -391,6 +397,7 @@ function stanford_personal_site_settings_advanced_form($form, &$form_state) {
   $form['advanced']['agree'] = array(
     '#type' => 'checkbox',
     '#title' => t('I understand these risks.'),
+    '#prefix' => '<p>' . $content . '</p>',
     '#required' => TRUE,
   );
   $form['advanced']['submit'] = array(
