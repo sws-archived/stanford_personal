@@ -396,6 +396,24 @@ function stanford_personal_design_form($form, &$form_state) {
       '#options' => $font_options,
 //      '#default_value' => $default_style,
     );
+    $form['logo'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Choose Logo'),
+      '#collapsible' => TRUE,
+      '#collapsed' => TRUE,
+    );
+    $form['header_bg_image'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Choose Header Background Image'),
+      '#collapsible' => TRUE,
+      '#collapsed' => TRUE,
+    );
+    $form['favicon'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Choose Favicon'),
+      '#collapsible' => TRUE,
+      '#collapsed' => TRUE,
+    );
 
   }
   return $form;
