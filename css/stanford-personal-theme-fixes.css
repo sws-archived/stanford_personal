@@ -16,6 +16,9 @@
 .row-fluid .node .content .float-right {
     margin-left: 15px;
 }
+.content-head {
+	margin-bottom:0;
+}
 
 /* adjust views-grid-five mobile breakpoint */
 @media (max-width:350px) {
