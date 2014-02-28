@@ -371,12 +371,25 @@ function stanford_personal_blocks_form($form, &$form_state) {
     ),
   );
 
+  $block_visibility = array();
+  $block_ids = array('stanford-personal-sidebar-block', 'stanford-personal-footer-block', 'jumpstart-footer-social-media--0');
+
+  foreach ($block_ids as $id) {
+    $block = block_load('bean',$id);
+    // a block is disabled if visibility = 0 and pages = *
+    if (($block->visibility == 0) && ($block->pages == '*')) {
+      $block_visibility[$id] = FALSE;
+    } else {
+      $block_visibility[$id] = TRUE;
+    }
+  }
+
   $form['block_items']['stanford-personal-sidebar-block'] = array(
     'enabled' => array(
       '#type'          => 'checkbox',
       '#title'         => 'Enable the Sidebar Block',
       '#title_display' => 'invisible',
-      '#default_value' => TRUE,
+      '#default_value' => $block_visibility['stanford-personal-sidebar-block'],
     ),
     'name' => array(
       '#markup' => 'Sidebar Block',
@@ -393,7 +406,7 @@ function stanford_personal_blocks_form($form, &$form_state) {
       '#type'          => 'checkbox',
       '#title'         => 'Enable the Footer Block',
       '#title_display' => 'invisible',
-      '#default_value' => TRUE,
+      '#default_value' => $block_visibility['stanford-personal-footer-block'],
     ),
     'name' => array(
       '#markup' => 'Footer Block',
@@ -410,7 +423,7 @@ function stanford_personal_blocks_form($form, &$form_state) {
       '#type'          => 'checkbox',
       '#title'         => 'Enable the Social Media Block',
       '#title_display' => 'invisible',
-      '#default_value' => TRUE,
+      '#default_value' => $block_visibility['jumpstart-footer-social-media--0'],
     ),
     'name' => array(
       '#markup' => 'Social Media Block',
@@ -460,6 +473,23 @@ function theme_stanford_personal_blocks_form($variables) {
 }
 
 function stanford_personal_blocks_form_submit($form, &$form_state) {
+
+  foreach ($form_state['values']['block_items'] as $id => $item) {
+    if (isset($item['enabled'])) {
+      if ($item['enabled']) {
+        db_update('block')->fields(array(
+          'visibility' => 0,
+          'pages' => '',
+          ))->condition('module', 'bean')->condition('delta', $id)->execute();
+      } else {
+        db_update('block')->fields(array(
+          'visibility' => 0,
+          'pages' => '*',
+          ))->condition('module', 'bean')->condition('delta', $id)->execute();
+      }
+    }
+  }
+  //TODO: clear cache
   drupal_set_message('Nothing. Nothing was done.');
 }
 
