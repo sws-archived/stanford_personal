@@ -554,91 +554,113 @@ function stanford_personal_design_form($form, &$form_state) {
     );
     $stanford_light_settings = variable_get('theme_stanford_light_settings', $stanford_light_settings);
     $form_state['stanford_light_settings'] = $stanford_light_settings;
+
+    // Layouts are driven by Contexts. we have 4 contexts, three of which are disabled
+    // TRUE means disabled. Ya rly.
+    $context_status_default = array (
+      'stanford_profile_left_sb' => TRUE,
+      'stanford_profile_right_sb' => TRUE,
+      'stanford_right_sb' => TRUE,
+    );
+    // it should be in the {variable} table
+    $context_status = variable_get('context_status', $context_status_default);
+    // make a new array to hold all of the contexts
+    $context_status_all = $context_status_default;
+    // add the missing one
+    $context_status_all['stanford_left_sb'] = TRUE;
+    // diff 'em!
+    $enabled_context = array_diff_key($context_status_all, $context_status);
+    // we want the key, not the value
+    foreach($enabled_context as $key => $value) {
+      $current_layout = $key;
+    }
+    // save these for using in submit function
+    $form_state['current_layout'] = $current_layout;
+    $form_state['context_status'] = $context_status;
     $form['layouts'] = array(
       '#type' => 'fieldset',
       '#title' => t('Choose Layout'),
     );
     $layout_options = array(
-      0 => t('Left Sidebar'),
-      1 => t('Right Sidebar'),
-      2 => t('Two Sidbars, Profile Right'),
-      3 => t('Two Sidebars, Profile Left'),
+      'stanford_left_sb' => t('Left Sidebar'),
+      'stanford_right_sb' => t('Right Sidebar'),
+      'stanford_profile_right_sb' => t('Two Sidbars, Profile Right'),
+      'stanford_profile_left_sb' => t('Two Sidebars, Profile Left'),
     );
     $form['layouts']['layout'] = array(
       '#type' => 'radios',
       '#title' => t('Layout'),
       '#options' => $layout_options,
-//      '#default_value' => $default_layout,
+      '#default_value' => $current_layout,
     );
     $form['styles'] = array(
-      '#type' => 'fieldset',
-      '#title' => t('Choose Style'),
+        '#type' => 'fieldset',
+        '#title' => t('Choose Style'),
     );
     $style_options = array(
-      'styles-light' => t('Light'),
-      'styles-dark' => t('Dark'),
-      'styles-plain' => t('Plain'),
-      'styles-rich' => t('Rich'),
-      'styles-bright' => t('Bright'),
-      'styles-contrast' => t('High Contrast'),
+        'styles-light' => t('Light'),
+        'styles-dark' => t('Dark'),
+        'styles-plain' => t('Plain'),
+        'styles-rich' => t('Rich'),
+        'styles-bright' => t('Bright'),
+        'styles-contrast' => t('High Contrast'),
     );
     $form['styles']['style'] = array(
-      '#type' => 'radios',
-      '#title' => t('Style'),
-      '#options' => $style_options,
-      '#default_value' => $stanford_light_settings['styles'],
+        '#type' => 'radios',
+        '#title' => t('Style'),
+        '#options' => $style_options,
+        '#default_value' => $stanford_light_settings['styles'],
     );
     $form['fonts'] = array(
-      '#type' => 'fieldset',
-      '#title' => t('Choose Fonts'),
+        '#type' => 'fieldset',
+        '#title' => t('Choose Fonts'),
     );
     $font_options = array(
-      
       'fonts-sans' => t('Sans Serif'),
-      'fonts-serif' => t('Serif'),
-      'fonts-slab' => t('Slab Serif'),
+        'fonts-serif' => t('Serif'),
+        'fonts-slab' => t('Slab Serif'),
     );
     $form['fonts']['font'] = array(
-      '#type' => 'radios',
-      '#title' => t('Font'),
-      '#options' => $font_options,
-      '#default_value' => $stanford_light_settings['fonts'],
+        '#type' => 'radios',
+        '#title' => t('Font'),
+        '#options' => $font_options,
+        '#default_value' => $stanford_light_settings['fonts'],
     );
     $form['redbar'] = array(
-      '#type' => 'fieldset',
-      '#title' => t('Enable Red Bar'),
+        '#type' => 'fieldset',
+        '#title' => t('Enable Red Bar'),
     );
     $redbar_options = array(
-      'red-bar' => t('Show red bar above header'),
-      'no-red-bar' => t('Do not show red bar above header'),
+        'red-bar' => t('Show red bar above header'),
+        'no-red-bar' => t('Do not show red bar above header'),
     );
     $form['redbar']['red_bar'] = array(
-      '#type' => 'radios',
-      '#title' => t('Font'),
-      '#options' => $redbar_options,
-      '#default_value' => $stanford_light_settings['red_bar'],
+        '#type' => 'radios',
+        '#title' => t('Font'),
+        '#options' => $redbar_options,
+        '#default_value' => $stanford_light_settings['red_bar'],
     );
     $form['logo'] = array(
-      '#type' => 'fieldset',
-      '#title' => t('Choose Logo'),
-      '#collapsible' => TRUE,
-      '#collapsed' => TRUE,
+        '#type' => 'fieldset',
+        '#title' => t('Choose Logo'),
+        '#collapsible' => TRUE,
+        '#collapsed' => TRUE,
     );
     $form['header_bg_image'] = array(
-      '#type' => 'fieldset',
-      '#title' => t('Choose Header Background Image'),
-      '#collapsible' => TRUE,
-      '#collapsed' => TRUE,
+        '#type' => 'fieldset',
+        '#title' => t('Choose Header Background Image'),
+        '#collapsible' => TRUE,
+        '#collapsed' => TRUE,
     );
     $form['favicon'] = array(
-      '#type' => 'fieldset',
-      '#title' => t('Choose Favicon'),
-      '#collapsible' => TRUE,
-      '#collapsed' => TRUE,
+        '#type' => 'fieldset',
+        '#title' => t('Choose Favicon'),
+        '#collapsible' => TRUE,
+        '#collapsed' => TRUE,
     );
     $form['submit'] = array(
-      '#type' => 'submit',
-      '#value' => t('Save Design Settings'),
+        '#type' => 'submit',
+        '#value' => t('Save Design Settings'),
     );
 
   }
@@ -675,32 +697,32 @@ function stanford_personal_site_details_form($form, &$form_state) {
       '#value' => t('Change Site Name and Subtitle'),
   );
   $form['other_settings'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('Other Site Settings'),
+      '#type' => 'fieldset',
+      '#title' => t('Other Site Settings'),
   );
   $form['other_settings']['editors'] = array(
-    '#prefix' => '<p>' . t('To allow additional people to edit your website, you can add Site Editors.') . '</p>',
-    '#type' => 'link',
-    '#title' => t('Add Site Editors'),
-    '#href' => 'admin/stanford-personal/site-settings/site-editors',
-    '#options' => array(
-      'attributes' => array(
-      'class' => 'btn btn-request',          
+      '#prefix' => '<p>' . t('To allow additional people to edit your website, you can add Site Editors.') . '</p>',
+      '#type' => 'link',
+      '#title' => t('Add Site Editors'),
+      '#href' => 'admin/stanford-personal/site-settings/site-editors',
+      '#options' => array(
+          'attributes' => array(
+              'class' => 'btn btn-request',
+          )
       )
-    )
   );
   $form['other_settings']['advanced'] = array(
-    '#prefix' => '<p>' . t('If you are familiar with Drupal and would like to access more complex functionality, you can switch to Advanced mode.') . '</p>',
-    '#type' => 'link',
-    '#title' => t('Advanced Mode'),
-    '#href' => 'admin/stanford-personal/site-settings/advanced',
-    '#options' => array(
-      'attributes' => array(
-      'class' => 'btn btn-request',          
+      '#prefix' => '<p>' . t('If you are familiar with Drupal and would like to access more complex functionality, you can switch to Advanced mode.') . '</p>',
+      '#type' => 'link',
+      '#title' => t('Advanced Mode'),
+      '#href' => 'admin/stanford-personal/site-settings/advanced',
+      '#options' => array(
+          'attributes' => array(
+              'class' => 'btn btn-request',
+          )
       )
-    )
-  );
-  
+  ); // </editor-fold>
+
   return $form;
 }
 
@@ -771,7 +793,7 @@ function stanford_personal_site_settings_advanced_form($form, &$form_state) {
         '#type' => 'submit',
         '#value' => t('Switch to Advanced Mode'),
     );
-  }   else {
+  } else {
     $content = t("You are currently in Advanced mode. Advanced mode allows you to use all of Drupal’s powerful functionality, but also makes it possible for you to break your site. If you would like to switch back to Basic Mode, with a simpler user interface, click the button below.");
     $form['basic'] = array(
         '#type' => 'fieldset',
@@ -851,7 +873,7 @@ function stanford_personal_site_settings_advanced_form_submit($form, &$form_stat
     $account->roles = $roles;
     // save the $account object as the user
     user_save($account);
-  }   elseif ($form_state['values']['submit'] == "Switch Back to Basic Mode") {
+  } elseif ($form_state['values']['submit'] == "Switch Back to Basic Mode") {
     // remove rid 8 from the $roles array
     unset($roles[$admin_rid]);
     // grab the rid of the "site owner" role
@@ -865,11 +887,26 @@ function stanford_personal_site_settings_advanced_form_submit($form, &$form_stat
 }
 
 function stanford_personal_design_form_submit($form, &$form_state) {
+  // grab some values that we passed from the form
+  $context_status = $form_state['context_status'];
+  $current_layout = $form_state['current_layout'];
+  // turn off the current Context here by setting it to TRUE
+  // logic is a little backwards here, true means false
+  $context_status[$current_layout] = TRUE;
+  // grab the layout option that the user chose
+  $layout = $form_state['values']['layout'];
+  // unset that key in the context_status array
+  // again, logic is backwards; unset = enabled
+  unset($context_status[$layout]);
+  // save our array to the {variable} table
+  variable_set('context_status', $context_status);
+  // grab some values from the $form_state variable
   $stanford_light_settings = $form_state['stanford_light_settings'];
   $stanford_light_settings['fonts'] = $form_state['values']['font'];
   $stanford_light_settings['styles'] = $form_state['values']['style'];
   $stanford_light_settings['red_bar'] = $form_state['values']['red_bar'];
   variable_set('theme_stanford_light_settings', $stanford_light_settings);
+  cache_clear_all('context', 'cache');
 }
 
 /**
