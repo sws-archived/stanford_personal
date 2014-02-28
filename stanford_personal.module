@@ -177,6 +177,13 @@ function stanford_personal_stanford_page_node_form_submit($form, &$form_state) {
  
   // Set the default menu to main-menu and the link title to the page title
   // Only do this if the user can't administer menus 
+
+  $nid = $form['nid']['#value'];
+ 
+  if (_stanford_personal_is_home($nid) && _stanford_personal_home_is_in_menu()) {
+    return;
+  }
+
   if (!user_access('administer menu')) {
     $form_state['values']['menu']['link_title'] = $form_state['values']['title'];
     $form_state['values']['menu']['enabled'] = 1;
@@ -1055,5 +1062,30 @@ function _stanford_personal_user_is_admin() {
 function _stanford_personal_fix_breadcrumb() {
   if (!_stanford_personal_user_is_admin()) {
     drupal_set_breadcrumb(array());
+  }
+}
+
+/**
+ *  Find out if <front> is in the main-menu
+ */
+function _stanford_personal_home_is_in_menu () {
+  $tree = menu_tree_all_data('main-menu');
+  foreach ($tree as $item) {
+    $link = $item['link'];
+    if ($link['link_path'] == '<front>') {
+      return TRUE;
+    }
+  }
+  return FALSE;
+}
+
+/**
+ *  Find out if the current page is the home page
+ */
+function _stanford_personal_is_home($nid) {
+  if (variable_get('site_frontpage') == 'node/' . $nid) {
+    return TRUE;
+  } else {
+    return FALSE;
   }
 }
