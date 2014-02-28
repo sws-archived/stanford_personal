@@ -9,8 +9,7 @@
 function stanford_personal_menu() {
   $items['admin/stanford-personal'] = array(
     'title' => 'Stanford Sites Personal Help',
-    'page callback' => 'theme',
-    'page arguments' => array('gethelp_template'),
+    'page callback' => 'stanford_personal_help_page',
     'access arguments' => array('access stanford personal help'),
     'type' => MENU_NORMAL_ITEM,
   );
@@ -92,7 +91,6 @@ function stanford_personal_menu() {
  */
 function stanford_personal_theme($existing, $type, $theme, $path) {
   // Set the default help templates
-
   return array(
     'gethelp_template' => array(
       'template' => 'templates/gethelp',
@@ -195,6 +193,14 @@ function stanford_personal_form_system_site_information_settings_alter(&$form, &
     $form['error_page']['#type'] = 'hidden';
     $form['front_page']['#type'] = 'hidden';
   }
+}
+
+function stanford_personal_help_page() {
+
+  // Remove 'Administration breadcrumb'
+  _stanford_personal_fix_breadcrumb();
+
+  return theme('gethelp_template');
 }
 
 function stanford_personal_manage_pages_form($form_state) {
