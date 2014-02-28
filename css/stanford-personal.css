@@ -60,13 +60,6 @@ html.js .region-search-box div.contextual-links-wrapper {display:none;}
 #admin-shortcuts .shortcuts-user .field-content a {display: inline-block; padding: 0; margin-bottom: 2px;}
 #admin-shortcuts .shortcuts-user .content a:hover {text-decoration:underline;}
 
-/* Launch status ribbon block */
-#admin-shortcuts .shortcuts-launch-block { background-image: url("../images/launch-block-border.png"); background-position: center bottom; border-left: 1px solid black; border-right: 1px solid black; padding-bottom: 15px; position: absolute; right: 50px; top: 0; width: 150px; z-index: 100; }
-#admin-shortcuts .shortcuts-launch-block .content {background-color: #A32A2A; padding:10px; text-align:center;}
-#admin-shortcuts .shortcuts-launch-block .nextstep { border-bottom: 1px solid #611616; border-top: 1px solid #611616; color: #611616; display: block; font-size: 10px; font-weight: bold; letter-spacing: 0.03em; margin-bottom: 5px; text-transform: uppercase; }
-#admin-shortcuts .shortcuts-launch-block .content a { background: none repeat scroll 0 0 #222222; border: medium none; -webkit-border-radius: 8px; -moz-border-radius: 8px; border-radius: 8px; display: block; font-weight: bold; margin-top: 5px; }
-#admin-shortcuts .shortcuts-launch-block .content a:hover {background: none repeat scroll 0 0 #4D4F53;}
-
 /* Responsive admin shortcuts */
 @media (max-width: 979px) {
 #admin-shortcuts .content a, #admin-shortcuts .shortcuts-user {margin-bottom: 7px;}
