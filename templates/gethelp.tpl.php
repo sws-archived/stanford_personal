@@ -8,7 +8,7 @@
 <h1>Get Help</h1>
 <div class="block-extrainfo block-need-assistance">
 <h2>Stanford Sites Personal User Guide</h2>
-<p>Do you need help with Stanford Sites Jumpstart? Look no further! We have lots of helpful tips in our user guide.</p>
+<p>Do you need help with Stanford Sites Personal? Look no further! We have lots of helpful tips in our user guide.</p>
 <p><a href="https://sites.stanford.edu/personal-userguide/user-guide" class="btn btn-request" target="blank">View  Guide</a></p>
 </div>
 <h2>Help by category</h2>
