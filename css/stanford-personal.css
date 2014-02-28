@@ -16,9 +16,6 @@
 /* In Stanford Page node body, make sure images are never wider than node body */
 .node .group_s_postcard_content img {max-width:100%;}
 
-/* Hide menu tabs on homepage */
-.front #content-head .tabs {display:none;}
-
 /* Contact us block */
 .field-group-div.group-s-contact-us-address {margin-bottom:0.8em;}
 
