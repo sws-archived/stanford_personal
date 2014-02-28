@@ -199,6 +199,9 @@ function stanford_personal_form_system_site_information_settings_alter(&$form, &
 
 function stanford_personal_manage_pages_form($form_state) {
 
+  // Remove 'Administration breadcrumb'
+  _stanford_personal_fix_breadcrumb();
+
   // retrieve the data for the main-menu menu
   $tree = menu_tree_all_data('main-menu');
 
@@ -328,6 +331,10 @@ function stanford_personal_manage_pages_form($form_state) {
  * Config form for "Manage Profile" page
  */
 function stanford_personal_profile_form($form, &$form_state) {
+
+  // Remove 'Administration breadcrumb'
+  _stanford_personal_fix_breadcrumb();
+
   return $form;
 }
 
@@ -335,6 +342,10 @@ function stanford_personal_profile_form($form, &$form_state) {
  * Config form for "Manage Blocks" page
  */
 function stanford_personal_blocks_form($form, &$form_state) {
+
+  // Remove 'Administration breadcrumb'
+  _stanford_personal_fix_breadcrumb();
+
   // Now we add our submit button, for submitting the form results.
   //
   // The 'actions' wrapper used here isn't strictly necessary for tabledrag,
@@ -497,6 +508,10 @@ function stanford_personal_blocks_form_submit($form, &$form_state) {
  * Config form for "Customize Design" page
  */
 function stanford_personal_design_form($form, &$form_state) {
+
+  // Remove 'Administration breadcrumb'
+  _stanford_personal_fix_breadcrumb();
+
   $default_theme = variable_get('theme_default');
   // If you aren't using stanford_light, no soup for you. Also, anybody that don't like Hank Williams, they can kiss our ass.
   if($default_theme !== 'stanford_light') {
@@ -630,6 +645,10 @@ function stanford_personal_design_form($form, &$form_state) {
  * Config form for "Site Details" page
  */
 function stanford_personal_site_details_form($form, &$form_state) {
+
+  // Remove 'Administration breadcrumb'
+  _stanford_personal_fix_breadcrumb();
+
   $content = t("Your site title and subtitle are displayed in the header of your website. The title is created automatically from your SUNet information when you request your site. You can update them to reflect your personal preferences.");
   $form['site_title'] = array(
       '#type' => 'fieldset',
@@ -987,5 +1006,17 @@ function _stanford_personal_user_is_admin() {
     return TRUE;
   } else {
     return FALSE;
+  }
+}
+
+/**
+ * Remove the "Administration" breadcrumb, which is the second breadcrumb
+ * Do this only if the user is not an admin
+ */
+function _stanford_personal_fix_breadcrumb() {
+  if (!_stanford_personal_user_is_admin()) {
+    $breadcrumbs = drupal_get_breadcrumb();
+    unset($breadcrumbs[1]);
+    drupal_set_breadcrumb($breadcrumbs);
   }
 }
