@@ -354,7 +354,7 @@ function stanford_personal_blocks_form($form, &$form_state) {
    *  TODO: enabled box needs to do something
    */
 
-  $form['block_items']['profile_block'] = array(
+  $form['block_items']['stanford-personal-profile-block'] = array(
     'enabled' => array(
       '#type'          => 'checkbox',
       '#title'         => 'Enable the Profile Block',
@@ -371,7 +371,7 @@ function stanford_personal_blocks_form($form, &$form_state) {
     ),
   );
 
-  $form['block_items']['sidebar_block'] = array(
+  $form['block_items']['stanford-personal-sidebar-block'] = array(
     'enabled' => array(
       '#type'          => 'checkbox',
       '#title'         => 'Enable the Sidebar Block',
@@ -388,7 +388,7 @@ function stanford_personal_blocks_form($form, &$form_state) {
     ),
   );
 
-  $form['block_items']['footer_block'] = array(
+  $form['block_items']['stanford-personal-footer-block'] = array(
     'enabled' => array(
       '#type'          => 'checkbox',
       '#title'         => 'Enable the Footer Block',
@@ -405,7 +405,7 @@ function stanford_personal_blocks_form($form, &$form_state) {
     ),
   );
 
-  $form['block_items']['social_media_block'] = array(
+  $form['block_items']['jumpstart-footer-social-media--0'] = array(
     'enabled' => array(
       '#type'          => 'checkbox',
       '#title'         => 'Enable the Social Media Block',
