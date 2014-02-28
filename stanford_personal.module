@@ -490,7 +490,7 @@ function stanford_personal_blocks_form_submit($form, &$form_state) {
     }
   }
   //TODO: clear cache
-  drupal_set_message('Nothing. Nothing was done.');
+  drupal_set_message('Something. Something was done.');
 }
 
 /**
