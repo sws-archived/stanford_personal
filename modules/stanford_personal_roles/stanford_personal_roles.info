@@ -47,6 +47,7 @@ features[user_permission][] = show format selection for field_collection_item
 features[user_permission][] = show format selection for node
 features[user_permission][] = show format selection for taxonomy_term
 features[user_permission][] = show format selection for user
+features[user_permission][] = stanford personal manage pages
 features[user_permission][] = stanford personal use full block
 features[user_permission][] = use text format content_editor_text_format
 features[user_permission][] = use text format filtered_html

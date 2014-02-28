@@ -51,29 +51,9 @@ function stanford_personal_roles_user_default_permissions() {
     'module' => 'contextual',
   );
 
-  // Exported permission: 'access dashboard'.
-  $permissions['access dashboard'] = array(
-    'name' => 'access dashboard',
-    'roles' => array(
-      'administrator' => 'administrator',
-      'site owner' => 'site owner',
-    ),
-    'module' => 'dashboard',
-  );
-
   // Exported permission: 'access stanford personal help'.
   $permissions['access stanford personal help'] = array(
     'name' => 'access stanford personal help',
-    'roles' => array(
-      'administrator' => 'administrator',
-      'site owner' => 'site owner',
-    ),
-    'module' => 'stanford_personal',
-  );
-
-  // Exported permission: 'stanford personal use full block'.
-  $permissions['stanford personal use full block'] = array(
-    'name' => 'stanford personal use full block',
     'roles' => array(
       'administrator' => 'administrator',
       'site owner' => 'site owner',
@@ -96,7 +76,6 @@ function stanford_personal_roles_user_default_permissions() {
     'name' => 'administer blocks',
     'roles' => array(
       'administrator' => 'administrator',
-      'site owner' => 'site owner',
     ),
     'module' => 'block',
   );
@@ -224,6 +203,7 @@ function stanford_personal_roles_user_default_permissions() {
   $permissions['search content'] = array(
     'name' => 'search content',
     'roles' => array(
+      'administrator' => 'administrator',
       'anonymous user' => 'anonymous user',
       'authenticated user' => 'authenticated user',
     ),
@@ -271,6 +251,26 @@ function stanford_personal_roles_user_default_permissions() {
     'module' => 'better_formats',
   );
 
+  // Exported permission: 'stanford personal manage pages'.
+  $permissions['stanford personal manage pages'] = array(
+    'name' => 'stanford personal manage pages',
+    'roles' => array(
+      'administrator' => 'administrator',
+      'site owner' => 'site owner',
+    ),
+    'module' => 'stanford_personal',
+  );
+
+  // Exported permission: 'stanford personal use full block'.
+  $permissions['stanford personal use full block'] = array(
+    'name' => 'stanford personal use full block',
+    'roles' => array(
+      'administrator' => 'administrator',
+      'site owner' => 'site owner',
+    ),
+    'module' => 'stanford_personal',
+  );
+
   // Exported permission: 'use text format content_editor_text_format'.
   $permissions['use text format content_editor_text_format'] = array(
     'name' => 'use text format content_editor_text_format',
@@ -288,7 +288,6 @@ function stanford_personal_roles_user_default_permissions() {
       'administrator' => 'administrator',
       'anonymous user' => 'anonymous user',
       'authenticated user' => 'authenticated user',
-      'site owner' => 'site owner',
     ),
     'module' => 'filter',
   );
@@ -298,7 +297,6 @@ function stanford_personal_roles_user_default_permissions() {
     'name' => 'use text format full_html',
     'roles' => array(
       'administrator' => 'administrator',
-      'site owner' => 'site owner',
     ),
     'module' => 'filter',
   );
