@@ -65,12 +65,6 @@ function stanford_personal_layouts_context_default_contexts() {
           'region' => 'navigation',
           'weight' => '-10',
         ),
-        'search-form' => array(
-          'module' => 'search',
-          'delta' => 'form',
-          'region' => 'search_box',
-          'weight' => '-10',
-        ),
       ),
     ),
   );

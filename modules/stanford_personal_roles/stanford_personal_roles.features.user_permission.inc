@@ -333,17 +333,6 @@ function stanford_personal_roles_user_default_permissions() {
     'module' => 'node',
   );
 
-  // Exported permission: 'search content'.
-  $permissions['search content'] = array(
-    'name' => 'search content',
-    'roles' => array(
-      'administrator' => 'administrator',
-      'anonymous user' => 'anonymous user',
-      'authenticated user' => 'authenticated user',
-    ),
-    'module' => 'search',
-  );
-
   // Exported permission: 'show format selection for bean'.
   $permissions['show format selection for bean'] = array(
     'name' => 'show format selection for bean',

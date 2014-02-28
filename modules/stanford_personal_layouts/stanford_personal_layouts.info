@@ -10,7 +10,6 @@ dependencies[] = context
 dependencies[] = ctools
 dependencies[] = features
 dependencies[] = menu_block
-dependencies[] = search
 dependencies[] = stanford_bean_types
 dependencies[] = stanford_page
 dependencies[] = stanford_personal
