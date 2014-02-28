@@ -358,11 +358,8 @@ function stanford_personal_blocks_form($form, &$form_state) {
   // but is included as a Form API recommended practice.
 
   // TODO: (i) links about what they are
-  // TODO: Sidebar block
-  // TODO: Footer block
-  // TODO: Social Media Block
-  // TODO: Manage block layouts - Decide where your blocks go. [Customize Design] link goes out (danger of leaving page without saving)
 
+//Decide where your blocks go. [Customize Design] link goes out (danger of leaving page without saving)
   $form['block_items']['#tree'] = TRUE;
 
 
@@ -460,6 +457,8 @@ function stanford_personal_blocks_form($form, &$form_state) {
 function theme_stanford_personal_blocks_form($variables) {
   $output = '';
 
+  $output .= t('<p>On this page you can enable, disable and edit blocks of content. If you would like to manage their layout, visit the ' . l('customize design page', 'admin/stanford-personal/design') . '.</p>');
+
   $form = $variables['form'];
 
   $header = array(t('Enabled'), t('Block'), t('Actions'));
@@ -506,8 +505,7 @@ function stanford_personal_blocks_form_submit($form, &$form_state) {
       }
     }
   }
-  //TODO: clear cache
-  drupal_set_message('Something. Something was done.');
+  drupal_set_message(t('The changes have been saved.'));
 }
 
 /**
@@ -676,6 +674,33 @@ function stanford_personal_site_details_form($form, &$form_state) {
       '#type' => 'submit',
       '#value' => t('Change Site Name and Subtitle'),
   );
+  $form['other_settings'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Other Site Settings'),
+  );
+  $form['other_settings']['editors'] = array(
+    '#prefix' => '<p>' . t('To allow additional people to edit your website, you can add Site Editors.') . '</p>',
+    '#type' => 'link',
+    '#title' => t('Add Site Editors'),
+    '#href' => 'admin/stanford-personal/site-settings/site-editors',
+    '#options' => array(
+      'attributes' => array(
+      'class' => 'btn btn-request',          
+      )
+    )
+  );
+  $form['other_settings']['advanced'] = array(
+    '#prefix' => '<p>' . t('If you are familiar with Drupal and would like to access more complex functionality, you can switch to Advanced mode.') . '</p>',
+    '#type' => 'link',
+    '#title' => t('Advanced Mode'),
+    '#href' => 'admin/stanford-personal/site-settings/advanced',
+    '#options' => array(
+      'attributes' => array(
+      'class' => 'btn btn-request',          
+      )
+    )
+  );
+  
   return $form;
 }
 
@@ -683,6 +708,10 @@ function stanford_personal_site_details_form($form, &$form_state) {
  * Config form for "Site Editors" page
  */
 function stanford_personal_site_editors_form($form, &$form_state) {
+
+  // Remove 'Administration breadcrumb'
+  _stanford_personal_fix_breadcrumb();
+
   $content = '<p>' . t("If you would like to have another person edit your website, you can add their SUNet ID here. It is also possible to request a SUNet ID for people who are off campus. ");
   $content .= t('!sunetids', array('!sunetids' => l('Learn more about SUNetIDs', 'https://itservices.stanford.edu/service/accounts/sunetids'))) . '</p>';
   $form['site_editors'] = array(
@@ -719,6 +748,10 @@ function stanford_personal_site_editors_form($form, &$form_state) {
  * Config form for "Advanced Mode" page
  */
 function stanford_personal_site_settings_advanced_form($form, &$form_state) {
+
+  // Remove 'Administration breadcrumb'
+  _stanford_personal_fix_breadcrumb();
+
   global $user;
   $account = $user;
   $admin_rid = variable_get('user_admin_role', user_role_load_by_name('administrator')->rid);
@@ -1021,8 +1054,6 @@ function _stanford_personal_user_is_admin() {
  */
 function _stanford_personal_fix_breadcrumb() {
   if (!_stanford_personal_user_is_admin()) {
-    $breadcrumbs = drupal_get_breadcrumb();
-    unset($breadcrumbs[1]);
-    drupal_set_breadcrumb($breadcrumbs);
+    drupal_set_breadcrumb(array());
   }
 }
