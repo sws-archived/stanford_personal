@@ -16,15 +16,6 @@
 /* In Stanford Page node body, make sure images are never wider than node body */
 .node .group_s_postcard_content img {max-width:100%;}
 
-/* Contact us block */
-.field-group-div.group-s-contact-us-address {margin-bottom:0.8em;}
-
-/* Map block */
-#content-body #block-bean-jumpstart-location-map-block .content h2 {margin-top:1em;}
-
-/* Footer text size */
-#footer .block {font-size: 12px;}
-
 /* Hide contextual editor on search box */
 html.js .region-search-box div.contextual-links-wrapper {display:none;}
 
