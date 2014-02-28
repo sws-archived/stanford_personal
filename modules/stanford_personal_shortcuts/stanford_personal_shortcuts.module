@@ -23,7 +23,7 @@ function stanford_personal_shortcuts_block_view($delta = '') {
     case 'hello':
       global $user;
       $content = '<div class="shortcuts-user">';
-      $content .= t('Hello, !name', array('!name' => l($user->name, 'user/' . $user->uid . '/edit')));
+      $content .= t('Hello, !name', array('!name' => $user->name));
       $content .= '</div><div class="shortcuts-logout">';
       $content .= t(l('Log out', 'user/logout'));
       $content .= '</div>';
