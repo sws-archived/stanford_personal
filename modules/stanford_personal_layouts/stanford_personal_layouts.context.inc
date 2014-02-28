@@ -59,12 +59,6 @@ function stanford_personal_layouts_context_default_contexts() {
   $context->reactions = array(
     'block' => array(
       'blocks' => array(
-        'webauth-webauth_login_block' => array(
-          'module' => 'webauth',
-          'delta' => 'webauth_login_block',
-          'region' => 'global_header',
-          'weight' => '-10',
-        ),
         'menu_block-stanford_personal_layouts-1' => array(
           'module' => 'menu_block',
           'delta' => 'stanford_personal_layouts-1',
@@ -76,24 +70,6 @@ function stanford_personal_layouts_context_default_contexts() {
           'delta' => 'form',
           'region' => 'search_box',
           'weight' => '-10',
-        ),
-        'bean-jumpstart-footer-social-media--0' => array(
-          'module' => 'bean',
-          'delta' => 'jumpstart-footer-social-media--0',
-          'region' => 'footer',
-          'weight' => '-10',
-        ),
-        'bean-jumpstart-footer-contact-block' => array(
-          'module' => 'bean',
-          'delta' => 'jumpstart-footer-contact-block',
-          'region' => 'footer',
-          'weight' => '-8',
-        ),
-        'bean-optional-footer-block' => array(
-          'module' => 'bean',
-          'delta' => 'optional-footer-block',
-          'region' => 'footer',
-          'weight' => '-7',
         ),
       ),
     ),
@@ -123,11 +99,6 @@ function stanford_personal_layouts_context_default_contexts() {
         '~?q=admin/*' => '~?q=admin/*',
       ),
     ),
-    'sitewide' => array(
-      'values' => array(
-        1 => 1,
-      ),
-    ),
   );
   $context->reactions = array(
     'block' => array(
@@ -137,6 +108,12 @@ function stanford_personal_layouts_context_default_contexts() {
           'delta' => 'stanford-personal-sidebar-block',
           'region' => 'sidebar_first',
           'weight' => '-10',
+        ),
+        'bean-jumpstart-footer-social-media--0' => array(
+          'module' => 'bean',
+          'delta' => 'jumpstart-footer-social-media--0',
+          'region' => 'sidebar_first',
+          'weight' => '-9',
         ),
         'bean-stanford-personal-footer-block' => array(
           'module' => 'bean',
@@ -172,15 +149,16 @@ function stanford_personal_layouts_context_default_contexts() {
         '~?q=admin/*' => '~?q=admin/*',
       ),
     ),
-    'sitewide' => array(
-      'values' => array(
-        1 => 1,
-      ),
-    ),
   );
   $context->reactions = array(
     'block' => array(
       'blocks' => array(
+        'bean-jumpstart-footer-social-media--0' => array(
+          'module' => 'bean',
+          'delta' => 'jumpstart-footer-social-media--0',
+          'region' => 'sidebar_first',
+          'weight' => '-10',
+        ),
         'bean-stanford-personal-sidebar-block' => array(
           'module' => 'bean',
           'delta' => 'stanford-personal-sidebar-block',
@@ -214,16 +192,11 @@ function stanford_personal_layouts_context_default_contexts() {
     'path' => array(
       'values' => array(
         '~admin' => '~admin',
-        '~admin/*' => '~admin/*',
-        '~node/add/*' => '~node/add/*',
-        'node/add' => 'node/add',
-        'block/*/edit*' => 'block/*/edit*',
-        'node/*/edit' => 'node/*/edit',
-      ),
-    ),
-    'sitewide' => array(
-      'values' => array(
-        1 => 1,
+        '~admin*' => '~admin*',
+        '~node/*/edit' => '~node/*/edit',
+        '~block/*/edit*' => '~block/*/edit*',
+        '~node/add*' => '~node/add*',
+        '~?q=admin/*' => '~?q=admin/*',
       ),
     ),
   );
@@ -234,6 +207,12 @@ function stanford_personal_layouts_context_default_contexts() {
           'module' => 'bean',
           'delta' => 'stanford-personal-sidebar-block',
           'region' => 'sidebar_first',
+          'weight' => '-9',
+        ),
+        'bean-jumpstart-footer-social-media--0' => array(
+          'module' => 'bean',
+          'delta' => 'jumpstart-footer-social-media--0',
+          'region' => 'sidebar_second',
           'weight' => '-10',
         ),
         'bean-stanford-personal-footer-block' => array(
@@ -245,7 +224,7 @@ function stanford_personal_layouts_context_default_contexts() {
       ),
     ),
   );
-  $context->condition_mode = 1;
+  $context->condition_mode = 0;
 
   // Translatables
   // Included for use with string extractors like potx.
@@ -270,11 +249,6 @@ function stanford_personal_layouts_context_default_contexts() {
         '~?q=admin/*' => '~?q=admin/*',
       ),
     ),
-    'sitewide' => array(
-      'values' => array(
-        1 => 1,
-      ),
-    ),
   );
   $context->reactions = array(
     'block' => array(
@@ -284,6 +258,12 @@ function stanford_personal_layouts_context_default_contexts() {
           'delta' => 'stanford-personal-sidebar-block',
           'region' => 'sidebar_second',
           'weight' => '-10',
+        ),
+        'bean-jumpstart-footer-social-media--0' => array(
+          'module' => 'bean',
+          'delta' => 'jumpstart-footer-social-media--0',
+          'region' => 'sidebar_second',
+          'weight' => '-9',
         ),
         'bean-stanford-personal-footer-block' => array(
           'module' => 'bean',
