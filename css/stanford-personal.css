@@ -76,8 +76,6 @@ html.js .region-search-box div.contextual-links-wrapper {display:none;}
 .page-admin-stanford-personal a:hover.btn-request {background-color:#284D15; text-decoration:none;}
 .page-admin-stanford-personal td {vertical-align:top; border-top:1px solid #E8E8E8; border-left:none; border-right:none; padding-left: 0; padding-right: 30px;}
 .page-admin-stanford-personal tr td:last-child {border-right:none;}
-.page-admin-stanford-personal-features td .btn-request {margin-top:45px; text-align:center; display:block;}
-.page-admin-stanford-personal-features table {border-bottom: 1px solid #E8E8E8 !important; margin-bottom:3em; margin-top:2em; }
 .page-admin-stanford-personal .block-extrainfo {width:40%; border:1px solid #E8E8E8; float:right; padding:5px 20px 15px 20px; background-color:#FAFAFA; margin-bottom: 30px; clear:right;}
 .page-admin-stanford-personal .block-extrainfo-full {border:1px solid #E8E8E8; padding:5px 20px 15px 20px; background-color:#FAFAFA;}
 
