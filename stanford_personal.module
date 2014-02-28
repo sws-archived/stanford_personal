@@ -674,6 +674,33 @@ function stanford_personal_site_details_form($form, &$form_state) {
       '#type' => 'submit',
       '#value' => t('Change Site Name and Subtitle'),
   );
+  $form['other_settings'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Other Site Settings'),
+  );
+  $form['other_settings']['editors'] = array(
+    '#prefix' => '<p>' . t('To allow additional people to edit your website, you can add Site Editors.') . '</p>',
+    '#type' => 'link',
+    '#title' => t('Add Site Editors'),
+    '#href' => 'admin/stanford-personal/site-settings/site-editors',
+    '#options' => array(
+      'attributes' => array(
+      'class' => 'btn btn-request',          
+      )
+    )
+  );
+  $form['other_settings']['advanced'] = array(
+    '#prefix' => '<p>' . t('If you are familiar with Drupal and would like to access more complex functionality, you can switch to Advanced mode.') . '</p>',
+    '#type' => 'link',
+    '#title' => t('Advanced Mode'),
+    '#href' => 'admin/stanford-personal/site-settings/advanced',
+    '#options' => array(
+      'attributes' => array(
+      'class' => 'btn btn-request',          
+      )
+    )
+  );
+  
   return $form;
 }
 
