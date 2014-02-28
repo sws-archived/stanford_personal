@@ -1,5 +1,5 @@
 @charset "UTF-8";
-/* Jumpstart Theme Fixes -- All CSS here HAS been fixed in the themes */
+/* Stanford Sites Personal Theme Fixes -- All CSS here HAS been fixed in the themes */
 
 /* Fixed at OFW */
 .float-left,
@@ -16,6 +16,12 @@
 .row-fluid .node .content .float-right {
     margin-left: 15px;
 }
+
+/* adjust views-grid-five mobile breakpoint */
+@media (max-width:350px) {
+	.views-grid-five .views-row { display:block; width:100%; margin-right:0;}
+}
+
 
 /* Fixed at Wilbur */
 p a.more-link {border-bottom:0;}
@@ -36,9 +42,4 @@ p a.more-link {border-bottom:0;}
 
 /* ---- NEEDS TO BE FIXED IN THEMES ---- */
 
-/* Open Framework */
-/* adjust views-grid-five mobile breakpoint */
-@media (max-width:350px) {
-	.views-grid-five .views-row { display:block; width:100%; margin-right:0;}
-}
 
