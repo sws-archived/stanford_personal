@@ -591,7 +591,7 @@ function stanford_personal_design_form($form, &$form_state) {
     $layout_options = array(
       'stanford_left_sb' => t('Left Sidebar'),
       'stanford_right_sb' => t('Right Sidebar'),
-      'stanford_profile_right_sb' => t('Two Sidbars, Profile Right'),
+      'stanford_profile_right_sb' => t('Two Sidebars, Profile Right'),
       'stanford_profile_left_sb' => t('Two Sidebars, Profile Left'),
     );
     $form['layouts']['layout'] = array(
