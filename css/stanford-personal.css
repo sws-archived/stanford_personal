@@ -41,7 +41,7 @@ html.js .region-search-box div.contextual-links-wrapper {display:none;}
 
 /* Hide headers */
 #admin-shortcuts h2 {display:none;}
-#admin-shortcuts .block {display: inline-block; position: relative;}
+#admin-shortcuts .block {display: inline-block; position: relative; vertical-align: bottom;}
 
 /* Hide editing of these blocks */
 #admin-shortcuts .block .contextual-links-wrapper {display:none;}
