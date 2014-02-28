@@ -130,7 +130,7 @@ ul.pager li div.ajax-progress-throbber {display:none;} /* hide the throbber */
 #admin-shortcuts .shortcuts-home .content a:hover { background-image: url("../images/home.png"); }
 
 /* Hello, gorgeous and logout */
-#block-stanford-jumpstart-shortcuts-hello {float:right; margin-top: 6px;}
+#block-stanford-personal-shortcuts-hello {float:right; margin-top: 6px;}
 #admin-shortcuts .shortcuts-user, #admin-shortcuts .shortcuts-logout { display:inline-block; }
 #admin-shortcuts .content .shortcuts-user a {text-decoration:underline; margin-right: 10px; padding: 0;}
 #admin-shortcuts .content .shortcuts-user a:hover {background: transparent;  color: #CCCCCC;}
@@ -148,7 +148,7 @@ ul.pager li div.ajax-progress-throbber {display:none;} /* hide the throbber */
 /* Responsive admin shortcuts */
 @media (max-width: 979px) {
 #admin-shortcuts .content a, #admin-shortcuts .shortcuts-user {margin-bottom: 7px;}
-#block-stanford-jumpstart-shortcuts-hello {float:none; margin-top: auto; margin-left: 1em;}
+#block-stanford-personal-shortcuts-hello {float:none; margin-top: auto; margin-left: 1em;}
 }
 @media (max-width: 640px) {
 #admin-shortcuts .shortcuts-launch-block {display:none;}
