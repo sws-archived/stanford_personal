@@ -714,7 +714,7 @@ function stanford_personal_site_details_form($form, &$form_state) {
       '#href' => 'admin/stanford-personal/site-settings/site-editors',
       '#options' => array(
           'attributes' => array(
-              'class' => 'btn btn-request',
+              'class' => 'button',
           )
       )
   );
@@ -725,7 +725,7 @@ function stanford_personal_site_details_form($form, &$form_state) {
       '#href' => 'admin/stanford-personal/site-settings/advanced',
       '#options' => array(
           'attributes' => array(
-              'class' => 'btn btn-request',
+              'class' => 'button',
           )
       )
   ); // </editor-fold>
