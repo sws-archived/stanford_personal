@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Stanford Personal Cap Settings feature.
+ */
+
+include_once 'stanford_personal_cap_settings.features.inc';
