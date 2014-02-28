@@ -94,7 +94,6 @@ function stanford_personal_roles_user_default_permissions() {
     'name' => 'administer nodes',
     'roles' => array(
       'administrator' => 'administrator',
-      'site owner' => 'site owner',
     ),
     'module' => 'node',
   );
@@ -104,7 +103,6 @@ function stanford_personal_roles_user_default_permissions() {
     'name' => 'administer permissions',
     'roles' => array(
       'administrator' => 'administrator',
-      'site owner' => 'site owner',
     ),
     'module' => 'user',
   );
@@ -124,7 +122,6 @@ function stanford_personal_roles_user_default_permissions() {
     'name' => 'administer users',
     'roles' => array(
       'administrator' => 'administrator',
-      'site owner' => 'site owner',
     ),
     'module' => 'user',
   );
@@ -444,6 +441,7 @@ function stanford_personal_roles_user_default_permissions() {
     'name' => 'use text format full_html',
     'roles' => array(
       'administrator' => 'administrator',
+      'site owner' => 'site owner',
     ),
     'module' => 'filter',
   );
