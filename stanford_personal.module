@@ -147,7 +147,6 @@ function stanford_personal_form_bean_form_alter(&$form, &$form_state, $form_id) 
     $form['revision']['#type'] = 'hidden';
     $form['actions']['delete']['#type'] = 'hidden';
   }
-  $form['#validate'][] = 'stanford_personal_bean_form_validate';
 }
 
 /**
