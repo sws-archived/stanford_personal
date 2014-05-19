@@ -490,6 +490,16 @@ function stanford_personal_roles_user_default_permissions() {
     'module' => 'bean',
   );
 
+  // Exported permission: 'view bean page'.
+  $permissions['view bean page'] = array(
+    'name' => 'view bean page',
+    'roles' => array(
+      'administrator' => 'administrator',
+      'site owner' => 'site owner',
+    ),
+    'module' => 'bean',
+  );
+
   // Exported permission: 'view own unpublished content'.
   $permissions['view own unpublished content'] = array(
     'name' => 'view own unpublished content',
