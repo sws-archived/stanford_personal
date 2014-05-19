@@ -11,6 +11,7 @@ include_once 'stanford_personal_shortcuts.features.inc';
  */
 function stanford_personal_shortcuts_block_info() {
   $blocks['hello']['info'] = t('Stanford Sites Personal Hello "User" Block');
+  $blocks['hello']['cache'] = DRUPAL_CACHE_PER_USER;
   return $blocks;
 }
 
