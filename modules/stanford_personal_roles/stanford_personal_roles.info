@@ -71,6 +71,7 @@ features[user_permission][] = view any stanford_contact bean
 features[user_permission][] = view any stanford_large_block bean
 features[user_permission][] = view any stanford_postcard bean
 features[user_permission][] = view any stanford_social_media_connect bean
+features[user_permission][] = view bean page
 features[user_permission][] = view own unpublished content
 features[user_permission][] = view revisions
 features[user_permission][] = view the administration theme
