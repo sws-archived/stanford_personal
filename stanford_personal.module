@@ -8,10 +8,11 @@
  */
 function stanford_personal_menu() {
   $items['admin/stanford-personal'] = array(
-    'title' => 'Stanford Sites Personal Help',
+    'title' => 'Site Actions',
     'page callback' => 'stanford_personal_help_page',
     'access arguments' => array('access stanford personal help'),
     'type' => MENU_NORMAL_ITEM,
+    'menu_name' => 'menu-admin-shortcuts-site-action',
   );
   $items['admin/stanford-personal/help'] = array(
     'title' => 'Get Help',
