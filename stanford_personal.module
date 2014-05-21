@@ -8,7 +8,7 @@
  */
 function stanford_personal_menu() {
   $items['admin/stanford-personal'] = array(
-    'title' => 'Stanford Sites Personal Help',
+    'title' => 'Site Actions',
     'page callback' => 'stanford_personal_help_page',
     'access arguments' => array('access stanford personal help'),
     'type' => MENU_NORMAL_ITEM,
@@ -210,6 +210,7 @@ function stanford_personal_help_page() {
 }
 
 function stanford_personal_manage_pages_form($form_state) {
+  drupal_set_title('Manage Pages');
 
   // Remove 'Administration breadcrumb'
   _stanford_personal_fix_breadcrumb();
@@ -343,6 +344,7 @@ function stanford_personal_manage_pages_form($form_state) {
  * Config form for "Manage Profile" page
  */
 function stanford_personal_profile_form($form, &$form_state) {
+  drupal_set_title('Manage Profile');
 
   // Remove 'Administration breadcrumb'
   _stanford_personal_fix_breadcrumb();
@@ -354,7 +356,7 @@ function stanford_personal_profile_form($form, &$form_state) {
  * Config form for "Manage Blocks" page
  */
 function stanford_personal_blocks_form($form, &$form_state) {
-
+  drupal_set_title('Manage Blocks');
   // Remove 'Administration breadcrumb'
   _stanford_personal_fix_breadcrumb();
 
@@ -518,7 +520,7 @@ function stanford_personal_blocks_form_submit($form, &$form_state) {
  * Config form for "Customize Design" page
  */
 function stanford_personal_design_form($form, &$form_state) {
-
+  drupal_set_title('Customize Design');
   // Remove 'Administration breadcrumb'
   _stanford_personal_fix_breadcrumb();
 
@@ -677,6 +679,7 @@ function stanford_personal_design_form($form, &$form_state) {
  * Config form for "Site Details" page
  */
 function stanford_personal_site_details_form($form, &$form_state) {
+  drupal_set_title('Change Site Settings');
 
   // Remove 'Administration breadcrumb'
   _stanford_personal_fix_breadcrumb();
@@ -736,6 +739,7 @@ function stanford_personal_site_details_form($form, &$form_state) {
  * Config form for "Site Editors" page
  */
 function stanford_personal_site_editors_form($form, &$form_state) {
+  drupal_set_title('Site Editors');
 
   // Remove 'Administration breadcrumb'
   _stanford_personal_fix_breadcrumb();
@@ -776,6 +780,7 @@ function stanford_personal_site_editors_form($form, &$form_state) {
  * Config form for "Advanced Mode" page
  */
 function stanford_personal_site_settings_advanced_form($form, &$form_state) {
+  drupal_set_title('Advanced Mode');
 
   // Remove 'Administration breadcrumb'
   _stanford_personal_fix_breadcrumb();
