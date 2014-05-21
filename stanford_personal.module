@@ -531,6 +531,11 @@ function stanford_personal_design_form($form, &$form_state) {
     );
   }
   else {
+    // Load system.admin.inc, so we can access the theme validation and sumbit functions
+    form_load_include($form_state, 'inc', 'system', 'system.admin');
+
+    $features = $themes['stanford_light']->info['features'];
+
     $stanford_light_settings = array (
       'toggle_logo' => 0,
       'toggle_name' => 1,
@@ -647,20 +652,89 @@ function stanford_personal_design_form($form, &$form_state) {
         '#default_value' => $stanford_light_settings['red_bar'],
     );
     $form['logo'] = array(
-        '#type' => 'fieldset',
-        '#title' => t('Choose Logo'),
-        '#collapsible' => TRUE,
-        '#collapsed' => TRUE,
+      '#type' => 'fieldset',
+      '#title' => t('Logo image settings'),
+      '#description' => t('If toggled on, the following logo will be displayed.'),
+      '#attributes' => array('class' => array('theme-settings-bottom')),
     );
+    $form['logo']['default_logo'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Use the default logo'),
+      '#default_value' => theme_get_setting('default_logo', $key),
+      '#tree' => FALSE,
+      '#description' => t('Check here if you want the theme to use the logo supplied with it.')
+    );
+    $form['logo']['settings'] = array(
+      '#type' => 'container',
+      '#states' => array(
+        // Hide the logo settings when using the default logo.
+        'invisible' => array(
+          'input[name="default_logo"]' => array('checked' => TRUE),
+        ),
+      ),
+    );
+    $form['logo']['settings']['logo_path'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Path to custom logo'),
+      '#description' => t('The path to the file you would like to use as your logo file instead of the default logo.'),
+      '#default_value' => theme_get_setting('logo_path', $key),
+    );
+    $form['logo']['settings']['logo_upload'] = array(
+      '#type' => 'file',
+      '#title' => t('Upload logo image'),
+      '#maxlength' => 40,
+      '#description' => t("If you don't have direct file access to the server, use this field to upload your logo.")
+    );
+    $form['favicon'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Shortcut icon settings'),
+      '#description' => t("Your shortcut icon, or 'favicon', is displayed in the address bar and bookmarks of most browsers."),
+    );
+    $form['favicon']['default_favicon'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Use the default shortcut icon.'),
+      '#default_value' => theme_get_setting('default_favicon', $key),
+      '#description' => t('Check here if you want the theme to use the default shortcut icon.')
+    );
+    $form['favicon']['settings'] = array(
+      '#type' => 'container',
+      '#states' => array(
+        // Hide the favicon settings when using the default favicon.
+        'invisible' => array(
+          'input[name="default_favicon"]' => array('checked' => TRUE),
+        ),
+      ),
+    );
+    $form['favicon']['settings']['favicon_path'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Path to custom icon'),
+      '#description' => t('The path to the image file you would like to use as your custom shortcut icon.'),
+      '#default_value' => theme_get_setting('favicon_path', $key),
+    );
+    $form['favicon']['settings']['favicon_upload'] = array(
+      '#type' => 'file',
+      '#title' => t('Upload icon image'),
+      '#description' => t("If you don't have direct file access to the server, use this field to upload your shortcut icon.")
+    );
+
+    // Inject human-friendly values for logo and favicon.
+    foreach (array('logo' => 'logo.png', 'favicon' => 'favicon.ico') as $type => $default) {
+      if (isset($form[$type]['settings'][$type . '_path'])) {
+        $element = &$form[$type]['settings'][$type . '_path'];
+
+        // If path is a public:// URI, display the path relative to the files
+        // directory; stream wrappers are not end-user friendly.
+        $original_path = $element['#default_value'];
+        $friendly_path = NULL;
+        if (file_uri_scheme($original_path) == 'public') {
+          $friendly_path = file_uri_target($original_path);
+          $element['#default_value'] = $friendly_path;
+        }
+      }
+    }
     $form['header_bg_image'] = array(
         '#type' => 'fieldset',
         '#title' => t('Choose Header Background Image'),
-        '#collapsible' => TRUE,
-        '#collapsed' => TRUE,
-    );
-    $form['favicon'] = array(
-        '#type' => 'fieldset',
-        '#title' => t('Choose Favicon'),
         '#collapsible' => TRUE,
         '#collapsed' => TRUE,
     );
@@ -668,6 +742,11 @@ function stanford_personal_design_form($form, &$form_state) {
         '#type' => 'submit',
         '#value' => t('Save Design Settings'),
     );
+    $form['var'] = array('#type' => 'hidden', '#value' => 'theme_stanford_light_settings');
+//    $form['#submit'][] = 'system_theme_settings_submit';
+    $form['#submit'][] = 'stanford_personal_design_form_submit';
+    $form['#validate'][] = 'system_theme_settings_validate';
+    dpm($form);
 
   }
   return $form;
