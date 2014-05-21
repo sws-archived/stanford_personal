@@ -103,9 +103,9 @@ function stanford_personal_layouts_context_default_contexts() {
           'region' => 'sidebar_first',
           'weight' => '-10',
         ),
-        'bean-jumpstart-footer-social-media--0' => array(
+        'bean-social-media-connect-block' => array(
           'module' => 'bean',
-          'delta' => 'jumpstart-footer-social-media--0',
+          'delta' => 'social-media-connect-block',
           'region' => 'sidebar_first',
           'weight' => '-9',
         ),
@@ -147,9 +147,9 @@ function stanford_personal_layouts_context_default_contexts() {
   $context->reactions = array(
     'block' => array(
       'blocks' => array(
-        'bean-jumpstart-footer-social-media--0' => array(
+        'bean-social-media-connect-block' => array(
           'module' => 'bean',
-          'delta' => 'jumpstart-footer-social-media--0',
+          'delta' => 'social-media-connect-block',
           'region' => 'sidebar_first',
           'weight' => '-10',
         ),
@@ -203,9 +203,9 @@ function stanford_personal_layouts_context_default_contexts() {
           'region' => 'sidebar_first',
           'weight' => '-9',
         ),
-        'bean-jumpstart-footer-social-media--0' => array(
+        'bean-social-media-connect-block' => array(
           'module' => 'bean',
-          'delta' => 'jumpstart-footer-social-media--0',
+          'delta' => 'social-media-connect-block',
           'region' => 'sidebar_second',
           'weight' => '-10',
         ),
@@ -253,9 +253,9 @@ function stanford_personal_layouts_context_default_contexts() {
           'region' => 'sidebar_second',
           'weight' => '-10',
         ),
-        'bean-jumpstart-footer-social-media--0' => array(
+        'bean-social-media-connect-block' => array(
           'module' => 'bean',
-          'delta' => 'jumpstart-footer-social-media--0',
+          'delta' => 'social-media-connect-block',
           'region' => 'sidebar_second',
           'weight' => '-9',
         ),
