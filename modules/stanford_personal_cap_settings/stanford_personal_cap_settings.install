@@ -1,0 +1,32 @@
+<?php
+/**
+ * @file
+ * Installation tasks
+ */
+
+/**
+ * Implements hook_install().
+ */
+function stanford_personal_cap_settings_install() {
+  include_once dirname(__FILE__) . "/stanford_personal_cap_settings.strongarm.inc";
+  variable_set('stanford_cap_api_import_profile_fields', CAP_FIELDS_IMPORT_LIST);
+
+  // Put the strongarm variables into the database as they need to be there
+  // during the installation of the whole site.
+  $strongarm = stanford_personal_cap_settings_strongarm();
+  foreach ($strongarm as $key => $obj) {
+    variable_set($key, $obj->value);
+  }
+
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function stanford_personal_cap_settings_uninstall() {
+  include_once dirname(__FILE__) . "/stanford_personal_cap_settings.strongarm.inc";
+  $strongarm = stanford_personal_cap_settings_strongarm();
+  foreach ($strongarm as $key => $obj) {
+    variable_del($key);
+  }
+}

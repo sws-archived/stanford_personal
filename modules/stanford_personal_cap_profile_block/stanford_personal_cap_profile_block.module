@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Stanford Personal CAP Profile Block feature.
+ */
+
+include_once 'stanford_personal_cap_profile_block.features.inc';
