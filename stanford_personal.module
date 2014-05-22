@@ -533,7 +533,7 @@ function stanford_personal_design_form($form, &$form_state) {
     );
   }
   else {
-    $stanford_light_settings = _stanford_personal_get_stanford_light_settings();
+    $stanford_light_settings = stanford_personal_get_stanford_light_settings();
     $form_state['stanford_light_settings'] = $stanford_light_settings;
 
     // Layouts are driven by Contexts. we have 4 contexts, three of which are disabled
