@@ -77,7 +77,7 @@ function stanford_personal_layouts_context_default_contexts() {
   $export['sitewide'] = $context;
 
   $context = new stdClass();
-  $context->disabled = TRUE; /* Edit this to true to make a default context disabled initially */
+  $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
   $context->api_version = 3;
   $context->name = 'stanford_left_sb';
   $context->description = 'Sitewide layout with a left sidebar';
@@ -192,7 +192,7 @@ function stanford_personal_layouts_context_default_contexts() {
   $export['stanford_profile_left_sb'] = $context;
 
   $context = new stdClass();
-  $context->disabled = TRUE; /* Edit this to true to make a default context disabled initially */
+  $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
   $context->api_version = 3;
   $context->name = 'stanford_profile_right_sb';
   $context->description = 'Sitewide layout with profile and social blocks in right (second) sidebar and flexi in left (first) sidebar';
@@ -249,7 +249,7 @@ function stanford_personal_layouts_context_default_contexts() {
   $export['stanford_profile_right_sb'] = $context;
 
   $context = new stdClass();
-  $context->disabled = TRUE; /* Edit this to true to make a default context disabled initially */
+  $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
   $context->api_version = 3;
   $context->name = 'stanford_right_sb';
   $context->description = 'Sitewide layout with a right sidebar';
