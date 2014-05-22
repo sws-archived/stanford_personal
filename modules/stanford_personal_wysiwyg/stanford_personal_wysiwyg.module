@@ -48,9 +48,20 @@ function stanford_personal_wysiwyg_wysiwyg_editor_settings_alter(&$settings, $co
       $settings['contentsCss'][] = url(drupal_get_path('theme', 'stanford_jordan') . '/css/stanford_jordan.css');
       break;
     case 'stanford_light' :
+      // get our theme settings
+      if (module_exists('stanford_personal')) {
+        $stanford_light_settings = stanford_personal_get_stanford_light_settings();
+      }
+      // pull out the styles and fonts for use in the WYSIWYG
+      $fonts = $stanford_light_settings['fonts'];
+      // commenting out for now - WYSIWYG just loads the body background color, not the background-color for .main
+      //$styles = $stanford_light_settings['styles'];
       $settings['contentsCss'][] = url(drupal_get_path('theme', 'open_framework') . '/bootstrap/css/bootstrap.css');
       $settings['contentsCss'][] = url(drupal_get_path('theme', 'open_framework') . '/css/open_framework.css');
       $settings['contentsCss'][] = url(drupal_get_path('theme', 'stanford_light') . '/css/stanford-light.css');
+      $settings['contentsCss'][] = url(drupal_get_path('theme', 'stanford_light') . '/css/' . $fonts . '.css');
+      // commenting out for now - WYSIWYG just loads the body background color, not the background-color for .main
+      //$settings['contentsCss'][] = url(drupal_get_path('theme', 'stanford_light') . '/css/' . $styles . '.css');
       break;
     case 'stanford_wilbur' :
       $settings['contentsCss'][] = url(drupal_get_path('theme', 'open_framework') . '/bootstrap/css/bootstrap.css');

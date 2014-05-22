@@ -1107,7 +1107,7 @@ function _stanford_personal_is_home($nid) {
 /**
  *  Get the theme settings for stanford_light
  */
-function _stanford_personal_get_stanford_light_settings() {
+function stanford_personal_get_stanford_light_settings() {
   $stanford_light_settings = array (
     'toggle_logo' => 0,
     'toggle_name' => 1,
