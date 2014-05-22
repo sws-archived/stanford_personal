@@ -77,7 +77,7 @@ function stanford_personal_layouts_context_default_contexts() {
   $export['sitewide'] = $context;
 
   $context = new stdClass();
-  $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
+  $context->disabled = TRUE; /* Edit this to true to make a default context disabled initially */
   $context->api_version = 3;
   $context->name = 'stanford_left_sb';
   $context->description = 'Sitewide layout with a left sidebar';
@@ -109,6 +109,12 @@ function stanford_personal_layouts_context_default_contexts() {
           'region' => 'sidebar_first',
           'weight' => '-9',
         ),
+        'views-profile_blocks-block' => array(
+          'module' => 'views',
+          'delta' => 'profile_blocks-block',
+          'region' => 'sidebar_second',
+          'weight' => '-10',
+        ),
         'bean-stanford-personal-footer-block' => array(
           'module' => 'bean',
           'delta' => 'stanford-personal-footer-block',
@@ -124,7 +130,9 @@ function stanford_personal_layouts_context_default_contexts() {
   // Included for use with string extractors like potx.
   t('Sitewide');
   t('Sitewide layout with a left sidebar');
+
   $export['stanford_left_sb'] = $context;
+
 
   $context = new stdClass();
   $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
@@ -147,11 +155,17 @@ function stanford_personal_layouts_context_default_contexts() {
   $context->reactions = array(
     'block' => array(
       'blocks' => array(
+        'views-profile_blocks-block' => array(
+          'module' => 'views',
+          'delta' => 'profile_blocks-block',
+          'region' => 'sidebar_first',
+          'weight' => '-10',
+        ),
         'bean-social-media-connect-block' => array(
           'module' => 'bean',
           'delta' => 'social-media-connect-block',
           'region' => 'sidebar_first',
-          'weight' => '-10',
+          'weight' => '-9',
         ),
         'bean-stanford-personal-sidebar-block' => array(
           'module' => 'bean',
@@ -174,10 +188,11 @@ function stanford_personal_layouts_context_default_contexts() {
   // Included for use with string extractors like potx.
   t('Sitewide');
   t('Sitewide layout with profile and social blocks in right (first) side bar and flexi block in left (second) sidebar');
+
   $export['stanford_profile_left_sb'] = $context;
 
   $context = new stdClass();
-  $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
+  $context->disabled = TRUE; /* Edit this to true to make a default context disabled initially */
   $context->api_version = 3;
   $context->name = 'stanford_profile_right_sb';
   $context->description = 'Sitewide layout with profile and social blocks in right (second) sidebar and flexi in left (first) sidebar';
@@ -203,11 +218,17 @@ function stanford_personal_layouts_context_default_contexts() {
           'region' => 'sidebar_first',
           'weight' => '-9',
         ),
+        'views-profile_blocks-block' => array(
+          'module' => 'views',
+          'delta' => 'profile_blocks-block',
+          'region' => 'sidebar_second',
+          'weight' => '-10',
+        ),
         'bean-social-media-connect-block' => array(
           'module' => 'bean',
           'delta' => 'social-media-connect-block',
           'region' => 'sidebar_second',
-          'weight' => '-10',
+          'weight' => '-9',
         ),
         'bean-stanford-personal-footer-block' => array(
           'module' => 'bean',
@@ -224,10 +245,11 @@ function stanford_personal_layouts_context_default_contexts() {
   // Included for use with string extractors like potx.
   t('Sitewide');
   t('Sitewide layout with profile and social blocks in right (second) sidebar and flexi in left (first) sidebar');
+
   $export['stanford_profile_right_sb'] = $context;
 
   $context = new stdClass();
-  $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
+  $context->disabled = TRUE; /* Edit this to true to make a default context disabled initially */
   $context->api_version = 3;
   $context->name = 'stanford_right_sb';
   $context->description = 'Sitewide layout with a right sidebar';
@@ -247,17 +269,23 @@ function stanford_personal_layouts_context_default_contexts() {
   $context->reactions = array(
     'block' => array(
       'blocks' => array(
+        'views-profile_blocks-block' => array(
+          'module' => 'views',
+          'delta' => 'profile_blocks-block',
+          'region' => 'sidebar_second',
+          'weight' => '-10',
+        ),
         'bean-stanford-personal-sidebar-block' => array(
           'module' => 'bean',
           'delta' => 'stanford-personal-sidebar-block',
           'region' => 'sidebar_second',
-          'weight' => '-10',
+          'weight' => '-9',
         ),
         'bean-social-media-connect-block' => array(
           'module' => 'bean',
           'delta' => 'social-media-connect-block',
           'region' => 'sidebar_second',
-          'weight' => '-9',
+          'weight' => '-8',
         ),
         'bean-stanford-personal-footer-block' => array(
           'module' => 'bean',
@@ -274,6 +302,7 @@ function stanford_personal_layouts_context_default_contexts() {
   // Included for use with string extractors like potx.
   t('Sitewide');
   t('Sitewide layout with a right sidebar');
+
   $export['stanford_right_sb'] = $context;
 
   return $export;
