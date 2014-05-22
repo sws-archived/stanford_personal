@@ -5,7 +5,7 @@
  */
 ?>
 <div class="content">
-<h1>Get Help</h1>
+<?php drupal_set_title('Get Help'); ?>
 <div class="block-extrainfo block-need-assistance">
 <h2>Stanford Sites Personal User Guide</h2>
 <p>Do you need help with Stanford Sites Personal? Look no further! We have lots of helpful tips in our user guide.</p>

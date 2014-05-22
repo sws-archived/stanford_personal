@@ -8,7 +8,7 @@
  */
 function stanford_personal_menu() {
   $items['admin/stanford-personal'] = array(
-    'title' => 'Stanford Sites Personal Help',
+    'title' => 'Site Actions',
     'page callback' => 'stanford_personal_help_page',
     'access arguments' => array('access stanford personal help'),
     'type' => MENU_NORMAL_ITEM,
@@ -158,7 +158,7 @@ function stanford_personal_form_stanford_page_node_form_alter(&$form, &$form_sta
     $form['options']['sticky']['#type'] = 'hidden';
   }
 
-  // hide the menu form, we'll default to main-menu later 
+  // hide the menu form, we'll default to main-menu later
   // only do this if the user is not an administrator
   if (!user_access('administer menu')) {
     $form['menu']['#type'] = 'hidden';
@@ -173,12 +173,12 @@ function stanford_personal_form_stanford_page_node_form_alter(&$form, &$form_sta
  */
 
 function stanford_personal_stanford_page_node_form_submit($form, &$form_state) {
- 
+
   // Set the default menu to main-menu and the link title to the page title
-  // Only do this if the user can't administer menus 
+  // Only do this if the user can't administer menus
 
   $nid = $form['nid']['#value'];
- 
+
   if (_stanford_personal_is_home($nid) && _stanford_personal_home_is_in_menu()) {
     return;
   }
@@ -210,6 +210,7 @@ function stanford_personal_help_page() {
 }
 
 function stanford_personal_manage_pages_form($form_state) {
+  drupal_set_title('Manage Pages');
 
   // Remove 'Administration breadcrumb'
   _stanford_personal_fix_breadcrumb();
@@ -282,12 +283,12 @@ function stanford_personal_manage_pages_form($form_state) {
       );
     }
 
-    // checkbox: 
+    // checkbox:
     // disabled if it's HOME
     // disabled if it's not a node
     // checked if it's a node, and it's published
     // unchecked if it's a node, and not published
-   
+
     $enabled_checkbox = array(
         '#type' => 'checkbox',
         '#title' => 'Publish the page',
@@ -343,6 +344,7 @@ function stanford_personal_manage_pages_form($form_state) {
  * Config form for "Manage Profile" page
  */
 function stanford_personal_profile_form($form, &$form_state) {
+  drupal_set_title('Manage Profile');
 
   // Remove 'Administration breadcrumb'
   _stanford_personal_fix_breadcrumb();
@@ -354,7 +356,7 @@ function stanford_personal_profile_form($form, &$form_state) {
  * Config form for "Manage Blocks" page
  */
 function stanford_personal_blocks_form($form, &$form_state) {
-
+  drupal_set_title('Manage Blocks');
   // Remove 'Administration breadcrumb'
   _stanford_personal_fix_breadcrumb();
 
@@ -392,7 +394,7 @@ function stanford_personal_blocks_form($form, &$form_state) {
   );
 
   $block_visibility = array();
-  $block_ids = array('stanford-personal-sidebar-block', 'stanford-personal-footer-block', 'jumpstart-footer-social-media--0');
+  $block_ids = array('stanford-personal-sidebar-block', 'stanford-personal-footer-block', 'social-media-connect-block');
 
   foreach ($block_ids as $id) {
     $block = block_load('bean',$id);
@@ -518,7 +520,7 @@ function stanford_personal_blocks_form_submit($form, &$form_state) {
  * Config form for "Customize Design" page
  */
 function stanford_personal_design_form($form, &$form_state) {
-
+  drupal_set_title('Customize Design');
   // Remove 'Administration breadcrumb'
   _stanford_personal_fix_breadcrumb();
 
@@ -531,39 +533,7 @@ function stanford_personal_design_form($form, &$form_state) {
     );
   }
   else {
-    // Load system.admin.inc, so we can access the theme validation and sumbit functions
-    form_load_include($form_state, 'inc', 'system', 'system.admin');
-
-    $features = $themes['stanford_light']->info['features'];
-
-    $stanford_light_settings = array (
-      'toggle_logo' => 0,
-      'toggle_name' => 1,
-      'toggle_slogan' => 1,
-      'toggle_node_user_picture' => 1,
-      'toggle_comment_user_picture' => 1,
-      'toggle_comment_user_verification' => 1,
-      'toggle_favicon' => 1,
-      'toggle_main_menu' => 1,
-      'toggle_secondary_menu' => 1,
-      'default_logo' => 1,
-      'logo_path' => '',
-      'logo_upload' => '',
-      'default_favicon' => 1,
-      'favicon_path' => '',
-      'favicon_upload' => '',
-      'content_order_classes' => '',
-      'front_heading_classes' => '',
-      'breadcrumb_classes' => '',
-      'body_bg_type' => '',
-      'body_bg_classes' => '',
-      'body_bg_path' => 'public://',
-      'body_bg_upload' => '',
-      'styles' => 'styles-light',
-      'fonts' => 'fonts-sans',
-      'red_bar' => 'red-bar',
-    );
-    $stanford_light_settings = variable_get('theme_stanford_light_settings', $stanford_light_settings);
+    $stanford_light_settings = stanford_personal_get_stanford_light_settings();
     $form_state['stanford_light_settings'] = $stanford_light_settings;
 
     // Layouts are driven by Contexts. we have 4 contexts, three of which are disabled
@@ -756,6 +726,7 @@ function stanford_personal_design_form($form, &$form_state) {
  * Config form for "Site Details" page
  */
 function stanford_personal_site_details_form($form, &$form_state) {
+  drupal_set_title('Change Site Settings');
 
   // Remove 'Administration breadcrumb'
   _stanford_personal_fix_breadcrumb();
@@ -815,6 +786,7 @@ function stanford_personal_site_details_form($form, &$form_state) {
  * Config form for "Site Editors" page
  */
 function stanford_personal_site_editors_form($form, &$form_state) {
+  drupal_set_title('Site Editors');
 
   // Remove 'Administration breadcrumb'
   _stanford_personal_fix_breadcrumb();
@@ -855,6 +827,7 @@ function stanford_personal_site_editors_form($form, &$form_state) {
  * Config form for "Advanced Mode" page
  */
 function stanford_personal_site_settings_advanced_form($form, &$form_state) {
+  drupal_set_title('Advanced Mode');
 
   // Remove 'Administration breadcrumb'
   _stanford_personal_fix_breadcrumb();
@@ -1203,4 +1176,39 @@ function _stanford_personal_is_home($nid) {
   } else {
     return FALSE;
   }
+}
+
+/**
+ *  Get the theme settings for stanford_light
+ */
+function stanford_personal_get_stanford_light_settings() {
+  $stanford_light_settings = array (
+    'toggle_logo' => 0,
+    'toggle_name' => 1,
+    'toggle_slogan' => 1,
+    'toggle_node_user_picture' => 1,
+    'toggle_comment_user_picture' => 1,
+    'toggle_comment_user_verification' => 1,
+    'toggle_favicon' => 1,
+    'toggle_main_menu' => 1,
+    'toggle_secondary_menu' => 1,
+    'default_logo' => 1,
+    'logo_path' => '',
+    'logo_upload' => '',
+    'default_favicon' => 1,
+    'favicon_path' => '',
+    'favicon_upload' => '',
+    'content_order_classes' => '',
+    'front_heading_classes' => '',
+    'breadcrumb_classes' => '',
+    'body_bg_type' => '',
+    'body_bg_classes' => '',
+    'body_bg_path' => 'public://',
+    'body_bg_upload' => '',
+    'styles' => 'styles-light',
+    'fonts' => 'fonts-sans',
+    'red_bar' => 'red-bar',
+  );
+  $stanford_light_settings = variable_get('theme_stanford_light_settings', $stanford_light_settings);
+  return $stanford_light_settings;
 }
