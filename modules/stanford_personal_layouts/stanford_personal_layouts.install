@@ -11,18 +11,18 @@
 function stanford_personal_layouts_install() {
 
   // Disable all but the left sidebar context.
+  $exists = context_load('stanford_profile_left_sb');
+  if (!empty($exists)) {
+    // Disable the context.
+    $context_status = variable_get('context_status', array());
+    $context_status['stanford_profile_left_sb'] = TRUE;
+    variable_set('context_status', $context_status);
+  }
   $exists = context_load('stanford_left_sb');
   if (!empty($exists)) {
     // Disable the context.
     $context_status = variable_get('context_status', array());
     $context_status['stanford_left_sb'] = TRUE;
-    variable_set('context_status', $context_status);
-  }
-  $exists = context_load('stanford_profile_right_sb');
-  if (!empty($exists)) {
-    // Disable the context.
-    $context_status = variable_get('context_status', array());
-    $context_status['stanford_profile_right_sb'] = TRUE;
     variable_set('context_status', $context_status);
   }
   $exists = context_load('stanford_right_sb');
