@@ -271,7 +271,7 @@ function stanford_personal_layouts_context_default_contexts() {
         'views-profile_blocks-block' => array(
           'module' => 'views',
           'delta' => 'profile_blocks-block',
-          'region' => 'sidebar_first',
+          'region' => 'sidebar_second',
           'weight' => '-10',
         ),
         'bean-stanford-personal-sidebar-block' => array(
