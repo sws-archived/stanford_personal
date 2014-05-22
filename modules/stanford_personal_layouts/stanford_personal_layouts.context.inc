@@ -97,23 +97,23 @@ function stanford_personal_layouts_context_default_contexts() {
   $context->reactions = array(
     'block' => array(
       'blocks' => array(
+        'views-profile_blocks-block' => array(
+          'module' => 'views',
+          'delta' => 'profile_blocks-block',
+          'region' => 'sidebar_first',
+          'weight' => '-10',
+        ),
         'bean-stanford-personal-sidebar-block' => array(
           'module' => 'bean',
           'delta' => 'stanford-personal-sidebar-block',
           'region' => 'sidebar_first',
-          'weight' => '-10',
+          'weight' => '-9',
         ),
         'bean-social-media-connect-block' => array(
           'module' => 'bean',
           'delta' => 'social-media-connect-block',
           'region' => 'sidebar_first',
-          'weight' => '-9',
-        ),
-        'views-profile_blocks-block' => array(
-          'module' => 'views',
-          'delta' => 'profile_blocks-block',
-          'region' => 'sidebar_second',
-          'weight' => '-10',
+          'weight' => '-8',
         ),
         'bean-stanford-personal-footer-block' => array(
           'module' => 'bean',
@@ -130,7 +130,6 @@ function stanford_personal_layouts_context_default_contexts() {
   // Included for use with string extractors like potx.
   t('Sitewide');
   t('Sitewide layout with a left sidebar');
-
   $export['stanford_left_sb'] = $context;
 
 
@@ -272,7 +271,7 @@ function stanford_personal_layouts_context_default_contexts() {
         'views-profile_blocks-block' => array(
           'module' => 'views',
           'delta' => 'profile_blocks-block',
-          'region' => 'sidebar_second',
+          'region' => 'sidebar_first',
           'weight' => '-10',
         ),
         'bean-stanford-personal-sidebar-block' => array(
@@ -302,7 +301,6 @@ function stanford_personal_layouts_context_default_contexts() {
   // Included for use with string extractors like potx.
   t('Sitewide');
   t('Sitewide layout with a right sidebar');
-
   $export['stanford_right_sb'] = $context;
 
   return $export;
