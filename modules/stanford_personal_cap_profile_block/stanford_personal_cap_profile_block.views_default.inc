@@ -32,22 +32,16 @@ function stanford_personal_cap_profile_block_views_default_views() {
   $handler->display->display_options['pager']['options']['items_per_page'] = '1';
   $handler->display->display_options['style_plugin'] = 'default';
   $handler->display->display_options['row_plugin'] = 'fields';
-  /* Relationship: Content: Profile Photos (cap_profilephotos) */
-  $handler->display->display_options['relationships']['cap_profilephotos_value']['id'] = 'cap_profilephotos_value';
-  $handler->display->display_options['relationships']['cap_profilephotos_value']['table'] = 'field_data_cap_profilephotos';
-  $handler->display->display_options['relationships']['cap_profilephotos_value']['field'] = 'cap_profilephotos_value';
-  $handler->display->display_options['relationships']['cap_profilephotos_value']['delta'] = '-1';
-  /* Relationship: Field collection item: big (cap_big) */
-  $handler->display->display_options['relationships']['cap_big_value']['id'] = 'cap_big_value';
-  $handler->display->display_options['relationships']['cap_big_value']['table'] = 'field_data_cap_big';
-  $handler->display->display_options['relationships']['cap_big_value']['field'] = 'cap_big_value';
-  $handler->display->display_options['relationships']['cap_big_value']['relationship'] = 'cap_profilephotos_value';
-  $handler->display->display_options['relationships']['cap_big_value']['delta'] = '-1';
   /* Relationship: Content: Primary Contact (cap_primarycontact) */
   $handler->display->display_options['relationships']['cap_primarycontact_value']['id'] = 'cap_primarycontact_value';
   $handler->display->display_options['relationships']['cap_primarycontact_value']['table'] = 'field_data_cap_primarycontact';
   $handler->display->display_options['relationships']['cap_primarycontact_value']['field'] = 'cap_primarycontact_value';
   $handler->display->display_options['relationships']['cap_primarycontact_value']['delta'] = '-1';
+  /* Relationship: Content: Internet Links (cap_internetlinks) */
+  $handler->display->display_options['relationships']['cap_internetlinks_value']['id'] = 'cap_internetlinks_value';
+  $handler->display->display_options['relationships']['cap_internetlinks_value']['table'] = 'field_data_cap_internetlinks';
+  $handler->display->display_options['relationships']['cap_internetlinks_value']['field'] = 'cap_internetlinks_value';
+  $handler->display->display_options['relationships']['cap_internetlinks_value']['delta'] = '-1';
   /* Field: Content: Nid */
   $handler->display->display_options['fields']['nid']['id'] = 'nid';
   $handler->display->display_options['fields']['nid']['table'] = 'node';
@@ -55,40 +49,6 @@ function stanford_personal_cap_profile_block_views_default_views() {
   $handler->display->display_options['fields']['nid']['label'] = '';
   $handler->display->display_options['fields']['nid']['exclude'] = TRUE;
   $handler->display->display_options['fields']['nid']['element_label_colon'] = FALSE;
-  /* Field: Field collection item: height */
-  $handler->display->display_options['fields']['cap_height']['id'] = 'cap_height';
-  $handler->display->display_options['fields']['cap_height']['table'] = 'field_data_cap_height';
-  $handler->display->display_options['fields']['cap_height']['field'] = 'cap_height';
-  $handler->display->display_options['fields']['cap_height']['relationship'] = 'cap_big_value';
-  $handler->display->display_options['fields']['cap_height']['label'] = '';
-  $handler->display->display_options['fields']['cap_height']['exclude'] = TRUE;
-  $handler->display->display_options['fields']['cap_height']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['cap_height']['settings'] = array(
-    'thousand_separator' => '',
-    'prefix_suffix' => 0,
-  );
-  /* Field: Field collection item: width */
-  $handler->display->display_options['fields']['cap_width']['id'] = 'cap_width';
-  $handler->display->display_options['fields']['cap_width']['table'] = 'field_data_cap_width';
-  $handler->display->display_options['fields']['cap_width']['field'] = 'cap_width';
-  $handler->display->display_options['fields']['cap_width']['relationship'] = 'cap_big_value';
-  $handler->display->display_options['fields']['cap_width']['label'] = '';
-  $handler->display->display_options['fields']['cap_width']['exclude'] = TRUE;
-  $handler->display->display_options['fields']['cap_width']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['cap_width']['settings'] = array(
-    'thousand_separator' => '',
-    'prefix_suffix' => 0,
-  );
-  /* Field: Field collection item: url */
-  $handler->display->display_options['fields']['cap_url']['id'] = 'cap_url';
-  $handler->display->display_options['fields']['cap_url']['table'] = 'field_data_cap_url';
-  $handler->display->display_options['fields']['cap_url']['field'] = 'cap_url';
-  $handler->display->display_options['fields']['cap_url']['relationship'] = 'cap_big_value';
-  $handler->display->display_options['fields']['cap_url']['label'] = '';
-  $handler->display->display_options['fields']['cap_url']['exclude'] = TRUE;
-  $handler->display->display_options['fields']['cap_url']['alter']['alter_text'] = TRUE;
-  $handler->display->display_options['fields']['cap_url']['alter']['text'] = '<img src="[cap_url]" height="[cap_width]" width="[cap_height]" alt="Profile Image" title="Profile Image" class="profile-block-photo-big" />';
-  $handler->display->display_options['fields']['cap_url']['element_label_colon'] = FALSE;
   /* Field: Content: CAP profile image */
   $handler->display->display_options['fields']['cap_profile_image']['id'] = 'cap_profile_image';
   $handler->display->display_options['fields']['cap_profile_image']['table'] = 'field_data_cap_profile_image';
@@ -158,6 +118,30 @@ function stanford_personal_cap_profile_block_views_default_views() {
   $handler->display->display_options['fields']['field_s_person_mail_code']['field'] = 'field_s_person_mail_code';
   $handler->display->display_options['fields']['field_s_person_mail_code']['label'] = '';
   $handler->display->display_options['fields']['field_s_person_mail_code']['element_label_colon'] = FALSE;
+  /* Field: Field collection item: Label */
+  $handler->display->display_options['fields']['cap_label']['id'] = 'cap_label';
+  $handler->display->display_options['fields']['cap_label']['table'] = 'field_data_cap_label';
+  $handler->display->display_options['fields']['cap_label']['field'] = 'cap_label';
+  $handler->display->display_options['fields']['cap_label']['relationship'] = 'cap_internetlinks_value';
+  $handler->display->display_options['fields']['cap_label']['label'] = '';
+  $handler->display->display_options['fields']['cap_label']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['cap_label']['element_label_colon'] = FALSE;
+  /* Field: Field collection item: url */
+  $handler->display->display_options['fields']['cap_url']['id'] = 'cap_url';
+  $handler->display->display_options['fields']['cap_url']['table'] = 'field_data_cap_url';
+  $handler->display->display_options['fields']['cap_url']['field'] = 'cap_url';
+  $handler->display->display_options['fields']['cap_url']['relationship'] = 'cap_internetlinks_value';
+  $handler->display->display_options['fields']['cap_url']['label'] = '';
+  $handler->display->display_options['fields']['cap_url']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['cap_url']['element_label_colon'] = FALSE;
+  /* Field: Global: Custom text */
+  $handler->display->display_options['fields']['nothing']['id'] = 'nothing';
+  $handler->display->display_options['fields']['nothing']['table'] = 'views';
+  $handler->display->display_options['fields']['nothing']['field'] = 'nothing';
+  $handler->display->display_options['fields']['nothing']['label'] = '';
+  $handler->display->display_options['fields']['nothing']['alter']['text'] = '<a href="[cap_url]" title="[cap_label]" >[cap_label]</a>';
+  $handler->display->display_options['fields']['nothing']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['nothing']['hide_empty'] = TRUE;
   /* Sort criterion: Content: Post date */
   $handler->display->display_options['sorts']['created']['id'] = 'created';
   $handler->display->display_options['sorts']['created']['table'] = 'node';
