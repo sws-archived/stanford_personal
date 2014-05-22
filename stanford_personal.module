@@ -158,7 +158,7 @@ function stanford_personal_form_stanford_page_node_form_alter(&$form, &$form_sta
     $form['options']['sticky']['#type'] = 'hidden';
   }
 
-  // hide the menu form, we'll default to main-menu later 
+  // hide the menu form, we'll default to main-menu later
   // only do this if the user is not an administrator
   if (!user_access('administer menu')) {
     $form['menu']['#type'] = 'hidden';
@@ -173,12 +173,12 @@ function stanford_personal_form_stanford_page_node_form_alter(&$form, &$form_sta
  */
 
 function stanford_personal_stanford_page_node_form_submit($form, &$form_state) {
- 
+
   // Set the default menu to main-menu and the link title to the page title
-  // Only do this if the user can't administer menus 
+  // Only do this if the user can't administer menus
 
   $nid = $form['nid']['#value'];
- 
+
   if (_stanford_personal_is_home($nid) && _stanford_personal_home_is_in_menu()) {
     return;
   }
@@ -283,12 +283,12 @@ function stanford_personal_manage_pages_form($form_state) {
       );
     }
 
-    // checkbox: 
+    // checkbox:
     // disabled if it's HOME
     // disabled if it's not a node
     // checked if it's a node, and it's published
     // unchecked if it's a node, and not published
-   
+
     $enabled_checkbox = array(
         '#type' => 'checkbox',
         '#title' => 'Publish the page',
@@ -394,7 +394,7 @@ function stanford_personal_blocks_form($form, &$form_state) {
   );
 
   $block_visibility = array();
-  $block_ids = array('stanford-personal-sidebar-block', 'stanford-personal-footer-block', 'jumpstart-footer-social-media--0');
+  $block_ids = array('stanford-personal-sidebar-block', 'stanford-personal-footer-block', 'social-media-connect-block');
 
   foreach ($block_ids as $id) {
     $block = block_load('bean',$id);

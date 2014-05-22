@@ -81,25 +81,25 @@ function stanford_personal_cap_profile_block_views_default_views() {
   $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['title']['link_to_node'] = FALSE;
   /* Field: Field collection item: Email */
-  $handler->display->display_options['fields']['cap_email']['id'] = 'cap_email';
-  $handler->display->display_options['fields']['cap_email']['table'] = 'field_data_cap_email';
-  $handler->display->display_options['fields']['cap_email']['field'] = 'cap_email';
-  $handler->display->display_options['fields']['cap_email']['relationship'] = 'cap_primarycontact_value';
-  $handler->display->display_options['fields']['cap_email']['label'] = '';
-  $handler->display->display_options['fields']['cap_email']['alter']['make_link'] = TRUE;
-  $handler->display->display_options['fields']['cap_email']['alter']['path'] = 'mailto:[cap_email-value]';
-  $handler->display->display_options['fields']['cap_email']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['cap_email']['hide_empty'] = TRUE;
+  $handler->display->display_options['fields']['cap_email_2']['id'] = 'cap_email_2';
+  $handler->display->display_options['fields']['cap_email_2']['table'] = 'field_data_cap_email_2';
+  $handler->display->display_options['fields']['cap_email_2']['field'] = 'cap_email_2';
+  $handler->display->display_options['fields']['cap_email_2']['relationship'] = 'cap_primarycontact_value';
+  $handler->display->display_options['fields']['cap_email_2']['label'] = '';
+  $handler->display->display_options['fields']['cap_email_2']['alter']['make_link'] = TRUE;
+  $handler->display->display_options['fields']['cap_email_2']['alter']['path'] = 'mailto:[cap_email_2-value]';
+  $handler->display->display_options['fields']['cap_email_2']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['cap_email_2']['hide_empty'] = TRUE;
   /* Field: Field collection item: Phone Numbers */
-  $handler->display->display_options['fields']['cap_phonenumbers']['id'] = 'cap_phonenumbers';
-  $handler->display->display_options['fields']['cap_phonenumbers']['table'] = 'field_data_cap_phonenumbers';
-  $handler->display->display_options['fields']['cap_phonenumbers']['field'] = 'cap_phonenumbers';
-  $handler->display->display_options['fields']['cap_phonenumbers']['relationship'] = 'cap_primarycontact_value';
-  $handler->display->display_options['fields']['cap_phonenumbers']['label'] = '';
-  $handler->display->display_options['fields']['cap_phonenumbers']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['cap_phonenumbers']['hide_empty'] = TRUE;
-  $handler->display->display_options['fields']['cap_phonenumbers']['delta_offset'] = '0';
-  $handler->display->display_options['fields']['cap_phonenumbers']['multi_type'] = 'ul';
+  $handler->display->display_options['fields']['cap_phonenumbers_2']['id'] = 'cap_phonenumbers_2';
+  $handler->display->display_options['fields']['cap_phonenumbers_2']['table'] = 'field_data_cap_phonenumbers_2';
+  $handler->display->display_options['fields']['cap_phonenumbers_2']['field'] = 'cap_phonenumbers_2';
+  $handler->display->display_options['fields']['cap_phonenumbers_2']['relationship'] = 'cap_primarycontact_value';
+  $handler->display->display_options['fields']['cap_phonenumbers_2']['label'] = '';
+  $handler->display->display_options['fields']['cap_phonenumbers_2']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['cap_phonenumbers_2']['hide_empty'] = TRUE;
+  $handler->display->display_options['fields']['cap_phonenumbers_2']['delta_offset'] = '0';
+  $handler->display->display_options['fields']['cap_phonenumbers_2']['multi_type'] = 'ul';
   /* Field: Content: Email */
   $handler->display->display_options['fields']['field_s_person_email']['id'] = 'field_s_person_email';
   $handler->display->display_options['fields']['field_s_person_email']['table'] = 'field_data_field_s_person_email';
