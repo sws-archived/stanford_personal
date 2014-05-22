@@ -40,23 +40,11 @@ function stanford_personal_shortcuts_context_default_contexts() {
           'region' => 'admin_shortcuts',
           'weight' => '-9',
         ),
-        'menu-menu-admin-shortcuts-add-feature' => array(
-          'module' => 'menu',
-          'delta' => 'menu-admin-shortcuts-add-feature',
-          'region' => 'admin_shortcuts',
-          'weight' => '-8',
-        ),
         'menu-menu-admin-shortcuts-get-help' => array(
           'module' => 'menu',
           'delta' => 'menu-admin-shortcuts-get-help',
           'region' => 'admin_shortcuts',
           'weight' => '-7',
-        ),
-        'menu-menu-admin-shortcuts-ready-to-la' => array(
-          'module' => 'menu',
-          'delta' => 'menu-admin-shortcuts-ready-to-la',
-          'region' => 'admin_shortcuts',
-          'weight' => '-6',
         ),
         'stanford_personal_shortcuts-hello' => array(
           'module' => 'stanford_personal_shortcuts',
