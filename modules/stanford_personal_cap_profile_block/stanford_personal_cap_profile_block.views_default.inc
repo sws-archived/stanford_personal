@@ -67,6 +67,8 @@ function stanford_personal_cap_profile_block_views_default_views() {
   $handler->display->display_options['fields']['field_s_person_profile_picture']['table'] = 'field_data_field_s_person_profile_picture';
   $handler->display->display_options['fields']['field_s_person_profile_picture']['field'] = 'field_s_person_profile_picture';
   $handler->display->display_options['fields']['field_s_person_profile_picture']['label'] = '';
+  $handler->display->display_options['fields']['field_s_person_profile_picture']['element_type'] = 'div';
+  $handler->display->display_options['fields']['field_s_person_profile_picture']['element_class'] = 'border-simple-nowidth border-shadow';
   $handler->display->display_options['fields']['field_s_person_profile_picture']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_s_person_profile_picture']['click_sort_column'] = 'fid';
   $handler->display->display_options['fields']['field_s_person_profile_picture']['settings'] = array(
