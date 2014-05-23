@@ -410,7 +410,7 @@ function stanford_personal_profile_form($form, &$form_state) {
 
   $form['cap_settings']['enable_cap_sync'] = array(
     '#type' => 'checkbox',
-    '#title' => t('Enable CAP integration') . " <span class=\"help-info-help\"><a href=\"#\" title=\"help\">i</a></span>",
+    '#title' => t('Enable CAP integration'),
     '#description' => t('Last Sync: ') . $last_sync,
     '#default_value' => $enabled,
   );
