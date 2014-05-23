@@ -1,0 +1,25 @@
+form > div > .view-id-profile_blocks {
+  background: #DDD;
+  border: solid 1px #BBB;
+  padding: 10px;
+  display: block;
+  overflow: hidden;
+  display: inline-block; /* Necessary to trigger "hasLayout" in IE */
+  display: block; /* Sets element back to block */
+  margin-bottom: 20px;
+}
+.views-field-cap-profile-image {
+  float: left;
+  margin-right: 20px;
+}
+
+.help-info-help a {
+  display: inline-block;
+  height: 0px;
+  width: 0px;
+  line-height: 0px;
+  border-radius: 50%;
+  border: solid 12px #CCC;
+  color: #FFF;
+  font-size: 1.3em;
+}

@@ -358,8 +358,232 @@ function stanford_personal_profile_form($form, &$form_state) {
   // Remove 'Administration breadcrumb'
   _stanford_personal_fix_breadcrumb();
 
+  // Add custom css
+  drupal_add_css(drupal_get_path('module', 'stanford_personal') . "/css/stanford-personal-admin.css");
+
+  // Block Preview
+  $form['block_preview_title']['#markup'] = "<h3>Profile Preview</h3>";
+  $block = module_invoke('views', 'block_view', 'profile_blocks-block');
+  $form['block_preview']['#markup'] = $block['content']['#markup'];
+
+  // If no cap module and working from stanford person content type end.
+  if (!module_exists('stanford_cap_api_profiles')) {
+    return $form;
+  }
+
+  $last_sync = stanford_pesonal_get_formatted_sync_date();
+  $enabled = stanford_personal_get_profile_sync_status();
+  $cap_nid = stanford_personal_get_cap_profile_nid();
+
+  // CAP ONLY STUFF HERE
+
+  $form['cap_profile_nid'] = array(
+    '#type' => 'hidden',
+    '#value' => $cap_nid,
+  );
+
+  $form['cap_actions'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Actions'),
+    '#description' => t(''),
+  );
+
+  $form['cap_actions']['cap_sync_now'] = array(
+    '#type' => 'button',
+    '#value' => 'Sync profile information from CAP',
+    '#executes_submit_callback' => TRUE,
+    '#submit' => array('stanford_personal_cap_sync_now_submit'),
+  );
+
+  $form['cap_actions']['cap_edit_profile'] = array(
+    '#type' => 'button',
+    '#value' => 'Edit my profile',
+    '#executes_submit_callback' => TRUE,
+    '#submit' => array('stanford_personal_edit_profile_submit'),
+  );
+
+  $form['cap_settings'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Settings'),
+    '#description' => t('Configuration settings for your CAP profile'),
+  );
+
+  $form['cap_settings']['enable_cap_sync'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Enable CAP integration') . " <span class=\"help-info-help\"><a href=\"#\" title=\"help\">i</a></span>",
+    '#description' => t('Last Sync: ') . $last_sync,
+    '#default_value' => $enabled,
+  );
+
+  $form['cap_settings']['cap_submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Save settings'),
+  );
+
   return $form;
 }
+
+/**
+ * Default submit handler
+ * @param  [type] $form       [description]
+ * @param  [type] $form_state [description]
+ * @return [type]             [description]
+ */
+function stanford_personal_profile_form_submit($form, $form_state) {
+
+  if (isset($form_state['values']['enable_cap_sync'])) {
+    db_update('cap_api_profiles')
+    ->fields(array(
+      'sync' => $form_state['values']['enable_cap_sync'],
+      ))
+    ->condition('nid', $form_state['values']['cap_profile_nid'])
+    ->execute();
+  }
+
+  drupal_set_message('CAP profile settings saved', 'status');
+}
+
+/**
+ * Sync the profile now submit function.
+ * @param  [type] $form       [description]
+ * @param  [type] $form_state [description]
+ * @return [type]             [description]
+ */
+function stanford_personal_cap_sync_now_submit($form, $form_state) {
+
+  $profile_id = stanford_personal_get_cap_profile_profile_id();
+  $profile = stanford_cap_api_profiles_get_profile($profile_id);
+  stanford_cap_api_profiles_synchronize_data($profile);
+
+  // stanford_cap_api_profiles_profile_import($profile_id);
+  variable_set('stanford_cap_api_profiles_cron_last_run', time());
+  drupal_set_message('Profile successfully updated');
+
+}
+
+/**
+ * Sync the edit profile submit function.
+ * @param  [type] $form       [description]
+ * @param  [type] $form_state [description]
+ * @return [type]             [description]
+ */
+function stanford_personal_edit_profile_submit($form, $form_state) {
+
+  $nid = stanford_personal_get_cap_profile_nid();
+  drupal_goto('node/' . $nid . '/edit');
+}
+
+/**
+ * Returns wether or not the profile should be syncd with CAP
+ * @return [type] [description]
+ */
+function stanford_personal_get_profile_sync_status() {
+  $status = 1;
+  $result = db_select('cap_api_profiles', 'cap')
+    ->fields('cap', array('id', 'nid', 'sync'))
+    ->range(0,1)
+    ->orderBy('id', 'ASC')
+    ->execute()
+    ->fetchAssoc();
+
+  if (!isset($result['sync'])) {
+    throw new Exception("Could not find profile node in sync status");
+  }
+
+  $status = (int) $result['sync'];
+
+  return $status;
+}
+
+/**
+ * Returns a formatted date string on the last time cap synced.
+ * @return string [description]
+ */
+function stanford_pesonal_get_formatted_sync_date() {
+  $output = "";
+
+  $last_sync = variable_get('stanford_cap_api_profiles_cron_last_run', 0);
+  if (!$last_sync) {
+    $last_sync = variable_get('install_time', 0);
+  }
+
+  $output .= date('m/d/Y h:i a', $last_sync);
+
+  return $output;
+}
+
+/**
+ * Returns the nid of the profile.
+ * @return [type] [description]
+ */
+function stanford_personal_get_cap_profile_nid() {
+
+  $nid = variable_get('stanford_personal_cap_profile_nid', 0);
+  if (!$nid) {
+
+    // Delete the saved profile_id as well.
+    variable_del('stanford_personal_cap_profile_id');
+
+    $result = db_select('cap_api_profiles', 'cap')
+      ->fields('cap', array('id', 'nid'))
+      ->range(0,1)
+      ->orderBy('id', 'ASC')
+      ->execute()
+      ->fetchAssoc();
+
+    if (!isset($result['nid'])) {
+      throw new Exception("No Cap Profile Available");
+    }
+
+    $nid = $result['nid'];
+    variable_set('stanford_personal_cap_profile_nid', $nid);
+  }
+
+  // Check to see if node exists!
+  $node = node_load($nid);
+  if (!$node) {
+    variable_del('stanford_personal_cap_profile_nid');
+    $nid = stanford_personal_get_cap_profile_nid();
+  }
+
+  return $nid;
+}
+
+/**
+ * Returns the CAP profile id
+ * @return [type] [description]
+ */
+function stanford_personal_get_cap_profile_profile_id() {
+  $profile_id = variable_get('stanford_personal_cap_profile_id', 0);
+  $nid = stanford_personal_get_cap_profile_nid();
+
+  // Check to see if node exists!
+  $node = node_load($nid);
+  if (!$node) {
+    variable_del('stanford_personal_cap_profile_nid');
+    $profile_id = 0;
+    stanford_personal_get_cap_profile_nid();
+  }
+
+  if (!$profile_id) {
+    $result = db_select('cap_api_profiles', 'cap')
+      ->fields('cap', array('id', 'nid', 'profile_id'))
+      ->range(0,1)
+      ->orderBy('id', 'ASC')
+      ->execute()
+      ->fetchAssoc();
+
+    if (!isset($result['profile_id'])) {
+      throw new Exception("No Cap Profile Available");
+    }
+
+    $profile_id = $result['profile_id'];
+    variable_set('stanford_personal_cap_profile_id', $profile_id);
+  }
+
+  return $profile_id;
+}
+
 
 /**
  * Returns an array of block deltas grouped by module
