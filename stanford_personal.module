@@ -536,6 +536,7 @@ function stanford_personal_design_form($form, &$form_state) {
     // Load system.admin.inc, so we can access the theme validation and submit functions
     form_load_include($form_state, 'inc', 'system', 'system.admin');
 
+    $themes = list_themes();
     $features = $themes['stanford_light']->info['features'];
     $stanford_light_settings = stanford_personal_get_stanford_light_settings();
     $form_state['stanford_light_settings'] = $stanford_light_settings;
@@ -634,7 +635,7 @@ function stanford_personal_design_form($form, &$form_state) {
     $form['logo']['default_logo'] = array(
       '#type' => 'checkbox',
       '#title' => t('Use the default logo'),
-      '#default_value' => theme_get_setting('default_logo', $key),
+      '#default_value' => theme_get_setting('default_logo', 'stanford_light'),
       '#tree' => FALSE,
       '#description' => t('Check here if you want the theme to use the logo supplied with it.')
     );
@@ -651,7 +652,7 @@ function stanford_personal_design_form($form, &$form_state) {
       '#type' => 'textfield',
       '#title' => t('Path to custom logo'),
       '#description' => t('The path to the file you would like to use as your logo file instead of the default logo.'),
-      '#default_value' => theme_get_setting('logo_path', $key),
+      '#default_value' => theme_get_setting('logo_path', 'stanford_light'),
     );
     $form['logo']['settings']['logo_upload'] = array(
       '#type' => 'file',
@@ -667,7 +668,7 @@ function stanford_personal_design_form($form, &$form_state) {
     $form['favicon']['default_favicon'] = array(
       '#type' => 'checkbox',
       '#title' => t('Use the default shortcut icon.'),
-      '#default_value' => theme_get_setting('default_favicon', $key),
+      '#default_value' => theme_get_setting('default_favicon', 'stanford_light'),
       '#description' => t('Check here if you want the theme to use the default shortcut icon.')
     );
     $form['favicon']['settings'] = array(
@@ -683,7 +684,7 @@ function stanford_personal_design_form($form, &$form_state) {
       '#type' => 'textfield',
       '#title' => t('Path to custom icon'),
       '#description' => t('The path to the image file you would like to use as your custom shortcut icon.'),
-      '#default_value' => theme_get_setting('favicon_path', $key),
+      '#default_value' => theme_get_setting('favicon_path', 'stanford_light'),
     );
     $form['favicon']['settings']['favicon_upload'] = array(
       '#type' => 'file',
@@ -720,7 +721,6 @@ function stanford_personal_design_form($form, &$form_state) {
 //    $form['#submit'][] = 'system_theme_settings_submit';
     $form['#submit'][] = 'stanford_personal_design_form_submit';
     $form['#validate'][] = 'system_theme_settings_validate';
-    dpm($form);
 
   }
   return $form;
