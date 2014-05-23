@@ -293,6 +293,16 @@ function stanford_personal_roles_user_default_permissions() {
     'module' => 'node',
   );
 
+  // Exported permission: 'edit any stanford_page content'.
+  $permissions['edit any cap_stanford_profile content'] = array(
+    'name' => 'edit any cap_stanford_profile content',
+    'roles' => array(
+      'administrator' => 'administrator',
+      'site owner' => 'site owner',
+    ),
+    'module' => 'node',
+  );
+
   // Exported permission: 'edit any stanford_postcard bean'.
   $permissions['edit any stanford_postcard bean'] = array(
     'name' => 'edit any stanford_postcard bean',
