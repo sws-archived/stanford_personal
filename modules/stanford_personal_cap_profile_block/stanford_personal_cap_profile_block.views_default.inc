@@ -184,7 +184,11 @@ function stanford_personal_cap_profile_block_views_default_views() {
   $handler->display->display_options['fields']['cap_label']['relationship'] = 'cap_internetlinks_value';
   $handler->display->display_options['fields']['cap_label']['label'] = '';
   $handler->display->display_options['fields']['cap_label']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['cap_label']['element_type'] = '0';
+  $handler->display->display_options['fields']['cap_label']['element_label_type'] = '0';
   $handler->display->display_options['fields']['cap_label']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['cap_label']['element_default_classes'] = FALSE;
+  $handler->display->display_options['fields']['cap_label']['type'] = 'text_plain';
   /* Field: Field collection item: URL */
   $handler->display->display_options['fields']['cap_url']['id'] = 'cap_url';
   $handler->display->display_options['fields']['cap_url']['table'] = 'field_data_cap_url';
