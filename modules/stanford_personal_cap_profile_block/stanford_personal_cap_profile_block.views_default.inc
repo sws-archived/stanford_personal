@@ -192,7 +192,7 @@ function stanford_personal_cap_profile_block_views_default_views() {
   $handler->display->display_options['fields']['cap_url']['relationship'] = 'cap_internetlinks_value';
   $handler->display->display_options['fields']['cap_url']['label'] = '';
   $handler->display->display_options['fields']['cap_url']['alter']['alter_text'] = TRUE;
-  $handler->display->display_options['fields']['cap_url']['alter']['text'] = '<a href="[cap_url]" title="[cap_label]">[cap_label]</a>';
+  $handler->display->display_options['fields']['cap_url']['alter']['text'] = '<a href="[cap_url]" title="[cap_label]" class="more-link">[cap_label]</a>';
   $handler->display->display_options['fields']['cap_url']['element_label_colon'] = FALSE;
   $handler->display->display_options['displays'] = array(
     'block' => 'block',
