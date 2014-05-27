@@ -13,6 +13,7 @@ dependencies[] = menu_block
 dependencies[] = stanford_bean_types
 dependencies[] = stanford_page
 dependencies[] = stanford_personal
+dependencies[] = views
 dependencies[] = webauth
 features[context][] = all_pages_but_homepage
 features[context][] = sitewide
