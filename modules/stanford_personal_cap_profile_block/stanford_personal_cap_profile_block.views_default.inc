@@ -136,6 +136,16 @@ function stanford_personal_cap_profile_block_views_default_views() {
   $handler->display->display_options['fields']['field_s_person_mail_code']['field'] = 'field_s_person_mail_code';
   $handler->display->display_options['fields']['field_s_person_mail_code']['label'] = '';
   $handler->display->display_options['fields']['field_s_person_mail_code']['element_label_colon'] = FALSE;
+  /* Field: Content: Personal info Links */
+  $handler->display->display_options['fields']['field_s_person_info_links']['id'] = 'field_s_person_info_links';
+  $handler->display->display_options['fields']['field_s_person_info_links']['table'] = 'field_data_field_s_person_info_links';
+  $handler->display->display_options['fields']['field_s_person_info_links']['field'] = 'field_s_person_info_links';
+  $handler->display->display_options['fields']['field_s_person_info_links']['label'] = '';
+  $handler->display->display_options['fields']['field_s_person_info_links']['element_class'] = 'more-link';
+  $handler->display->display_options['fields']['field_s_person_info_links']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_s_person_info_links']['click_sort_column'] = 'url';
+  $handler->display->display_options['fields']['field_s_person_info_links']['delta_offset'] = '0';
+  $handler->display->display_options['fields']['field_s_person_info_links']['separator'] = '<br />';
   /* Sort criterion: Content: Post date */
   $handler->display->display_options['sorts']['created']['id'] = 'created';
   $handler->display->display_options['sorts']['created']['table'] = 'node';
