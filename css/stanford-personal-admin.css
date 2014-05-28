@@ -14,6 +14,10 @@ form > div > .view-id-profile_blocks {
   margin-right: 20px;
 }
 
+.views-field-field-s-person-info-links .more-link a{
+  float: left;
+}
+
 .help-info-help a {
   display: inline-block;
   height: 0px;

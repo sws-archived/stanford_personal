@@ -3,6 +3,10 @@
  * @file
  * Code for the Stanford Sites Jumpstart module.
  */
+
+module_load_include('inc', 'stanford_personal', 'includes/admin.ui');
+module_load_include('inc', 'stanford_personal', 'includes/cap.api');
+
 /**
  * Implements hook_menu().
  */
@@ -124,82 +128,6 @@ function stanford_personal_permission() {
   );
 }
 
-/**
- * Implements hook_form_FORM_ID_alter().
- */
-function stanford_personal_form_block_admin_configure_alter(&$form, &$form_state, $form_id) {
-  if (!user_access('stanford personal use full block')) {
-    $form['regions']['#type'] = 'hidden';
-    $form['visibility']['node_type']['#type'] = 'hidden';
-    $form['visibility']['role']['#type'] = 'hidden';
-    $form['visibility']['user']['#type'] = 'hidden';
-    $form['settings']['css_class']['#type'] = 'hidden';
-    //"visiblity" - ya rly.
-    $form['visiblity']['context_respect']['#type'] = 'hidden';
-  }
-}
-
-/**
- * Implements hook_form_FORM_ID_alter().
- */
-function stanford_personal_form_bean_form_alter(&$form, &$form_state, $form_id) {
-  if (!user_access('stanford personal use full block')) {
-    $form['revision']['#type'] = 'hidden';
-    $form['actions']['delete']['#type'] = 'hidden';
-  }
-}
-
-/**
- * Implements hook_form_FORM_ID_alter().
- */
-function stanford_personal_form_stanford_page_node_form_alter(&$form, &$form_state, $form_id) {
-  if (!user_access('stanford personal use full block')) {
-    $form['options']['promote']['#type'] = 'hidden';
-    $form['options']['sticky']['#type'] = 'hidden';
-  }
-
-  // hide the menu form, we'll default to main-menu later
-  // only do this if the user is not an administrator
-  if (!user_access('administer menu')) {
-    $form['menu']['#type'] = 'hidden';
-  }
-
-  // add submit functions to form
-  $form['#submit'][] = 'stanford_personal_stanford_page_node_form_submit';
-}
-
-/**
- * Tasks to run when editing a form
- */
-
-function stanford_personal_stanford_page_node_form_submit($form, &$form_state) {
-
-  // Set the default menu to main-menu and the link title to the page title
-  // Only do this if the user can't administer menus
-
-  $nid = $form['nid']['#value'];
-
-  if (_stanford_personal_is_home($nid) && _stanford_personal_home_is_in_menu()) {
-    return;
-  }
-
-  if (!user_access('administer menu')) {
-    $form_state['values']['menu']['link_title'] = $form_state['values']['title'];
-    $form_state['values']['menu']['enabled'] = 1;
-    $form_state['values']['menu']['parent'] = 'main-menu:0';
-  }
-}
-
-/**
- * Implements hook_form_FORM_ID_alter().
- */
-function stanford_personal_form_system_site_information_settings_alter(&$form, &$form_state, $form_id) {
-  if (!user_access('stanford personal use full block')) {
-    $form['site_information']['site_slogan']['#type'] = 'hidden';
-    $form['error_page']['#type'] = 'hidden';
-    $form['front_page']['#type'] = 'hidden';
-  }
-}
 
 /**
  * [stanford_personal_help_page description]
@@ -473,14 +401,31 @@ function stanford_personal_swap_profile_from_cap_submit($form, &$form_state) {
   module_disable($disable, FALSE);
   drupal_uninstall_modules($disable, FALSE);
 
-  module_load_include('inc', 'stanford_personal', 'includes/cap.api');
   stanford_personal_deep_clean_out_cap();
 
   $enable = array('stanford_person');
   module_enable($enable);
 
-  // Get dummy content.
+  // Clear out caches so perms can work.
+  static $drupal_static_fast;
+  $drupal_static_fast = array();
+  drupal_static_reset();
+  drupal_flush_all_caches();
 
+  // Allow site owner to edit the content.
+  $site_owner_role = user_role_load_by_name('site owner');
+  $perms = array('edit any stanford_person content', 'edit own stanford_person content');
+  user_role_grant_permissions($site_owner_role->rid, $perms);
+
+  // Get dummy content.
+  stanford_personal_get_profile_from_content_server();
+}
+
+/**
+ * Get content from the server.
+ * @return [type] [description]
+ */
+function stanford_personal_get_profile_from_content_server() {
   // Try to use libraries module if available to find the path.
   if (function_exists('libraries_get_path')) {
     $library_path = DRUPAL_ROOT . '/' . libraries_get_path('stanford_sites_content_importer');
@@ -500,9 +445,8 @@ function stanford_personal_swap_profile_from_cap_submit($form, &$form_state) {
   $importer = new SitesContentImporter();
   $importer->set_endpoint($endpoint);
   $importer->importer_process_nodes_by_uuids($ids);
-
-  drupal_flush_all_caches();
 }
+
 
 /**
  * Person form settings.
@@ -569,8 +513,11 @@ function stanford_personal_swap_profile_from_person_submit($form, &$form_state) 
   );
   module_enable($enable);
   features_revert(array('stanford_personal_cap_settings'));
-  drupal_flush_all_caches();
+
+  static $drupal_static_fast;
+  $drupal_static_fast = array();
   drupal_static_reset();
+  drupal_flush_all_caches();
 
   // IMPORT FROM CAP!?!?!?!?!?
   $sunetid = variable_get('stanford_sites_requester_sunetid', FALSE);
@@ -580,10 +527,8 @@ function stanford_personal_swap_profile_from_person_submit($form, &$form_state) 
     return;
   }
 
-  module_load_include('inc', 'stanford_personal', 'includes/cap.api');
   stanford_personal_import_cap_profile_from_cap($sunetid);
 
-  drupal_flush_all_caches();
 }
 
 /**
@@ -636,7 +581,8 @@ function stanford_personal_edit_profile_submit($form, $form_state) {
     drupal_goto('node/' . $nid . '/edit');
   }
   else {
-    drupal_set_message("Could not find profile nid", 'error');
+    stanford_personal_get_profile_from_content_server();
+    drupal_set_message("Could not find profile. Please try again.", 'error');
   }
 }
 
@@ -701,7 +647,6 @@ function stanford_personal_get_person_profile_nid() {
       ->fetchAssoc();
 
     if (!isset($result['nid'])) {
-      // throw new Exception("No Profile Available");
       return FALSE;
     }
 
