@@ -47,7 +47,7 @@ html.js .region-search-box div.contextual-links-wrapper {display:none;}
 #admin-shortcuts .block .contextual-links-wrapper {display:none;}
 
 /* Home block */
-#admin-shortcuts .block.shortcuts-home { top: -9px;}
+#admin-shortcuts .block.shortcuts-home { top: -2px;}
 #admin-shortcuts .shortcuts-home .content a { background-image: url("../images/home.png"); color: transparent; display: inline-block; font-size: 0; height: 25px; padding: 0; width: 30px; }
 #admin-shortcuts .shortcuts-home .content a:hover { background-image: url("../images/home.png"); }
 
