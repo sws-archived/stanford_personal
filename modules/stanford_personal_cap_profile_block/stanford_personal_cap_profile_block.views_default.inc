@@ -146,15 +146,6 @@ function stanford_personal_cap_profile_block_views_default_views() {
   $handler->display->display_options['fields']['field_s_person_info_links']['click_sort_column'] = 'url';
   $handler->display->display_options['fields']['field_s_person_info_links']['delta_offset'] = '0';
   $handler->display->display_options['fields']['field_s_person_info_links']['separator'] = '<br />';
-  /* Field: Content: Edit link */
-  $handler->display->display_options['fields']['edit_node']['id'] = 'edit_node';
-  $handler->display->display_options['fields']['edit_node']['table'] = 'views_entity_node';
-  $handler->display->display_options['fields']['edit_node']['field'] = 'edit_node';
-  $handler->display->display_options['fields']['edit_node']['label'] = '';
-  $handler->display->display_options['fields']['edit_node']['element_type'] = 'div';
-  $handler->display->display_options['fields']['edit_node']['element_class'] = 'edit-link';
-  $handler->display->display_options['fields']['edit_node']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['edit_node']['text'] = 'Manage my profile';
   /* Sort criterion: Content: Post date */
   $handler->display->display_options['sorts']['created']['id'] = 'created';
   $handler->display->display_options['sorts']['created']['table'] = 'node';
@@ -217,6 +208,34 @@ function stanford_personal_cap_profile_block_views_default_views() {
   $handler->display->display_options['fields']['cap_url']['alter']['alter_text'] = TRUE;
   $handler->display->display_options['fields']['cap_url']['alter']['text'] = '<a href="[cap_url]" title="[cap_label]" class="more-link">[cap_label]</a>';
   $handler->display->display_options['fields']['cap_url']['element_label_colon'] = FALSE;
+  $handler->display->display_options['displays'] = array(
+    'block' => 'block',
+    'default' => 0,
+  );
+  $handler->display->display_options['attachment_position'] = 'after';
+
+  /* Display: Attachment */
+  $handler = $view->new_display('attachment', 'Edit Link Attachment', 'attachment_2');
+  $handler->display->display_options['pager']['type'] = 'none';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['defaults']['relationships'] = FALSE;
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Content: Nid */
+  $handler->display->display_options['fields']['nid']['id'] = 'nid';
+  $handler->display->display_options['fields']['nid']['table'] = 'node';
+  $handler->display->display_options['fields']['nid']['field'] = 'nid';
+  $handler->display->display_options['fields']['nid']['label'] = '';
+  $handler->display->display_options['fields']['nid']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['nid']['element_label_colon'] = FALSE;
+  /* Field: Content: Edit link */
+  $handler->display->display_options['fields']['edit_node']['id'] = 'edit_node';
+  $handler->display->display_options['fields']['edit_node']['table'] = 'views_entity_node';
+  $handler->display->display_options['fields']['edit_node']['field'] = 'edit_node';
+  $handler->display->display_options['fields']['edit_node']['label'] = '';
+  $handler->display->display_options['fields']['edit_node']['element_type'] = 'div';
+  $handler->display->display_options['fields']['edit_node']['element_class'] = 'edit-link';
+  $handler->display->display_options['fields']['edit_node']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['edit_node']['text'] = 'Manage my profile';
   $handler->display->display_options['displays'] = array(
     'block' => 'block',
     'default' => 0,
