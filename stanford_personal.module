@@ -364,63 +364,226 @@ function stanford_personal_profile_form($form, &$form_state) {
   // Block Preview
   $form['block_preview_title']['#markup'] = "<h3>Profile Preview</h3>";
   $block = module_invoke('views', 'block_view', 'profile_blocks-block');
-  $form['block_preview']['#markup'] = $block['content']['#markup'];
+  $form['block_preview']['#markup'] = !empty($block['content']['#markup']) ? $block['content']['#markup'] : "No profile available";
 
-  // If no cap module and working from stanford person content type end.
-  if (!module_exists('stanford_cap_api_profiles')) {
-    return $form;
+  // If cap module get cap fields
+  if (module_exists('stanford_cap_api_profiles')) {
+    $form = stanford_personal_profile_form_cap_form($form, $form_state);
   }
 
+  // If stanford module get stanford fields
+  if (module_exists('stanford_person')) {
+    $form = stanford_personal_profile_form_person_form($form, $form_state);
+  }
+
+  return $form;
+}
+
+/**
+ * Cap form settings form
+ * @param  [type] $form [description]
+ * @param  [type] $form [description]
+ * @return [type]       [description]
+ */
+function stanford_personal_profile_form_cap_form($form, &$form_state) {
   $last_sync = stanford_pesonal_get_formatted_sync_date();
   $enabled = stanford_personal_get_profile_sync_status();
   $cap_nid = stanford_personal_get_cap_profile_nid();
 
-  // CAP ONLY STUFF HERE
+  if ($cap_nid) {
 
-  $form['cap_profile_nid'] = array(
-    '#type' => 'hidden',
-    '#value' => $cap_nid,
+    // CAP ONLY STUFF HERE
+    $form['cap_profile_nid'] = array(
+      '#type' => 'hidden',
+      '#value' => $cap_nid,
+    );
+
+    $form['cap_actions'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Actions'),
+      '#description' => t(''),
+    );
+
+    $form['cap_actions']['cap_sync_now'] = array(
+      '#type' => 'button',
+      '#value' => 'Sync profile information from CAP',
+      '#executes_submit_callback' => TRUE,
+      '#submit' => array('stanford_personal_cap_sync_now_submit'),
+    );
+
+    $form['cap_settings'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Settings'),
+      '#description' => t('Configuration settings for your CAP profile'),
+    );
+
+    $form['cap_settings']['enable_cap_sync'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Enable nightly CAP update.'),
+      '#description' => t('Last sync: ') . $last_sync,
+      '#default_value' => $enabled,
+    );
+
+    $form['cap_settings']['cap_submit'] = array(
+      '#type' => 'submit',
+      '#value' => t('Save settings'),
+    );
+
+  } // end if cap_id
+
+  $form['change_profile'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Change profile source'),
+    '#description' => "<p>" . t('Your profile information is currently synced with CAP.') . "</p>" .
+                      "<p>" . t('You can remove all imported CAP profile information in exchange for a profile that you edit manually in your website.') . "</p>",
   );
 
-  $form['cap_actions'] = array(
+  $form['change_profile']['swap_profile_from_cap'] = array(
+    '#type' => 'button',
+    '#value' => 'Create custom profile',
+    '#executes_submit_callback' => TRUE,
+    '#submit' => array('stanford_personal_swap_profile_from_cap_submit'),
+  );
+
+  $form['#submit'][] = "stanford_personal_profile_form_cap_form_submit";
+  return $form;
+}
+
+/**
+ * Disable and uninstall all of CAP. Enable stanford_person
+ * @param  [type] $form       [description]
+ * @param  [type] $form_state [description]
+ * @return [type]             [description]
+ */
+function stanford_personal_swap_profile_from_cap_submit($form, &$form_state) {
+
+  // Delete the content!
+  $nid = stanford_personal_get_cap_profile_nid();
+  if ($nid) {
+    node_delete($nid);
+  }
+
+  $disable = array(
+    'stanford_cap_api',
+    'stanford_cap_api_profiles',
+    'stanford_cap_api_profiles_layout',
+    'stanford_cap_api_orgs',
+    'stanford_personal_cap_settings',
+  );
+  module_disable($disable, FALSE);
+  drupal_uninstall_modules($disable, FALSE);
+
+  module_load_include('inc', 'stanford_personal', 'includes/cap.api');
+  stanford_personal_deep_clean_out_cap();
+
+  $enable = array('stanford_person');
+  module_enable($enable);
+
+  // Get dummy content.
+
+  // Try to use libraries module if available to find the path.
+  if (function_exists('libraries_get_path')) {
+    $library_path = DRUPAL_ROOT . '/' . libraries_get_path('stanford_sites_content_importer');
+  }
+  if (!file_exists($library_path . '/SitesContentImporter.php')) {
+    $library_path = DRUPAL_ROOT . '/sites/all/libraries/stanford_sites_content_importer';
+  }
+  if (!file_exists($library_path . '/SitesContentImporter.php')) {
+    $library_path = DRUPAL_ROOT . '/sites/default/libraries/stanford_sites_content_importer';
+  }
+  $library_path .= "/SitesContentImporter.php";
+  include_once $library_path;
+
+  // Request from the server Jane Doh!
+  $endpoint = "https://sites.stanford.edu/jsa-content/jsainstall";
+  $ids = array('985a66ed-f74f-4427-b56a-4a634bbc9e96' => array()); // Jane Doe
+  $importer = new SitesContentImporter();
+  $importer->set_endpoint($endpoint);
+  $importer->importer_process_nodes_by_uuids($ids);
+
+  drupal_flush_all_caches();
+}
+
+/**
+ * Person form settings.
+ * @param  [type] $form       [description]
+ * @param  [type] $form_state [description]
+ * @return [type]             [description]
+ */
+function stanford_personal_profile_form_person_form($form, &$form_state) {
+
+  $form['person_actions'] = array(
     '#type' => 'fieldset',
     '#title' => t('Actions'),
     '#description' => t(''),
   );
 
-  $form['cap_actions']['cap_sync_now'] = array(
-    '#type' => 'button',
-    '#value' => 'Sync profile information from CAP',
-    '#executes_submit_callback' => TRUE,
-    '#submit' => array('stanford_personal_cap_sync_now_submit'),
-  );
-
-  $form['cap_actions']['cap_edit_profile'] = array(
+  $form['person_actions']['person_edit_profile'] = array(
     '#type' => 'button',
     '#value' => 'Edit my profile',
     '#executes_submit_callback' => TRUE,
     '#submit' => array('stanford_personal_edit_profile_submit'),
   );
 
-  $form['cap_settings'] = array(
+  $form['change_profile'] = array(
     '#type' => 'fieldset',
-    '#title' => t('Settings'),
-    '#description' => t('Configuration settings for your CAP profile'),
+    '#title' => t('Change profile source'),
+    '#description' => "<p>" . t('Your profile information is not currently synced with CAP.') . "</p>"
+                    . "<p>" . t('You can have an automatically populated profile block with information from CAP. By clicking the below button you will disable and remove all existing profile information.') . "</p>"
+                    . "<p>" . t('WARNING: this will delete all of your changes to your profile on this site. They cannot be recovered.') . "</p>",
   );
 
-  $form['cap_settings']['enable_cap_sync'] = array(
-    '#type' => 'checkbox',
-    '#title' => t('Enable CAP integration'),
-    '#description' => t('Last Sync: ') . $last_sync,
-    '#default_value' => $enabled,
-  );
-
-  $form['cap_settings']['cap_submit'] = array(
-    '#type' => 'submit',
-    '#value' => t('Save settings'),
+  $form['change_profile']['swap_profile_from_person'] = array(
+    '#type' => 'button',
+    '#value' => 'Add CAP synced profile',
+    '#executes_submit_callback' => TRUE,
+    '#submit' => array('stanford_personal_swap_profile_from_person_submit'),
   );
 
   return $form;
+}
+
+/**
+ * Disable and uninstall all person content and enable cap.
+ * @param  [type] $form       [description]
+ * @param  [type] $form_state [description]
+ * @return [type]             [description]
+ */
+function stanford_personal_swap_profile_from_person_submit($form, &$form_state) {
+
+  // Delete the content!
+  $nid = stanford_personal_get_person_profile_nid();
+  if ($nid) {
+    node_delete($nid);
+  }
+
+  $disable = array('stanford_person');
+  module_disable($disable, FALSE);
+  drupal_uninstall_modules($disable, FALSE);
+
+  $enable = array(
+    'stanford_cap_api',
+    'stanford_cap_api_profiles',
+    'stanford_cap_api_orgs',
+    'stanford_personal_cap_settings',
+  );
+  module_enable($enable);
+  features_revert(array('stanford_personal_cap_settings'));
+  drupal_flush_all_caches();
+  drupal_static_reset();
+
+  // IMPORT FROM CAP!?!?!?!?!?
+  $sunetid = variable_get('stanford_sites_requester_sunetid', FALSE);
+
+  if (!$sunetid) {
+    drupal_set_message('Could not find SuNet ID to use. Could not import profile. Please contact your site administrator.', 'error');
+    return;
+  }
+
+  module_load_include('inc', 'stanford_personal', 'includes/cap.api');
+  stanford_personal_import_cap_profile_from_cap($sunetid);
+
+  drupal_flush_all_caches();
 }
 
 /**
@@ -429,7 +592,7 @@ function stanford_personal_profile_form($form, &$form_state) {
  * @param  [type] $form_state [description]
  * @return [type]             [description]
  */
-function stanford_personal_profile_form_submit($form, $form_state) {
+function stanford_personal_profile_form_cap_form_submit($form, $form_state) {
 
   if (isset($form_state['values']['enable_cap_sync'])) {
     db_update('cap_api_profiles')
@@ -468,9 +631,13 @@ function stanford_personal_cap_sync_now_submit($form, $form_state) {
  * @return [type]             [description]
  */
 function stanford_personal_edit_profile_submit($form, $form_state) {
-
-  $nid = stanford_personal_get_cap_profile_nid();
-  drupal_goto('node/' . $nid . '/edit');
+  $nid = stanford_personal_get_person_profile_nid();
+  if ($nid) {
+    drupal_goto('node/' . $nid . '/edit');
+  }
+  else {
+    drupal_set_message("Could not find profile nid", 'error');
+  }
 }
 
 /**
@@ -487,7 +654,8 @@ function stanford_personal_get_profile_sync_status() {
     ->fetchAssoc();
 
   if (!isset($result['sync'])) {
-    throw new Exception("Could not find profile node in sync status");
+    // throw new Exception("Could not find profile node in sync status");
+    return TRUE;
   }
 
   $status = (int) $result['sync'];
@@ -516,7 +684,51 @@ function stanford_pesonal_get_formatted_sync_date() {
  * Returns the nid of the profile.
  * @return [type] [description]
  */
+function stanford_personal_get_person_profile_nid() {
+
+  $nid = variable_get('stanford_personal_person_profile_nid', 0);
+  if (!$nid) {
+
+    // Delete the saved profile_id as well.
+    variable_del('stanford_personal_person_profile_id');
+
+    $result = db_select('node', 'n')
+      ->fields('n', array('vid', 'nid'))
+      ->condition('type', 'stanford_person')
+      ->range(0,1)
+      ->orderBy('nid', 'ASC')
+      ->execute()
+      ->fetchAssoc();
+
+    if (!isset($result['nid'])) {
+      // throw new Exception("No Profile Available");
+      return FALSE;
+    }
+
+    $nid = $result['nid'];
+    variable_set('stanford_personal_person_profile_nid', $nid);
+  }
+
+  // Check to see if node exists!
+  $node = node_load($nid);
+  if (!$node) {
+    variable_del('stanford_personal_person_profile_nid');
+    $nid = stanford_personal_get_person_profile_nid();
+  }
+
+  return $nid;
+
+}
+
+/**
+ * Returns the nid of the profile.
+ * @return [type] [description]
+ */
 function stanford_personal_get_cap_profile_nid() {
+
+  if (!module_exists('stanford_cap_api_profiles')) {
+    return FALSE;
+  }
 
   $nid = variable_get('stanford_personal_cap_profile_nid', 0);
   if (!$nid) {
@@ -532,7 +744,8 @@ function stanford_personal_get_cap_profile_nid() {
       ->fetchAssoc();
 
     if (!isset($result['nid'])) {
-      throw new Exception("No Cap Profile Available");
+      // throw new Exception("No Cap Profile Available");
+      return FALSE;
     }
 
     $nid = $result['nid'];
@@ -574,7 +787,8 @@ function stanford_personal_get_cap_profile_profile_id() {
       ->fetchAssoc();
 
     if (!isset($result['profile_id'])) {
-      throw new Exception("No Cap Profile Available");
+//      throw new Exception("No Cap Profile Available");
+      return FALSE;
     }
 
     $profile_id = $result['profile_id'];
