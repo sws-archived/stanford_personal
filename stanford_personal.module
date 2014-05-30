@@ -814,227 +814,259 @@ function stanford_personal_design_form($form, &$form_state) {
     $form['other'] = array(
       '#prefix' => '<p>' . $content . '</p>',
     );
+    return;
   }
-  else {
-    // Load system.admin.inc, so we can access the theme validation and submit functions
-    form_load_include($form_state, 'inc', 'system', 'system.admin');
 
-    $themes = list_themes();
-    $features = $themes['stanford_light']->info['features'];
-    $stanford_light_settings = stanford_personal_get_stanford_light_settings();
-    $form_state['stanford_light_settings'] = $stanford_light_settings;
 
-    // Layouts are driven by Contexts. we have 4 contexts, three of which are disabled
-    // TRUE means disabled. Ya rly.
-    $context_status_default = array (
-      'stanford_profile_left_sb' => TRUE,
-      'stanford_profile_right_sb' => TRUE,
-      'stanford_right_sb' => TRUE,
-    );
-    // it should be in the {variable} table
-    $context_status = variable_get('context_status', $context_status_default);
-    // make a new array to hold all of the contexts
-    $context_status_all = $context_status_default;
-    // add the missing one
-    $context_status_all['stanford_left_sb'] = TRUE;
-    // diff 'em!
-    $enabled_context = array_diff_key($context_status_all, $context_status);
-    // we want the key, not the value
-    foreach($enabled_context as $key => $value) {
-      $current_layout = $key;
-    }
-    // save these for using in submit function
-    $form_state['current_layout'] = $current_layout;
-    $form_state['context_status'] = $context_status;
-    $form['layouts'] = array(
-      '#type' => 'fieldset',
-      '#title' => t('Choose Layout'),
-    );
-    $layout_options = array(
-      'stanford_left_sb' => t('Left Sidebar'),
-      'stanford_right_sb' => t('Right Sidebar'),
-      'stanford_profile_right_sb' => t('Two Sidebars, Profile Right'),
-      'stanford_profile_left_sb' => t('Two Sidebars, Profile Left'),
-    );
-    // Toggle settings
-    $toggles = array(
-      'logo'                      => t('Logo'),
-      'favicon'                   => t('Shortcut icon'),
-    );
+  // Load system.admin.inc, so we can access the theme validation and submit functions
+  form_load_include($form_state, 'inc', 'system', 'system.admin');
 
-    // da form
-    foreach ($toggles as $name => $title) {
-      if (in_array($name, $features)) {
-        $form['theme_settings']['toggle_' . $name] = array('#type' => 'checkbox', '#title' => $title, '#default_value' => theme_get_setting('toggle_' . $name, 'stanford_light'));
-        // Disable checkboxes for features not supported in the current configuration.
-        if (isset($disabled['toggle_' . $name])) {
-          $form['theme_settings']['toggle_' . $name]['#disabled'] = TRUE;
-        }
-      }
-    }
+  // Load the theme settings form file so we can use just the one form file.
+  include_once drupal_get_path('theme', 'stanford_light') . "/theme-settings.php";
 
-    if (!element_children($form['theme_settings'])) {
-      // If there is no element in the theme settings fieldset then do not show
-      // it -- but keep it in the form if another module wants to alter.
-      $form['theme_settings']['#access'] = FALSE;
-    }
-    $form['layouts']['layout'] = array(
-      '#type' => 'radios',
-      '#title' => t('Layout'),
-      '#options' => $layout_options,
-      '#default_value' => $current_layout,
-    );
-    $form['styles'] = array(
-        '#type' => 'fieldset',
-        '#title' => t('Choose Style'),
-    );
-    $style_options = array(
-        'styles-light' => t('Light'),
-        'styles-dark' => t('Dark'),
-        'styles-plain' => t('Plain'),
-        'styles-rich' => t('Rich'),
-        'styles-bright' => t('Bright'),
-        'styles-contrast' => t('High Contrast'),
-    );
-    $form['styles']['style'] = array(
-        '#type' => 'radios',
-        '#title' => t('Style'),
-        '#options' => $style_options,
-        '#default_value' => $stanford_light_settings['styles'],
-    );
-    $form['fonts'] = array(
-        '#type' => 'fieldset',
-        '#title' => t('Choose Fonts'),
-    );
-    $font_options = array(
-      'fonts-sans' => t('Sans Serif'),
-        'fonts-serif' => t('Serif'),
-        'fonts-slab' => t('Slab Serif'),
-    );
-    $form['fonts']['font'] = array(
-        '#type' => 'radios',
-        '#title' => t('Font'),
-        '#options' => $font_options,
-        '#default_value' => $stanford_light_settings['fonts'],
-    );
-    $form['redbar'] = array(
-        '#type' => 'fieldset',
-        '#title' => t('Enable Red Bar'),
-    );
-    $redbar_options = array(
-        'red-bar' => t('Show red bar above header'),
-        'no-red-bar' => t('Do not show red bar above header'),
-    );
-    $form['redbar']['red_bar'] = array(
-        '#type' => 'radios',
-        '#title' => t('Font'),
-        '#options' => $redbar_options,
-        '#default_value' => $stanford_light_settings['red_bar'],
-    );
-    $form['logo'] = array(
-      '#type' => 'fieldset',
-      '#title' => t('Logo image settings'),
-      '#description' => t('If toggled on, the following logo will be displayed.'),
-      '#attributes' => array('class' => array('theme-settings-bottom')),
-    );
-    $form['logo']['default_logo'] = array(
-      '#type' => 'checkbox',
-      '#title' => t('Use the default logo'),
-      '#default_value' => theme_get_setting('default_logo', 'stanford_light'),
-      '#tree' => FALSE,
-      '#description' => t('Check here if you want the theme to use the logo supplied with it.')
-    );
-    $form['logo']['settings'] = array(
-      '#type' => 'container',
-      '#states' => array(
-        // Hide the logo settings when using the default logo.
-        'invisible' => array(
-          'input[name="default_logo"]' => array('checked' => TRUE),
-        ),
-      ),
-    );
-    $form['logo']['settings']['logo_path'] = array(
-      '#type' => 'textfield',
-      '#title' => t('Path to custom logo'),
-      '#description' => t('The path to the file you would like to use as your logo file instead of the default logo.'),
-      '#default_value' => theme_get_setting('logo_path', 'stanford_light'),
-    );
-    $form['logo']['settings']['logo_upload'] = array(
-      '#type' => 'file',
-      '#title' => t('Upload logo image'),
-      '#maxlength' => 40,
-      '#description' => t("If you don't have direct file access to the server, use this field to upload your logo.")
-    );
-    $form['favicon'] = array(
-      '#type' => 'fieldset',
-      '#title' => t('Shortcut icon settings'),
-      '#description' => t("Your shortcut icon, or 'favicon', is displayed in the address bar and bookmarks of most browsers."),
-    );
-    $form['favicon']['default_favicon'] = array(
-      '#type' => 'checkbox',
-      '#title' => t('Use the default shortcut icon.'),
-      '#default_value' => theme_get_setting('default_favicon', 'stanford_light'),
-      '#description' => t('Check here if you want the theme to use the default shortcut icon.')
-    );
-    $form['favicon']['settings'] = array(
-      '#type' => 'container',
-      '#states' => array(
-        // Hide the favicon settings when using the default favicon.
-        'invisible' => array(
-          'input[name="default_favicon"]' => array('checked' => TRUE),
-        ),
-      ),
-    );
-    $form['favicon']['settings']['favicon_path'] = array(
-      '#type' => 'textfield',
-      '#title' => t('Path to custom icon'),
-      '#description' => t('The path to the image file you would like to use as your custom shortcut icon.'),
-      '#default_value' => theme_get_setting('favicon_path', 'stanford_light'),
-    );
-    $form['favicon']['settings']['favicon_upload'] = array(
-      '#type' => 'file',
-      '#title' => t('Upload icon image'),
-      '#description' => t("If you don't have direct file access to the server, use this field to upload your shortcut icon.")
-    );
+  // $themes = list_themes();
+  // $features = $themes['stanford_light']->info['features'];
+  // $stanford_light_settings = stanford_personal_get_stanford_light_settings();
+  // $form_state['stanford_light_settings'] = $stanford_light_settings;
 
-    // Inject human-friendly values for logo and favicon.
-    foreach (array('logo' => 'logo.png', 'favicon' => 'favicon.ico') as $type => $default) {
-      if (isset($form[$type]['settings'][$type . '_path'])) {
-        $element = &$form[$type]['settings'][$type . '_path'];
-
-        // If path is a public:// URI, display the path relative to the files
-        // directory; stream wrappers are not end-user friendly.
-        $original_path = $element['#default_value'];
-        $friendly_path = NULL;
-        if (file_uri_scheme($original_path) == 'public') {
-          $friendly_path = file_uri_target($original_path);
-          $element['#default_value'] = $friendly_path;
-        }
-      }
-    }
-    $form['header_bg_image'] = array(
-        '#type' => 'fieldset',
-        '#title' => t('Choose Header Background Image'),
-        '#collapsible' => TRUE,
-        '#collapsed' => TRUE,
-    );
-    $form['submit'] = array(
-        '#type' => 'submit',
-        '#value' => t('Save Design Settings'),
-    );
-    $form['var'] = array('#type' => 'hidden', '#value' => 'theme_stanford_light_settings');
-//    $form['#submit'][] = 'system_theme_settings_submit';
-    $form = system_settings_form($form);
-    // We don't want to call system_settings_form_submit(), so change #submit.
-    array_pop($form['#submit']);
-    $form['#submit'][] = 'system_theme_settings_submit';
-    $form['#submit'][] = 'stanford_personal_design_form_submit';
-    $form['#validate'][] = 'system_theme_settings_validate';
-    return $form;
-
+  // Layouts are driven by Contexts. we have 4 contexts, three of which are disabled
+  // TRUE means disabled. Ya rly.
+  $context_status_default = array (
+    'stanford_profile_left_sb' => TRUE,
+    'stanford_profile_right_sb' => TRUE,
+    'stanford_right_sb' => TRUE,
+  );
+  // it should be in the {variable} table
+  $context_status = variable_get('context_status', $context_status_default);
+  // make a new array to hold all of the contexts
+  $context_status_all = $context_status_default;
+  // add the missing one
+  $context_status_all['stanford_left_sb'] = TRUE;
+  // diff 'em!
+  $enabled_context = array_diff_key($context_status_all, $context_status);
+  // we want the key, not the value
+  foreach($enabled_context as $key => $value) {
+    $current_layout = $key;
   }
+
+  // // LAYOUTS -------------------------------------------------------------------
+
+  // save these for using in submit function
+  $form_state['current_layout'] = $current_layout;
+  $form_state['context_status'] = $context_status;
+  $form['layouts'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Choose Layout'),
+  );
+  $layout_options = array(
+    'stanford_left_sb' => t('Left Sidebar'),
+    'stanford_right_sb' => t('Right Sidebar'),
+    'stanford_profile_right_sb' => t('Two Sidebars, Profile Right'),
+    'stanford_profile_left_sb' => t('Two Sidebars, Profile Left'),
+  );
+  $form['layouts']['layout'] = array(
+    '#type' => 'radios',
+    '#title' => t('Layout'),
+    '#options' => $layout_options,
+    '#default_value' => $current_layout,
+  );
+
+  // // STYLES --------------------------------------------------------------------
+
+  // $form['styles'] = array(
+  //     '#type' => 'fieldset',
+  //     '#title' => t('Choose Style'),
+  // );
+  // $style_options = array(
+  //     'styles-light' => t('Light'),
+  //     'styles-dark' => t('Dark'),
+  //     'styles-plain' => t('Plain'),
+  //     'styles-rich' => t('Rich'),
+  //     'styles-bright' => t('Bright'),
+  //     'styles-contrast' => t('High Contrast'),
+  // );
+  // $form['styles']['style'] = array(
+  //     '#type' => 'radios',
+  //     '#title' => t('Style'),
+  //     '#options' => $style_options,
+  //     '#default_value' => $stanford_light_settings['styles'],
+  // );
+
+  // // FONTS ---------------------------------------------------------------------
+
+  // $form['fonts'] = array(
+  //     '#type' => 'fieldset',
+  //     '#title' => t('Choose Fonts'),
+  // );
+  // $font_options = array(
+  //   'fonts-sans' => t('Sans Serif'),
+  //     'fonts-serif' => t('Serif'),
+  //     'fonts-slab' => t('Slab Serif'),
+  // );
+  // $form['fonts']['font'] = array(
+  //     '#type' => 'radios',
+  //     '#title' => t('Font'),
+  //     '#options' => $font_options,
+  //     '#default_value' => $stanford_light_settings['fonts'],
+  // );
+
+  // // REDBAR --------------------------------------------------------------------
+
+  // $form['redbar'] = array(
+  //     '#type' => 'fieldset',
+  //     '#title' => t('Enable Red Bar'),
+  // );
+  // $redbar_options = array(
+  //     'red-bar' => t('Show red bar above header'),
+  //     'no-red-bar' => t('Do not show red bar above header'),
+  // );
+  // $form['redbar']['red_bar'] = array(
+  //     '#type' => 'radios',
+  //     '#title' => t('Font'),
+  //     '#options' => $redbar_options,
+  //     '#default_value' => $stanford_light_settings['red_bar'],
+  // );
+
+  // // LOGO --------------------------------------------------------------------
+
+  // $form['logo'] = array(
+  //   '#type' => 'fieldset',
+  //   '#title' => t('Logo image settings'),
+  //   '#description' => t('If toggled on, the following logo will be displayed.'),
+  //   '#attributes' => array('class' => array('theme-settings-bottom')),
+  // );
+  // $form['logo']['default_logo'] = array(
+  //   '#type' => 'checkbox',
+  //   '#title' => t('Use the default logo'),
+  //   '#default_value' => theme_get_setting('default_logo', 'stanford_light'),
+  //   '#tree' => FALSE,
+  //   '#description' => t('Check here if you want the theme to use the logo supplied with it.')
+  // );
+  // $form['logo']['settings'] = array(
+  //   '#type' => 'container',
+  //   '#states' => array(
+  //     // Hide the logo settings when using the default logo.
+  //     'invisible' => array(
+  //       'input[name="default_logo"]' => array('checked' => TRUE),
+  //     ),
+  //   ),
+  // );
+  // $form['logo']['settings']['logo_path'] = array(
+  //   '#type' => 'textfield',
+  //   '#title' => t('Path to custom logo'),
+  //   '#description' => t('The path to the file you would like to use as your logo file instead of the default logo.'),
+  //   '#default_value' => theme_get_setting('logo_path', 'stanford_light'),
+  // );
+  // $form['logo']['settings']['logo_upload'] = array(
+  //   '#type' => 'file',
+  //   '#title' => t('Upload logo image'),
+  //   '#maxlength' => 40,
+  //   '#description' => t("If you don't have direct file access to the server, use this field to upload your logo.")
+  // );
+
+  // // FAVICON -------------------------------------------------------------------
+
+  // $form['favicon'] = array(
+  //   '#type' => 'fieldset',
+  //   '#title' => t('Shortcut icon settings'),
+  //   '#description' => t("Your shortcut icon, or 'favicon', is displayed in the address bar and bookmarks of most browsers."),
+  // );
+  // $form['favicon']['default_favicon'] = array(
+  //   '#type' => 'checkbox',
+  //   '#title' => t('Use the default shortcut icon.'),
+  //   '#default_value' => theme_get_setting('default_favicon', 'stanford_light'),
+  //   '#description' => t('Check here if you want the theme to use the default shortcut icon.')
+  // );
+  // $form['favicon']['settings'] = array(
+  //   '#type' => 'container',
+  //   '#states' => array(
+  //     // Hide the favicon settings when using the default favicon.
+  //     'invisible' => array(
+  //       'input[name="default_favicon"]' => array('checked' => TRUE),
+  //     ),
+  //   ),
+  // );
+  // $form['favicon']['settings']['favicon_path'] = array(
+  //   '#type' => 'textfield',
+  //   '#title' => t('Path to custom icon'),
+  //   '#description' => t('The path to the image file you would like to use as your custom shortcut icon.'),
+  //   '#default_value' => theme_get_setting('favicon_path', 'stanford_light'),
+  // );
+  // $form['favicon']['settings']['favicon_upload'] = array(
+  //   '#type' => 'file',
+  //   '#title' => t('Upload icon image'),
+  //   '#description' => t("If you don't have direct file access to the server, use this field to upload your shortcut icon.")
+  // );
+
+  // // Inject human-friendly values for logo and favicon.
+  // // foreach (array('logo' => 'logo.png', 'favicon' => 'favicon.ico') as $type => $default) {
+  // //   if (isset($form[$type]['settings'][$type . '_path'])) {
+  // //     $element = &$form[$type]['settings'][$type . '_path'];
+
+  // //     // If path is a public:// URI, display the path relative to the files
+  // //     // directory; stream wrappers are not end-user friendly.
+  // //     $original_path = $element['#default_value'];
+  // //     $friendly_path = NULL;
+  // //     if (file_uri_scheme($original_path) == 'public') {
+  // //       $friendly_path = file_uri_target($original_path);
+  // //       $element['#default_value'] = $friendly_path;
+  // //     }
+  // //   }
+  // // }
+
+  // // HEADER BG IMG -------------------------------------------------------------
+
+  // $form['header_bg_image'] = array(
+  //     '#type' => 'fieldset',
+  //     '#title' => t('Choose Header Background Image'),
+  //     '#collapsible' => FALSE,
+  //     '#collapsed' => FALSE,
+  // );
+  // $form['header_bg_image']['stanford_light_hdr_img_fid'] = array(
+  //   '#type' => 'managed_file',
+  //   '#title' => t('Upload header image'),
+  //   '#description' => t("Upload an image to use as the header."),
+  //   '#default_value' => variable_get('stanford_light_hdr_img_fid', ''),
+  //   '#upload_location' => 'public://stanford_light/headers/',
+  // );
+
+  // // SUBMIT --------------------------------------------------------------------
+
+  // $form['submit'] = array(
+  //     '#type' => 'submit',
+  //     '#value' => t('Save Design Settings'),
+  // );
+  // $form['var'] = array('#type' => 'hidden', '#value' => 'theme_stanford_light_settings');
+  // $form['#submit'][] = 'system_theme_settings_submit';
+  // $form['#submit'][] = 'stanford_personal_design_form_submit';
+  // $form['#validate'][] = 'system_theme_settings_validate';
+
+  $GLOBALS['theme_key'] = "stanford_light";
+  $form = system_theme_settings($form, $form_state, 'stanford_light');
+  // stanford_light_form_system_theme_settings_alter($form, $form_state);
+
+  // Remove the things we don't want.
+  $form['theme_settings']['toggle_slogan']['#access'] =                     user_access('administer themes');
+  $form['theme_settings']['toggle_node_user_picture']['#access'] =          user_access('administer themes');
+  $form['theme_settings']['toggle_comment_user_picture']['#access'] =       user_access('administer themes');
+  $form['theme_settings']['toggle_comment_user_verification']['#access'] =  user_access('administer themes');
+  $form['theme_settings']['toggle_main_menu']['#access'] =                  user_access('administer themes');
+  $form['theme_settings']['toggle_secondary_menu']['#access'] =             user_access('administer themes');
+
+  $form['responsive_container']['#access'] =  user_access('administer themes');
+  $form['layout_container']['#access'] =      user_access('administer themes');
+  $form['background_container']['#access'] =  user_access('administer themes');
+  $form['border_container']['#access'] =      user_access('administer themes');
+
+  // Ensure only one submit callback.
+  // We will do the rest later.
+  $form['var'] = array('#type' => 'hidden', '#value' => 'theme_stanford_light_settings');
+  $form['#submit'] = array('stanford_personal_design_form_submit');
+
   return $form;
 }
+
+
 
 /**
  * Config form for "Site Details" page
@@ -1272,13 +1304,14 @@ function stanford_personal_design_form_submit($form, &$form_state) {
   unset($context_status[$layout]);
   // save our array to the {variable} table
   variable_set('context_status', $context_status);
-  // grab some values from the $form_state variable
-  $stanford_light_settings = $form_state['stanford_light_settings'];
-  $stanford_light_settings['fonts'] = $form_state['values']['font'];
-  $stanford_light_settings['styles'] = $form_state['values']['style'];
-  $stanford_light_settings['red_bar'] = $form_state['values']['red_bar'];
-  variable_set('theme_stanford_light_settings', $stanford_light_settings);
   cache_clear_all('context', 'cache');
+
+  // Submit the theme settings callback.
+  stanford_light_settings_submit($form, $form_state);
+
+  // Submit the theme setting variables ourselves.
+  system_theme_settings_submit($form, $form_state);
+
 }
 
 /**
