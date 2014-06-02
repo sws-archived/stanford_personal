@@ -237,7 +237,7 @@ function stanford_personal_cap_profile_block_views_default_views() {
   $handler->display->display_options['fields']['edit_node']['element_type'] = 'div';
   $handler->display->display_options['fields']['edit_node']['element_class'] = 'edit-link';
   $handler->display->display_options['fields']['edit_node']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['edit_node']['text'] = 'Manage my profile';
+  $handler->display->display_options['fields']['edit_node']['text'] = 'Edit my profile';
   /* Filter criterion: Content: Published */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
