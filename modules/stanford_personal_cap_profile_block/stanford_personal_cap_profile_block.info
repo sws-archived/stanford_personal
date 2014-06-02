@@ -43,3 +43,4 @@ features_exclude[field_base][cap_square] = cap_square
 features_exclude[field_base][cap_height_2] = cap_height_2
 features_exclude[field_base][cap_url_2] = cap_url_2
 features_exclude[field_base][cap_width_2] = cap_width_2
+stylesheets[all][] = css/stanford_personal_cap_profile_block.css
