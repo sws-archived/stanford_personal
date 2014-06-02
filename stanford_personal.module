@@ -294,6 +294,20 @@ function stanford_personal_profile_form($form, &$form_state) {
   $block = module_invoke('views', 'block_view', 'profile_blocks-block');
   $form['block_preview']['#markup'] = !empty($block['content']['#markup']) ? $block['content']['#markup'] : "No profile available";
 
+  // Confirm Step --------------------------------------------------------------
+
+  if (isset($form_state['storage']['confirm'])) {
+    $question = t("Are you sure?");
+    $path = "admin/stanford-personal/profile";
+    $description = "Are you sure you want to replace your profile? This process could take a few minutes.";
+    $yes = t('Yes, Replace my profile');
+    $no = t('No thanks, keep my existing profile.');
+    $form['#submit'][] = $form_state['storage']['confirm_submit'];
+    return confirm_form($form, $question, $path, $description, $yes, $no);
+  }
+
+  // END Confirm Step ----------------------------------------------------------
+
   // If cap module get cap fields
   if (module_exists('stanford_cap_api_profiles')) {
     $form = stanford_personal_profile_form_cap_form($form, $form_state);
@@ -318,6 +332,8 @@ function stanford_personal_profile_form_cap_form($form, &$form_state) {
   $enabled = stanford_personal_get_profile_sync_status();
   $cap_nid = stanford_personal_get_cap_profile_nid();
 
+  // ---------------------------------------------------------------------------
+
   if ($cap_nid) {
 
     // CAP ONLY STUFF HERE
@@ -334,9 +350,16 @@ function stanford_personal_profile_form_cap_form($form, &$form_state) {
 
     $form['cap_actions']['cap_sync_now'] = array(
       '#type' => 'button',
-      '#value' => 'Sync profile information from CAP',
+      '#value' => 'Sync profile with CAP',
       '#executes_submit_callback' => TRUE,
       '#submit' => array('stanford_personal_cap_sync_now_submit'),
+    );
+
+    $form['cap_actions']['cap_edit_on_cap_now'] = array(
+      '#type' => 'button',
+      '#value' => 'Edit profile @ CAP',
+      '#executes_submit_callback' => TRUE,
+      '#submit' => array('stanford_personal_cap_edit_on_cap_now_submit'),
     );
 
     $form['cap_settings'] = array(
@@ -363,18 +386,47 @@ function stanford_personal_profile_form_cap_form($form, &$form_state) {
     '#type' => 'fieldset',
     '#title' => t('Change profile source'),
     '#description' => "<p>" . t('Your profile information is currently synced with CAP.') . "</p>" .
-                      "<p>" . t('You can remove all imported CAP profile information in exchange for a profile that you edit manually in your website.') . "</p>",
+                      "<p>" . t('You can remove all imported CAP profile information in exchange for a profile that you edit manually in your website.') . "</p>" .
+                      "<p>" . t('This action will take a few minutes.') . "</p>",
   );
 
   $form['change_profile']['swap_profile_from_cap'] = array(
     '#type' => 'button',
     '#value' => 'Create custom profile',
     '#executes_submit_callback' => TRUE,
-    '#submit' => array('stanford_personal_swap_profile_from_cap_submit'),
+    '#submit' => array('stanford_personal_swap_profile_from_confirm_submit'),
   );
 
   $form['#submit'][] = "stanford_personal_profile_form_cap_form_submit";
   return $form;
+}
+
+/**
+ * [stanford_personal_cap_edit_on_cap_now_submit description]
+ * @param  [type] $form       [description]
+ * @param  [type] $form_state [description]
+ * @return [type]             [description]
+ */
+function stanford_personal_cap_edit_on_cap_now_submit($form, $form_state) {
+  $profile_id = stanford_personal_get_cap_profile_profile_id();
+  if (!$profile_id) {
+    drupal_set_message('No CAP profile available.');
+  }
+  $location = "https://cap.stanford.edu/profiles/auth/frdAuthActionServlet?choiceId=authFacProfile&fid=" . $profile_id;
+  header('Location: ' . $location);
+  exit();
+}
+
+/**
+ * [stanford_personal_profile_form_cap_form_submit description]
+ * @param  [type] $form       [description]
+ * @param  [type] $form_state [description]
+ * @return [type]             [description]
+ */
+function stanford_personal_swap_profile_from_confirm_submit($form, &$form_state) {
+  $form_state['storage']['confirm'] = TRUE;
+  $form_state['storage']['confirm_submit'] = 'stanford_personal_swap_profile_from_cap_submit';
+  $form_state['rebuild'] = TRUE;
 }
 
 /**
@@ -481,10 +533,22 @@ function stanford_personal_profile_form_person_form($form, &$form_state) {
     '#type' => 'button',
     '#value' => 'Add CAP synced profile',
     '#executes_submit_callback' => TRUE,
-    '#submit' => array('stanford_personal_swap_profile_from_person_submit'),
+    '#submit' => array('stanford_personal_swap_profile_from_person_confirm_submit'),
   );
 
   return $form;
+}
+
+/**
+ * [stanford_personal_profile_form_cap_form_submit description]
+ * @param  [type] $form       [description]
+ * @param  [type] $form_state [description]
+ * @return [type]             [description]
+ */
+function stanford_personal_swap_profile_from_person_confirm_submit($form, &$form_state) {
+  $form_state['storage']['confirm'] = TRUE;
+  $form_state['storage']['confirm_submit'] = 'stanford_personal_swap_profile_from_person_submit';
+  $form_state['rebuild'] = TRUE;
 }
 
 /**
@@ -581,8 +645,18 @@ function stanford_personal_edit_profile_submit($form, $form_state) {
     drupal_goto('node/' . $nid . '/edit');
   }
   else {
+    // Go get a profile from jsa-content.
     stanford_personal_get_profile_from_content_server();
-    drupal_set_message("Could not find profile. Please try again.", 'error');
+
+    // Try again.
+    $nid = stanford_personal_get_person_profile_nid();
+    if ($nid) {
+      drupal_goto('node/' . $nid . "/edit");
+    }
+    else {
+      drupal_set_message("Could not find profile. Please try again.", 'error');
+    }
+
   }
 }
 

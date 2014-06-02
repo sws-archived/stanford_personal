@@ -65,6 +65,7 @@ function stanford_personal_form_stanford_person_node_form_alter(&$form, &$form_s
   $form['field_s_person_dissertatn_title']['#access'] = user_access('administer nodes');
   $form['field_s_person_education']['#access'] = user_access('administer nodes');
   //$form['field_s_person_email']['#access'] = user_access('administer nodes');
+  $form['body']['#access'] = user_access('administer nodes');
   $form['field_s_person_faculty_title']['#access'] = user_access('administer nodes');
   $form['field_s_person_faculty_type']['#access'] = user_access('administer nodes');
   $form['field_s_person_fax_display']['#access'] = user_access('administer nodes');

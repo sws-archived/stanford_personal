@@ -8,6 +8,11 @@ form > div > .view-id-profile_blocks {
   display: block; /* Sets element back to block */
   margin-bottom: 20px;
 }
+
+.view-profile-blocks .view-display-id-attachment_2 {
+  display: none;
+}
+
 .views-field-field-s-person-profile-picture,
 .views-field-cap-profile-image {
   float: left;
