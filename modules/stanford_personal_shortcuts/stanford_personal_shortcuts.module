@@ -4,33 +4,81 @@
  * Code for the Stanford Sites Personal Layouts feature.
  */
 
-include_once 'stanford_personal_shortcuts.features.inc';
+/**
+ * Implements hook_menu().
+ */
+function stanford_personal_shortcuts_menu() {
+  $items = array();
+
+  $items['admin/stanford/jumpstart/shortcuts/site-actions/manage-profile'] = array(
+    'title' => 'Manage Profile',
+    'page callback' => 'drupal_goto',
+    'page arguments' => array('admin/stanford-personal/profile'),
+    'access arguments' => array('access stanford personal help'),
+    'type' => MENU_NORMAL_ITEM,
+    'menu_name' => 'menu-admin-shortcuts',
+  );
+
+  $items['admin/stanford/jumpstart/shortcuts/site-actions/manage-pages'] = array(
+    'title' => 'Manage Pages',
+    'page callback' => 'drupal_goto',
+    'page arguments' => array('admin/stanford-personal/pages'),
+    'access arguments' => array('stanford personal manage pages'),
+    'type' => MENU_NORMAL_ITEM,
+    'menu_name' => 'menu-admin-shortcuts',
+  );
+
+  $items['admin/stanford/jumpstart/shortcuts/site-actions/manage-blocks'] = array(
+    'title' => 'Manage Blocks',
+    'description' => 'Manage Blocks on your Stanford Site',
+    'page callback' => 'drupal_goto',
+    'page arguments' => array('admin/stanford-personal/blocks'),
+    'access arguments' => array('access stanford personal help'),
+    'type' => MENU_NORMAL_ITEM,
+    'menu_name' => 'menu-admin-shortcuts',
+  );
+
+  $items['admin/stanford/jumpstart/shortcuts/site-actions/manage-design'] = array(
+    'title' => 'Customize Design',
+    'page callback' => 'drupal_goto',
+    'page arguments' => array('admin/stanford-personal/design'),
+    'access arguments' => array('access stanford personal help'),
+    'type' => MENU_NORMAL_ITEM,
+    'menu_name' => 'menu-admin-shortcuts',
+  );
+
+  $items['admin/stanford/jumpstart/shortcuts/site-actions/manage-settings'] = array(
+    'title' => 'Change Site Settings',
+    'page callback' => 'drupal_goto',
+    'page arguments' => array('admin/stanford-personal/site-settings'),
+    'access arguments' => array('access stanford personal help'),
+    'type' => MENU_NORMAL_ITEM,
+    'menu_name' => 'menu-admin-shortcuts',
+  );
+
+  return $items;
+}
+
 
 /**
- * Implements hook_block_info().
+ * Implements hook_menu_alter().
  */
-function stanford_personal_shortcuts_block_info() {
-  $blocks['hello']['info'] = t('Stanford Sites Personal Hello "User" Block');
-  $blocks['hello']['cache'] = DRUPAL_CACHE_PER_USER;
-  return $blocks;
+function stanford_personal_shortcuts_menu_alter(&$items) {
+
+  $items['admin/stanford/jumpstart/shortcuts/site-actions/manage-taxonomies']['access callback'] = "stanford_personal_shortcuts_user_access";
+  $items['admin/stanford/jumpstart/shortcuts/site-actions/manage-users']['access callback'] = "stanford_personal_shortcuts_user_access";
+  $items['admin/stanford/jumpstart/shortcuts/site-actions/edit-main-menu']['access callback'] = "stanford_personal_shortcuts_user_access";
+  $items['admin/stanford/jumpstart/shortcuts/site-actions/edit-site-name']['access callback'] = "stanford_personal_shortcuts_user_access";
+  $items['admin/stanford/jumpstart/shortcuts/site-actions/add/stanford-page']['access callback'] = "stanford_personal_shortcuts_user_access";
+  $items['admin/stanford-jumpstart/ready']['access callback'] = "stanford_personal_shortcuts_user_access";
+  $items['admin/stanford-jumpstart/shortucts-features']["access callback"] = "stanford_personal_shortcuts_user_access";
+  $items['admin/stanford-jumpstart/launch-checklist']['access callback'] = "stanford_personal_shortcuts_user_access";
+
 }
 
 /**
- * Implements hook_block_view().
+ * User access callback for disabling menu items
  */
-function stanford_personal_shortcuts_block_view($delta = '') {
-  $block = array();
-  switch($delta) {
-    case 'hello':
-      global $user;
-      $content = '<div class="shortcuts-user">';
-      $content .= t('Hello, !name', array('!name' => $user->name));
-      $content .= '</div><div class="shortcuts-logout">';
-      $content .= t(l('Log out', 'user/logout'));
-      $content .= '</div>';
-      $block['subject'] = NULL;
-      $block['content'] = $content;
-    break;
-  }
-  return $block;
+function stanford_personal_shortcuts_user_access($args) {
+  return FALSE;
 }

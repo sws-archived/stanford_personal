@@ -947,7 +947,7 @@ function stanford_personal_blocks_form($form, &$form_state) {
     'actions' => array(
       '#type' => 'link',
       '#title' => t('edit'),
-      '#href'  => 'block/bean-social-media-connect-block/edit',
+      '#href'  => 'block/social-media-connect-block/edit',
     ),
   );
 
